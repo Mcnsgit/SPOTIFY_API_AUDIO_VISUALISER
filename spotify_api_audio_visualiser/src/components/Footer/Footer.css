@@ -1,0 +1,48 @@
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    height: 80px;
+    background-color: #1f1f1f;
+    color: white;
+        Container {
+      margin-top: 0.5rem;
+      border-radius: 20px;
+      background-color: #141414;
+      height: 100%;
+      width: 100%;
+      border-top: 1px solid #282828;
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      align-items: center;
+      justify-content: center;
+      padding: 0 1rem;
+        }    
+}
+
+/* src/components/mainComponents/playerControls/PlayerControls.css */
+.player-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* src/components/mainComponents/playerControls/CurrentTrack.css */
+.current-track {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.current-track__image {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.current-track__info {
+  display: flex;
+  flex-direction: column;
+}
