@@ -1,0 +1,30 @@
+/* src/components/reusable/InputBar.css */
+.input-bar {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+  }
+  
+  .input-bar:focus {
+    outline: none;
+    border-color: #1DB954;
+  }
+  
+
+.container {
+    position: 'relative';
+    top: '15px'
+  };
+  
+.input  {
+    background: '#fff';
+    width: 120;
+    border-radius: 10;
+    border: 'none';
+    font: "'Proxima Nova', Georgia, sans-serif";
+    padding: '4px 4px 4px 10px';
+    outline: 'none';
+    margin: -2
+  };
