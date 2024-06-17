@@ -1,19 +1,24 @@
+const initialState = {
+  view: 'browse',
+  modal: false
+};
 
-export const sessionReducer = (state = {}, action) => {
+export const uiReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_TOKEN':
+    case 'SET_NEW_VIEW':
       return {
         ...state,
-        token: action.token
+        view: action.view
       };
-    case 'SET_DEVICE_ID':
+    case 'SET_MODAL':
       return {
         ...state,
-        deviceId: action.id
+        modal: action.modal,
+        mode: action.mode
       };
     default:
       return state;
   }
 };
 
-export default sessionReducer;
+export default uiReducer;

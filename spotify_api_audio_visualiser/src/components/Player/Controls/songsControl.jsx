@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Button from './controlButon';
-
+import './SongControls.css';
 const songsControl = props => (
   <div className="song-control">
     <Button

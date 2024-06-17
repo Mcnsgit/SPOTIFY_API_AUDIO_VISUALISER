@@ -1,52 +1,59 @@
-import React, {Component} from 'react';
+import React, { useRef, useState } from 'react';
 import './Player.scss'
+import './Controls/SongControls.css'
+import ReactPlayer from 'react-player';
+import ProgressBar from './Controls/songSider';
 import DetailSection from './Details/detailSection';
-import SongSider from './Controls/songSider';
-import SongsControl from './Controls/controlButon';
+import SongsControl from './playerControls/songsControl';
 import VolumeControl from './volume/Volume';
 import withPlayer from '../../hoc/playerHoc';
 
 
-class Player extends Component {
-    toSeconds = (ms) => ms / 1000;
-    render = () => {
-        const position = this.toSeconds(this.props.trackPosition) || 0;
-        const duration = this.props.currentSong
-          ? this.toSeconds(this.props.currentSong.duration_ms)
-          : 1;
+
+
+
+const CustomPlayer = ({ url, currentSong, contains }) => {
+    const [timeProgress, setTimeProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+    const playerRef = useRef(null);
   
-    // const handleSeek = (time) => {
-    //     if (onSeek) {
-    //         onSeek(time);
-    //     }
-    // };
-  
+    const handleSeek = (seekTime) => {
+        if (playerRef.current) {
+          playerRef.current.seekTo(seekTime);
+        }
+      };
     return (
-        <div className="player-container">
-            {this.props.currentSong.id ? (
+        <div className="custom-player">
+            <ReactPlayer
+                ref={playerRef}
+                url={url}
+                playing={true}
+                width="100%"
+                height="50px"
+            />
+            <ProgressBar 
+            {...{ProgressBarRef, auidoRef, timeProgress, duration }} player={playerRef.current} onSeek={handleSeek} />
+            {currentSong.id && (
                 <DetailSection
                     ids={
-                        this.props.currentSong.linked_from?.id
-                            ? `${this.props.currentSong.linked_from.id},${this.props.currentSong.id}`
-                            : this.props.currentSong.id
+                        currentSong.linked_from?.id
+                            ? `${currentSong.linked_from.id},${currentSong.id}`
+                            : currentSong.id
                     }
-                    contains={this.props.contains}  
-                    songName={this.props.currentSong.name || ''}
-                    album={this.props.currentSong.album.uri.split(':')[2]}
-                    artists={this.props.currentSong.artists || []}
+                    contains={contains}
+                    songName={currentSong.name || ''}
+                    album={currentSong.album.uri.split(':')[2]}
+                    artists={currentSong.artists || []}
                 />
-            ) : null}
-            <SongsControl {...this.props} />
-            <SongSider
-                isEnabled
-                value={position / duration}
-                position={position}
-                duration={duration}
-                onChange={(value) => seekSong(Math.round(value * duration * 1000))}
+            )}
+            <SongsControl currentSong={currentSong} />
+            <VolumeControl 
+            player={playerRef.current}
+            onVolumeChange={(volume) => playerRef.current.setVolume(volume)}
             />
-            <VolumeControl />
         </div>
     );
-  };
-}
-  export default withPlayer(Player);
+};
+
+
+export default withPlayer(CustomPlayer);

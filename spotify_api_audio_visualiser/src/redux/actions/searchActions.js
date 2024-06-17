@@ -1,5 +1,6 @@
 import axios from '../../utils/axios';
 
+
 const fetchDataPending = () => {
   return {
     type: 'FETCH_DATA_PENDING'
@@ -26,45 +27,20 @@ export const setQuery = query => {
   };
 };
 
-const fetchQueryPending = () => {
-  return {
-    type: 'FETCH_QUERY_PENDING'
-  };
-};
-
 export const fetchSearchData = query => {
   return async (dispatch, getState) => {
-    dispatch(fetchQueryPending());
+    dispatch(setQuery(query));
     if (!query) {
       return;
     }
     dispatch(fetchDataPending());
-    dispatch(setQuery(query));
-    
-    const user = getState().userReducer.user;
-    if (!user || !user.country) {
-      // Handle the case where user or country is null
-      dispatch(fetchDataError());
-      return null;
-    }
-
-    const country = user.country;
-    
+    const country = getState().userReducer.user.country;
     try {
-      const responseArtist = await axios.get(`/search?q=${query}&type=artist&market=${country}&limit=2`);
-      const responseAlbum = await axios.get(`/search?q=${query}&type=album&market=${country}&limit=2`);
-      const responsePlaylist = await axios.get(`/search?q=${query}&type=playlist&market=${country}&limit=1`);
-      const responseTrack = await axios.get(`/search?q=${query}&type=track&market=${country}&limit=1`);
-      
-      const responseData = {
-        artist: responseArtist.data,
-        album: responseAlbum.data,
-        playlist: responsePlaylist.data,
-        track: responseTrack.data
-      };
-      
-      dispatch(fetchDataSuccess(responseData));
-      return responseData;
+      const response = await axios.get(
+        `/search?q=${query}&type=artist,album,playlist,track&market=${country}&limit=6`
+      );
+      dispatch(fetchDataSuccess(response.data));
+      return response.data;
     } catch (error) {
       dispatch(fetchDataError());
       return error;

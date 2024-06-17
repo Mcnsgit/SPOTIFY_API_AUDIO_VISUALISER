@@ -5,10 +5,22 @@ import './Footer.css';
 
 
 
-const Footer = props => {
-    <div className="footer">
-        <Player />
-    </div>
 
-    }
-export default Footer;
+const style = {
+    position: 'fixed',
+    width: '100%',
+    bottom: 0,
+    left: 0,
+    background: 'rgb(40, 40, 40)',
+    height: 80,
+    zIndex: 2000
+  };
+  
+  const footer = props => (
+    <div className="footer" style={style}>
+      <Player />
+    </div>
+  );
+  
+  export default footer;
+  

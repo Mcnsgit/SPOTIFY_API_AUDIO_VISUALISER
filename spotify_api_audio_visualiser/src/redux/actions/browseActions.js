@@ -1,89 +1,91 @@
-export const fetchCategoriesSuccess = (categories) => {
+import axios from '../../utils/axios';
+
+const fetchCategoriesSuccess = categories => {
   return {
     type: 'FETCH_CATEGORIES_SUCCESS',
     categories
   };
 };
 
-export const fetchCategoriesError = () => {
+const fetchCategoriesError = () => {
   return {
     type: 'FETCH_CATEGORIES_ERROR'
   };
 };
 
-export const fetchCategories = (accessToken) => {
-  return dispatch => {
-    const request = new Request(`https://api.spotify.com/v1/browse/categories`, {
-      headers: new Headers({
-        'Authorization': 'Bearer ' + accessToken
-      })
-    });
-    fetch(request).then(res => {
-      return res.json();
-    }).then(res => {
-      dispatch(fetchCategoriesSuccess(res.categories));
-    }).catch(err => {
-      dispatch(fetchCategoriesError(err));
-    });
-  };
-};
-
-export const fetchNewReleasesSuccess = (newReleases) => {
+const fetchMoreSuccess = (categories, next) => {
   return {
-    type: 'FETCH_NEW_RELEASES_SUCCESS',
-    newReleases
+    type: 'FETCH_MORE_CATEGORIES_SUCCESS',
+    categories,
+    next
   };
 };
 
-export const fetchNewReleasesError = () => {
-  return {
-    type: 'FETCH_NEW_RELEASES_ERROR'
+export const fetchMoreCategories = () => {
+  return async (dispatch, getState) => {
+    try {
+      const next = getState().browseReducer.categories.next;
+      if (next) {
+        const response = await axios.get(next);
+        const result =
+          response.data.categories ||
+          response.data.playlists ||
+          response.data.albums;
+        dispatch(fetchMoreSuccess(result.items, result.next));
+        return response;
+      }
+    } catch (error) {
+      return error;
+    }
   };
 };
 
-export const fetchNewReleases = (accessToken) => {
-  return dispatch => {
-    const request = new Request(`https://api.spotify.com/v1/browse/new-releases`, {
-      headers: new Headers({
-        'Authorization': 'Bearer ' + accessToken
-      })
-    });
-    fetch(request).then(res => {
-      return res.json();
-    }).then(res => {
-      dispatch(fetchNewReleasesSuccess(res.albums));
-    }).catch(err => {
-      dispatch(fetchNewReleasesError(err));
-    });
+const fetchCategories = path => {
+  return async (dispatch, getState) => {
+    try {
+      const country = getState().userReducer.user.country || 'US';
+      const response = await axios.get(
+        `/browse/${path}country=${country}&limit=38`
+      );
+      const result =
+        response.data.categories ||
+        response.data.playlists ||
+        response.data.albums;
+      dispatch(fetchCategoriesSuccess(result));
+      return result;
+    } catch (error) {
+      dispatch(fetchCategoriesError());
+      return error;
+    }
   };
 };
 
-export const fetchFeaturedSuccess = (featured) => {
-  return {
-    type: 'FETCH_FEATURED_SUCCESS',
-    featured
+export const fetchGenres = () => {
+  return async dispatch => {
+    dispatch(fetchCategories('categories?offset=1&'));
   };
 };
 
-export const fetchFeaturedError = () => {
-  return {
-    type: 'FETCH_FEATURED_ERROR'
+export const fetchNewReleases = () => {
+  return async dispatch => {
+    dispatch(fetchCategories('new-releases?'));
   };
 };
 
-export const fetchFeatured = (accessToken) => {
-  return dispatch => {
-    const request = new Request(`https://api.spotify.com/v1/browse/featured-playlists`, {
-      headers: new Headers({
-        'Authorization': 'Bearer ' + accessToken
-      })
-    });
-    fetch(request).then(res => {
-      return res.json();
-    }).then(res => {
-      dispatch(fetchFeaturedSuccess(res.playlists));
-    }).catch(err => {
-      dispatch(fetchFeaturedError(err));
-    });
+export const fetchFeatured = () => {
+  return async dispatch => {
+    dispatch(fetchCategories('featured-playlists?'));
+  };
+};
+
+export const fetchCharts = () => {
+  return async dispatch => {
+    dispatch(fetchCategories(`categories/toplists/playlists?&`));
+  };
+};
+
+export const fetchPlaylistForCategory = id => {
+  return async dispatch => {
+    dispatch(fetchCategories(`categories/${id}/playlists?`));
   };
 };
