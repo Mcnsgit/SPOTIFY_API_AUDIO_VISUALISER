@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import axios from '../../axios';
-import { setModal } from '../../store/actions/uiActions';
+import axios from '../../../utils/axios';
+import { setModal } from '../../../redux/actions/uiActions';
 import {
   fetchPlaylistsMenu,
   updatePlaylist
-} from '../../store/actions/playlistActions';
+} from '../../../redux/actions/playlistActions';
 
-import './modal.css';
-import song from '../../containers/mainSection/images/song.png';
+import './modal.scss';
+import song from '../../Layout/MainSection/images/song.png';
 
 class Modal extends Component {
   state = {};

@@ -8,6 +8,11 @@ const initialState = {
   top_artists: null,
   top_tracks: null,
   user_playlists: null,
+  userProfile: {
+    display_name: null,
+    image:'',
+    spotifyUrl:''
+  }
 };
 
 const authSlice = createSlice({
@@ -16,6 +21,9 @@ const authSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
+    },
+    setUserProfile: (state, action) => {
+      state.userProfile = action.payload;
     },
     clearUser: (state) => {
       state.user = null;

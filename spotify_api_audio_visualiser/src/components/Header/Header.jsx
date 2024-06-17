@@ -1,18 +1,33 @@
-import React, { Component } from 'react';
-import UserDetails from '../userDetails/userDetails';
+// Rewritten code to fix performance issues
+import React from 'react';
+import { useSelector } from 'react-redux';
 import Search from '../trackSearch/trackSearch';
-import SearchResults from '../Search/SearchResults/SearchResults';
-
+import PropTypes from 'prop-types';
+import UserProfile from '../userProfile/UserProfile';
 import './Header.scss';
 
-class Header extends Component {
-  render = () => (
+const Header = ({ searchValue, onSearchChange, results, onSelect, userProfile }) => {
+  const userProfileData = useSelector(state => state.auth || {});
+  return (
     <div className="main-header">
-      <Search />
-      <SearchResults results={this.props.results} onSelect={this.props.onSelect} />
-      <UserDetails username={this.props.username} img={this.props.img} />
+      <Search value={searchValue} onChange={onSearchChange}/>
+      <div className="user-profile">
+        <UserProfile userProfile={userProfileData} />
+      </div>
     </div>
   );
 }
 
-export default Header;
+Header.propTypes = {
+  searchValue: PropTypes.string.isRequired,
+  onSearchChange: PropTypes.func.isRequired,
+  results: PropTypes.array.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  userProfile: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string,
+    profileUrl: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+export default React.memo(Header);

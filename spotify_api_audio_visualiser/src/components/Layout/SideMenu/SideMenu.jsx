@@ -2,9 +2,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchPlaylistsMenu } from '../../../redux/actions/playlistActions';
+import {fetchPlaylistsMenu} from '../../../redux/actions/playlistActions.js';
+
+
 import withUiActions from '../../../hoc/uiHoc';
-import SideMenuConnected from './SideMenuConnected.jsx'; // Import the SideMenuConnected component
+import MenuItem from './menuItem';
 import './SideMenu.css';
 
 const sectionOne = [{ name: 'Browse', view: 'browse', id: 1 }];
@@ -35,7 +37,7 @@ class SiderMenu extends Component {
 
   generateItems(items, playlist = false) {
     return items.map(item => (
-      <SideMenuConnected
+      <MenuItem
         key={item.id}
         title={item.name}
         active={this.state.active === item.id}

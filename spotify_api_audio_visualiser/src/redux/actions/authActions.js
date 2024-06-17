@@ -30,5 +30,10 @@ export const loginSuccess = (accessToken, refresh_token, expiresIn) => ({
     payload: { error },
   });
   
+
+  export const setUserProfile = (profile) => ({
+    type: 'SET_USER_PROFILE',
+    payload: { profile },
+  });
  
   

@@ -10,16 +10,14 @@ import './mainSection.css';
 class MainSection extends Component {
   render = () => {
     // Destructure props for easier access
-    const { user } = this.props;
+    const { userProfile } = this.props;
 
     // Check if user data is available
-    if (!user) {
+    if (!userProfile) {
       return (
         <div className="main-section">
-          <Header />
-          <div className="main-section-container">
-            <p>Loading user data...</p> {/* Show loading state */}
-          </div>
+          <Header  searchValue={''} onSearchChange={() => {}} results={[]} onSelect={() => {}} userProfile={userProfile} />
+          
         </div>
       );
     }
@@ -29,7 +27,7 @@ class MainSection extends Component {
 
     return (
       <div className="main-section">
-        <Header />
+        <Header searchValue={''} onSearchChange={() => {}} results={[]} onSelect={() => {}} userProfile={userProfile} />
         <div className="main-section-container">
           {/* Display user details */}
           <div className="user-details">
@@ -37,8 +35,12 @@ class MainSection extends Component {
             <h2>{display_name}</h2>
             <p>ID: {id}</p>
           </div>
-          <SideMenu/>
+          <div className="main-section-content">
+          <SideMenu />
+.
           <Dashboard />
+
+          </div>
         </div>
       </div>
     );
