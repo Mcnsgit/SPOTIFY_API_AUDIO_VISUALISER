@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Generic from '../../../top/generic';
-import SongSearch from './songsSearch';
+import TrackSearch from './tracksSearch';
 const results = props => {
   let type;
   switch (true) {
@@ -25,7 +25,7 @@ const results = props => {
         Showing {props.type} for "{props.query}"
       </h2>
       {type === 'track' ? (
-        <SongSearch query={props.query} />
+        <TrackSearch query={props.query} />
       ) : (
         <Generic type={type} url={`/search?q=${props.query}&type=${type}`} />
       )}

@@ -9,12 +9,13 @@ import { fetchSearchData } from '../../../redux/actions/searchActions';
 import './Search.css';
 const container = {
   position: 'relative',
-  top: '15px'
+  left: '190px',
+  top: '50px'
 };
 
 const input = {
   background: '#fff',
-  width: 120,
+  width: 180,
   borderRadius: 10,
   border: 'none',
   fontFamily: "'Proxima Nova', Georgia, sans-serif",

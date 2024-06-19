@@ -1,8 +1,8 @@
-@use "../../styles/variables.scss" as *;
-@use "../../styles/mixins.scss" as mixin;
+@use "../../../utilities/variables" as *;
+
 
 .audio-player {
-  @include mixin.audio-card;
+  display: flex;
   &__container {
     display: flex;
     justify-content: center;
@@ -167,4 +167,33 @@
     transform: scale(1.2);
     background: var(--playhead-selected);
   }
+
+
+.add-remove-section {
+  display: flex;
+  i {
+    width: 20px;
+    margin-top: 9px;
+    margin-left: 10px;
+    font-size: 23px;
+    -webkit-text-stroke: 4px $bar-color !important;
+    color: $gray;
+
+    &:hover {
+      color: white;
+    }
+
+    &:active {
+      color: $darker-gray;
+    }
+  }
+  .fa-check {
+    color: #01da01;
+    &:hover {
+      &:before {
+        content: '\f00d';
+      }
+    }
+  }
+}
 }

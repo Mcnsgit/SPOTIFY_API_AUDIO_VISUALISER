@@ -1,59 +1,113 @@
-import React, { useRef, useState } from 'react';
+import React, {useRef, useState, useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import './Player.scss'
-import './Controls/SongControls.css'
-import ReactPlayer from 'react-player';
-import ProgressBar from './Controls/songSider';
+import './Controls/TrackControls.css'
+
+import ProgressBar from './Controls/trackSider';
 import DetailSection from './Details/detailSection';
-import SongsControl from './playerControls/songsControl';
-import VolumeControl from './volume/Volume';
-import withPlayer from '../../hoc/playerHoc';
+import TracksControl from './playerControls/tracksControl';
+import withSpotifyPlayer from '../../hoc/playerHoc';
+import { fetchTracks } from '../../redux/actions/libraryActions';
 
+const Player = ({
+  currentTrack,
+  playTrack,
+  pauseTrack,
+  nextTrack,
+  previousTrack,
+  seekTrack,
+  shuffle,
+  repeatContext,
+  playing,
+  shuffleActive,
+  repeatActive,
 
-
-
-
-const CustomPlayer = ({ url, currentSong, contains }) => {
-    const [timeProgress, setTimeProgress] = useState(0);
+}) => {
+  const [trackIndex, setTrackIndex] = useState(0);
+  const [timeProgress, setTimeProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-    const playerRef = useRef(null);
+
   
-    const handleSeek = (seekTime) => {
-        if (playerRef.current) {
-          playerRef.current.seekTo(seekTime);
-        }
+  
+  const audioRef = useRef();
+  const progressBarRef = useRef();
+  const token = useSelector(state => state.sessionReducer.token);
+  const tracks = useSelector(state => state.libraryReducer.tracks);
+  
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    if (tracks.length === 0) {
+      dispatch(fetchTracks());
+    }
+  }, [dispatch, tracks]);
+  
+  useEffect(() => {
+    if (tracks.length > 0 && !currentTrack) {
+      setTrackIndex(0);
+      playTrack(tracks[0]);
+      currentTrack(currentTrack);
+    }
+  }, [tracks,currentTrack, playTrack]);
+  const handleNext = () => {
+    if (trackIndex >= tracks.length - 1) {
+      setTrackIndex(0);
+      playTrack(tracks[0]);
+    } else {
+      setTrackIndex((prev) => prev + 1);
+      playTrack(tracks[trackIndex + 1]);
+    }
+  };
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.onloadedmetadata = () => {
+        setDuration(audioRef.current.duration);
       };
+      audioRef.current.ontimeupdate = () => {
+        setTimeProgress(audioRef.current.currentTime);
+      };
+    }
+  }, [audioRef]);
+
+
     return (
-        <div className="custom-player">
-            <ReactPlayer
-                ref={playerRef}
-                url={url}
-                playing={true}
-                width="100%"
-                height="50px"
-            />
-            <ProgressBar 
-            {...{ProgressBarRef, auidoRef, timeProgress, duration }} player={playerRef.current} onSeek={handleSeek} />
-            {currentSong.id && (
-                <DetailSection
-                    ids={
-                        currentSong.linked_from?.id
-                            ? `${currentSong.linked_from.id},${currentSong.id}`
-                            : currentSong.id
-                    }
-                    contains={contains}
-                    songName={currentSong.name || ''}
-                    album={currentSong.album.uri.split(':')[2]}
-                    artists={currentSong.artists || []}
-                />
-            )}
-            <SongsControl currentSong={currentSong} />
-            <VolumeControl 
-            player={playerRef.current}
-            onVolumeChange={(volume) => playerRef.current.setVolume(volume)}
-            />
-        </div>
+      <div className="player-container">
+        <div className='details-container'>
+
+         {currentTrack && (
+           <DetailSection {...{ currentTrack }} />
+          )}
+          </div>
+      <div className="track-controls">
+
+      <TracksControl {...{
+        audioRef,
+        progressBarRef,
+        duration,
+        setTimeProgress,
+        tracks,
+        trackIndex,
+        setTrackIndex,
+        currentTrack,
+        handleNext,
+        playTrack,
+        pauseTrack,
+        nextTrack,
+        previousTrack,
+        seekTrack,
+        shuffle,
+        repeatContext,
+        playing,
+        shuffleActive,
+        repeatActive,
+      }} />
+      </div>
+      <div className="progress-bar">
+      <ProgressBar {...{ audioRef, progressBarRef, duration, timeProgress }} />
+      </div>
+      </div>
     );
-};
-
-
-export default withPlayer(CustomPlayer);
+  };
+  
+  export default withSpotifyPlayer(Player);

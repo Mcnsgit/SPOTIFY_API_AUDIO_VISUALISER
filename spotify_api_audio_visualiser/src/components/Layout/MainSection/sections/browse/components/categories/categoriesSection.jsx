@@ -13,7 +13,7 @@ import {
   fetchPlaylistForCategory
 } from '../../../../../../../redux/actions/browseActions';
 
-import Album from '../../../../../../songsTable/items/album';
+import Album from '../../../../../../tracksTable/items/album';
 import Genre from '../items/genre';
 import Playlist from '../items/playlist';
 

@@ -4,7 +4,7 @@ import withUiActions from '../../../../../../hoc/uiHoc';
 
 import ResultGroup from './resultGroup';
 const results = ({
-  songs,
+  tracks,
   artists,
   albums,
   playlists,
@@ -16,12 +16,12 @@ const results = ({
   <div className="table-container">
     <div className="results-table">
       <div className="search-results">
-        {songs.length ? (
+        {tracks.length ? (
           <ResultGroup
-            items={songs}
+            items={tracks}
             onClick={onAlbumClick}
             changeMode={changeMode}
-            type="Songs"
+            type="Tracks"
           />
         ) : null}
         {artists.length ? (

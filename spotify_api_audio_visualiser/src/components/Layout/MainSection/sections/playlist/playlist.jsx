@@ -3,12 +3,12 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import {
-  fetchMoreSongs,
-  movePlaylistSong
+  fetchMoreTracks,
+  movePlaylistTrack
 } from "../../../../../redux/actions/playlistActions";
 
 import Header from "./components/header/playlistHeader";
-import Table from "../../../../songsTable/playlistTable/playlistTable";
+import Table from "../../../../tracksTable/playlistTable/playlistTable";
 
 import withStatus from "../../../../../hoc/statusHoc";
 import Spinner from "../../../../spinner/spinner";
@@ -27,8 +27,8 @@ class Playlist extends Component {
             playlist={this.props.playlist || {}}
             currentUri={this.props.currentUri}
             playing={this.props.playing}
-            pauseSong={this.props.pauseSong}
-            playSong={() => this.props.playSong(this.props.playlist.uri, 0)}
+            pauseTrack={this.props.pauseTrack}
+            playTrack={() => this.props.playTrack(this.props.playlist.uri, 0)}
           />
           <Table
             more={
@@ -37,14 +37,14 @@ class Playlist extends Component {
                 : false
             }
             playlist={this.props.playlist || {}}
-            fetchMoreSongs={this.props.fetchMoreSongs}
-            movePlaylistSong={this.props.movePlaylistSong}
-            current={this.props.currentSong}
+            fetchMoreTracks={this.props.fetchMoreTracks}
+            movePlaylistTrack={this.props.movePlaylistTrack}
+            current={this.props.currentTrack}
             playing={this.props.playing}
             uri={this.props.playlist ? this.props.playlist.uri : ""}
-            songs={this.props.playlist ? this.props.playlist.tracks.items : []}
-            pauseSong={this.props.pauseSong}
-            playSong={this.props.playSong}
+            tracks={this.props.playlist ? this.props.playlist.tracks.items : []}
+            pauseTrack={this.props.pauseTrack}
+            playTrack={this.props.playTrack}
           />
         </div>
       </Spinner>
@@ -63,8 +63,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      fetchMoreSongs,
-      movePlaylistSong
+      fetchMoreTracks,
+      movePlaylistTrack
     },
     dispatch
   );

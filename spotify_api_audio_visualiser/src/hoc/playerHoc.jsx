@@ -3,74 +3,71 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import {
-  nextSong,
-  previousSong,
-  pauseSong,
-  playSong,
-  seekSong,
+  nextTrack,
+  previousTrack,
+  pauseTrack,
+  playTrack,
+  seekTrack,
   shuffle,
   repeatContext
 } from '../redux/actions/playerActions';
 
-import { containsCurrentSong } from '../redux/actions/libraryActions.js'; 
-
+import { containsCurrentTrack, fetchTracks } from '../redux/actions/libraryActions.js'; 
 export default function(ComposedComponent) {
   class PlayerHoc extends Component {
-    shouldComponentUpdate(nextProps) {
-      return nextProps.playing || (this.props.playing && !nextProps.playing);
-    }
 
+    componentDidMount() {
+    if (!this.props.tracks || this.props.tracks.length === 0) {
+      this.props.fetchTracks();
+    }
+  }
+    shouldComponentUpdate(nextProps) {
+      return nextProps.playing !== this.props.playing;
+    }
     componentDidUpdate(prevProps) {
-      if (prevProps.currentSong.id !== this.props.currentSong.id) {
-        const id = this.props.currentSong.id;
-        const other = this.props.currentSong.linked_from
-          ? this.props.currentSong.linked_from.id
-          : null;
-        this.props.containsCurrentSong(other ? `${id},${other}` : id);
+      const { currentTrack } = this.props;
+      if (prevProps.currentTrack.id !== currentTrack.id) {
+        const id = currentTrack.id;
+        const other = currentTrack.linked_from ? currentTrack.linked_from.id : null;
+        this.props.containsCurrentTrack(other ? `${id},${other}` : id);
       }
     }
 
     render = () => (
       <ComposedComponent
         {...this.props}
-        playContext={(context, offset) => this.props.playSong(context, offset)}
-        playSong={() => this.props.playSong()}
+        playContext={(context, offset) => this.props.playTrack(context, offset)}
+        playTrack={() => this.props.playTrack()}
       />
     );
   }
 
   const mapStateToProps = state => {
+    const playerStatus = state.playerReducer.status;
     return {
-      currentSong: state.playerReducer.status
-        ? state.playerReducer.status.track_window.current_track
-        : {},
+      currentTrack: playerStatus 
+      ? playerStatus.track_window.current_track 
+      : {},
       contains: state.libraryReducer.containsCurrent ? true : false,
-      trackPosition: state.playerReducer.status
-        ? state.playerReducer.status.position
-        : 0,
-      playing: state.playerReducer.status
-        ? !state.playerReducer.status.paused
-        : false,
-      shuffleActive: state.playerReducer.status
-        ? state.playerReducer.status.shuffle
-        : false,
-      repeatActive: state.playerReducer.status
-        ? state.playerReducer.status.repeat_mode !== 0
-        : false
+      trackPosition: playerStatus ? playerStatus.position : 0,
+      playing: playerStatus ? !playerStatus.paused : false,
+      shuffleActive: playerStatus ? playerStatus.shuffle : false,
+      repeatActive: playerStatus ? playerStatus.repeat_mode !== 0 : false,
+      tracks: state.libraryReducer.tracks.items || []
     };
   };
-
   const mapDispatchToProps = dispatch => {
     return bindActionCreators(
       {
-        nextSong,
-        previousSong,
-        pauseSong,
-        playSong,
-        seekSong,
+        nextTrack,
+        previousTrack,
+        pauseTrack,
+        playTrack,
+        seekTrack,
         shuffle,
         repeatContext,
-        containsCurrentSong
+        containsCurrentTrack,
+        fetchTracks
       },
       dispatch
     );

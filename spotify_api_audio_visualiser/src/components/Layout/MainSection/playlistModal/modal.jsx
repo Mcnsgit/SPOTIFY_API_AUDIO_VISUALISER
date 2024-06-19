@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { bindActionCreators } from 'redux';
-
+import trackpng from '../../../../assets/images/trackpng.png';
 import axios from '../../../../utils/axios';
 import { setModal } from '../../../../redux/actions/uiActions';
 import {
@@ -10,21 +11,28 @@ import {
 } from '../../../../redux/actions/playlistActions';
 
 import './modal.scss';
-import song from '../images/song.png';
+
+
 
 class Modal extends Component {
-  state = {};
+  state = { header: '',
+    title: '',
+    description: '',
+    image: trackpng, // Default to trackpng
+    btn: '',
+    error: false
+  };
+  
 
   componentWillMount() {
     this.initialize();
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps !== this.props && this.props.show) {
+    if (prevProps.show !== this.props.show) {
       this.initialize();
     }
   }
-
   initialize = () => {
     if (this.props.edit) {
       this.setState({
@@ -33,7 +41,7 @@ class Modal extends Component {
         description: this.props.playlist.description || '',
         image: this.props.playlist.images.length
           ? this.props.playlist.images[0].url
-          : song,
+          : trackpng,
         btn: 'Save',
         error: false
       });
@@ -42,19 +50,21 @@ class Modal extends Component {
         header: 'Create Playlist',
         title: 'New Playlist',
         description: '',
-        image: song,
+        image: trackpng,
         btn: 'Create',
         error: false
       });
     }
   };
 
-  handleChange = (input, event) => {
-    input === 'title'
-      ? this.setState({ title: event.target.value })
-      : this.setState({ description: event.target.value });
-  };
-
+  handleChange(input, event) {
+    const value = event.target.value;
+    this.setState(prevState => ({
+      ...prevState,
+      [input]: value
+    }));
+  }
+  
   validate = () => {
     const title = this.state.title;
     if (!title.replace(/\s/g, '').length) {
@@ -72,42 +82,41 @@ class Modal extends Component {
   onSubmitNew = () => {
     if (this.validate()) {
       axios
-        .post(`/users/${this.props.id}/playlists`, {
-          name: this.state.title,
-          description: this.state.description
-        })
-        .then(() => {
-          this.props.setModal(false);
-          this.props.fetchPlaylistsMenu();
-        });
+  .post(`/users/${this.props.id}/playlists`, {
+    name: this.state.title,
+    description: this.state.description
+  })
+  .then(() => {
+    this.props.setModal(false);
+    this.props.fetchPlaylistsMenu();
+  })
+  .catch(error => console.error(error));
     }
   };
 
   onSubmitPlaylist = () => {
     const changeTitle = this.props.playlist.name !== this.state.title;
-    const changeDescription =
-      this.props.playlist.description !== this.state.description;
-
+    const changeDescription = this.props.playlist.description !== this.state.description;
     if (!changeTitle && !changeDescription) {
       return;
     }
-
     let playlist = {};
     if (changeTitle) {
       playlist.name = this.state.title;
     }
-    if (this.state.description && changeDescription) {
+    if (changeDescription) {
       playlist.description = this.state.description;
     }
-
     if (this.validate()) {
-      axios.put(`/playlists/${this.props.playlist.id}`, playlist).then(() => {
+      axios.put(`/playlists/${this.props.playlist.id}`, playlist)
+      .then(() => {
         this.props.setModal(false);
-        this.props.updatePlaylist(playlist);
+        this.props.updatePlaylist({ ...this.props.playlist, ...playlist });
         if (changeTitle) {
           this.props.fetchPlaylistsMenu();
         }
-      });
+      })
+      .catch(error => console.error(error));
     }
   };
 
@@ -134,7 +143,7 @@ class Modal extends Component {
                 }/100`}</div>
                 <div className="description">
                   <div className="image">
-                    <span>Image</span> <img alt="song" src={this.state.image} />
+                    <span>Image</span> <img alt="track" src={this.state.image} />
                   </div>
                   <div className="text">
                     <span>Description</span>
@@ -190,6 +199,7 @@ const mapStateToProps = state => {
     show: state.uiReducer.modal,
     edit: state.uiReducer.mode !== 'new',
     id: state.userReducer.user.id
+
   };
 };
 

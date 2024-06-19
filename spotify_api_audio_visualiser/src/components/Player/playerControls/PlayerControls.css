@@ -31,6 +31,7 @@
   color: var(--primary);
   cursor: pointer;
 }
+
 .audio-player__forward-backward {
   background: none;
   color: var(--dark);
@@ -153,4 +154,4 @@
 .audio-player__progress:active::-moz-range-thumb {
   transform: scale(1.2);
   background: var(--playhead-selected);
-}/*# sourceMappingURL=PlayerControls.css.map */
+}

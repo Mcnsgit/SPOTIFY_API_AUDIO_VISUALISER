@@ -7,21 +7,21 @@ export const setStatus = status => {
   };
 };
 
-export const nextSong = () => {
+export const nextTrack = () => {
   axios.post('/me/player/next');
   return {
     type: 'CHANGE_SONG'
   };
 };
 
-export const previousSong = () => {
+export const previousTrack = () => {
   axios.post('/me/player/previous');
   return {
     type: 'CHANGE_SONG'
   };
 };
 
-export const playSong = (context = false, offset) => {
+export const playTrack = (context = false, offset) => {
   if (context && offset) {
     axios.put('/me/player/play', {
       context_uri: context,
@@ -51,14 +51,14 @@ export const playTracks = (tracks, offset) => {
   };
 };
 
-export const pauseSong = () => {
+export const pauseTrack = () => {
   axios.put('/me/player/pause');
   return {
     type: 'PAUSE_STATE'
   };
 };
 
-export const seekSong = ms => {
+export const seekTrack = ms => {
   axios.put(`/me/player/seek?position_ms=${ms}`);
   return {
     type: 'SEEK_SONG'

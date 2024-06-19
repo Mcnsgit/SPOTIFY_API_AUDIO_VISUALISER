@@ -11,8 +11,8 @@ const playlistHeader = ({
   playlist,
   album = false,
   onArtistClick,
-  playSong,
-  pauseSong,
+  playTrack,
+  pauseTrack,
   playing,
   showModal,
   currentUri,
@@ -27,11 +27,11 @@ const playlistHeader = ({
     ? playlist.owner.display_name || playlist.owner.id
     : '';
 
-  const songs = playlist.tracks ? playlist.tracks.total : '0';
+  const tracks = playlist.tracks ? playlist.tracks.total : '0';
 
   const playingPlaylist = currentUri === playlist.uri && playing;
 
-  const event = playingPlaylist ? pauseSong : playSong;
+  const event = playingPlaylist ? pauseTrack : playTrack;
 
   return (
     <div className="playlist-title-container">
@@ -65,7 +65,7 @@ const playlistHeader = ({
         {!album && (
           <p className="created-by">
             {'Created by: '}
-            <span className="lighter-text">{owner}</span> - {songs} songs
+            <span className="lighter-text">{owner}</span> - {tracks} tracks
           </p>
         )}
         {album && (
@@ -91,7 +91,7 @@ const playlistHeader = ({
                 {' '}
                 {moment(playlist.release_date).format('YYYY')}
               </span>{' '}
-              - {playlist.total_tracks || 0} songs
+              - {playlist.total_tracks || 0} tracks
             </div>
           </div>
         )}

@@ -1,4 +1,10 @@
-export const artistReducer = (state = {}, action) => {
+const initialState = {
+  currentArtist: { artists: [] },
+  fetchArtistError: false,
+  fetchArtistPending: false
+};
+
+export const artistReducer = (state = initialState, action) => {
     switch (action.type) {
       case 'FETCH_ARTIST_PENDING':
         return {

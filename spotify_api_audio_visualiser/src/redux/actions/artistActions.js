@@ -1,5 +1,9 @@
 import axios from '../../utils/axios';
 
+const initialState = {
+  id: [],
+};
+
 const fetchArtistPending = () => {
   return {
     type: 'FETCH_ARTIST_PENDING'

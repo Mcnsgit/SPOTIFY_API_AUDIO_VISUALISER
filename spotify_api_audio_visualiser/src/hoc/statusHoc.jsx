@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import {
-  playSong,
-  pauseSong,
+  playTrack,
+  pauseTrack,
   playTracks
 } from '../redux/actions/playerActions';
 
 import {
-  removeSong,
-  addSong,
-  containsSong
+  removeTrack,
+  addTrack,
+  containsTrack
 } from '../redux/actions/libraryActions';
 
 export default function(ComposedComponent) {
@@ -24,7 +24,7 @@ export default function(ComposedComponent) {
       currentUri: state.playerReducer.status
         ? state.playerReducer.status.context.uri
         : null,
-      currentSong: state.playerReducer.status
+      currentTrack: state.playerReducer.status
         ? state.playerReducer.status.track_window.current_track.linked_from
             .id || state.playerReducer.status.track_window.current_track.id
         : null,
@@ -37,12 +37,12 @@ export default function(ComposedComponent) {
   const mapDispatchToProps = dispatch => {
     return bindActionCreators(
       {
-        pauseSong,
-        playSong,
+        pauseTrack,
+        playTrack,
         playTracks,
-        removeSong,
-        containsSong,
-        addSong
+        removeTrack,
+        containsTrack,
+        addTrack
       },
       dispatch
     );

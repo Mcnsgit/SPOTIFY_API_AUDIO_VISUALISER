@@ -6,7 +6,7 @@ const index = () => (
   <Message
     icon="fa-search"
     title="Search Spotify"
-    description="Find your favorite songs, artists, albums and playlists."
+    description="Find your favorite tracks, artists, albums and playlists."
   />
 );
 

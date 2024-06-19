@@ -28,7 +28,7 @@ class Search extends Component {
 
   render = () => {
     const results =
-      this.props.songs.length ||
+      this.props.tracks.length ||
       this.props.playlists.length ||
       this.props.artists.length ||
       this.props.albums.length;
@@ -59,7 +59,7 @@ const mapStateToProps = state => {
   return {
     query: state.searchReducer.query,
     artists: state.searchReducer.artists || [],
-    songs: state.searchReducer.tracks || [],
+    tracks: state.searchReducer.tracks || [],
     playlists: state.searchReducer.playlists || [],
     albums: state.searchReducer.albums || []
   };

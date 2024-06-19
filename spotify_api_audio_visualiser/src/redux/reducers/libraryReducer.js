@@ -1,32 +1,41 @@
-export const playlistReducer = (state = {}, action) => {
+
+
+const initialState = {
+  tracks: {items:[]},
+  fetchTracksError: false,
+  fetchTracksPending: false,
+  containsCurrent: false
+};
+
+export const playlistReducer = (state = initialState, action) => {
     switch (action.type) {
       case 'FETCH_SONGS_PENDING':
         return {
           ...state,
-          fetchSongsPending: true
+          fetchTracksPending: true
         };
   
       case 'FETCH_SONGS_SUCCESS':
         return {
           ...state,
-          songs: action.songs,
-          fetchSongsError: false,
-          fetchSongsPending: false
+          tracks: action.tracks,
+          fetchTracksError: false,
+          fetchTracksPending: false
         };
   
       case 'FETCH_SONGS_ERROR':
         return {
           ...state,
-          fetchSongsError: true,
-          fetchSongsPending: false
+          fetchTracksError: true,
+          fetchTracksPending: false
         };
   
       case 'FETCH_MORE_SONGS_SUCCESS':
-        let items = [...state.songs.items, ...action.songs];
+        let items = [...state.tracks.items, ...action.tracks];
         return {
           ...state,
-          songs: {
-            ...state.songs,
+          tracks: {
+            ...state.tracks,
             next: action.next,
             items: items
           }

@@ -8,16 +8,16 @@ const item = ({
   item,
   type,
   onClick,
-  playSong,
-  pauseSong,
+  playTrack,
+  pauseTrack,
   playTracks,
   currentUri,
-  currentSong,
+  currentTrack,
   playing
 }) => {
   let img, title, description;
 
-  if (type === 'Songs') {
+  if (type === 'Tracks') {
     img = item.album.images[2]
       ? item.album.images[2].url
       : item.album.images[0].url;
@@ -39,19 +39,19 @@ const item = ({
   return (
     <ul className={`item ${type === 'Artists' ? 'artist' : ''}`}>
       <div className="image">
-        <img alt="song" src={img} />
-        {(playing && currentUri === item.uri) || currentSong === item.id ? (
+        <img alt="track" src={img} />
+        {(playing && currentUri === item.uri) || currentTrack === item.id ? (
           <i
             className="fa fa-pause-circle-o"
             aria-hidden="true"
-            onClick={() => pauseSong()}
+            onClick={() => pauseTrack()}
           />
         ) : (
           <i
             className="fa fa-play-circle-o"
             aria-hidden="true"
             onClick={() =>
-              type === 'Songs' ? playTracks([item.uri], 0) : playSong(item.uri)
+              type === 'Tracks' ? playTracks([item.uri], 0) : playTrack(item.uri)
             }
           />
         )}

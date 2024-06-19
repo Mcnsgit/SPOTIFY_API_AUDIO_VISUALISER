@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
 import './browser.css';
-
 import Header from './components/header/browseHeader';
 import Categories from './components/categories/categoriesSection';
 
@@ -22,7 +20,7 @@ class Browse extends Component {
   };
 
   render = () => (
-    <div>
+    <div className="browse-container">
       <Header
         options={options}
         onClick={this.setActive}

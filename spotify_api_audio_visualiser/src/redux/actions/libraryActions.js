@@ -1,60 +1,60 @@
 import axios from '../../utils/axios';
 
-const fetchSongsPending = () => {
+const fetchTracksPending = () => {
   return {
-    type: 'FETCH_SONGS_PENDING'
+    type: 'FETCH_TRACKS_PENDING'
   };
 };
 
-const fetchSongsSuccess = songs => {
+const fetchTracksSuccess = tracks => {
   return {
-    type: 'FETCH_SONGS_SUCCESS',
-    songs
+    type: 'FETCH_TRACKS_SUCCESS',
+    tracks
   };
 };
 
-const fetchMoreSucess = (songs, next) => {
+const fetchMoreSucess = (tracks, next) => {
   return {
-    type: 'FETCH_MORE_SONGS_SUCCESS',
-    songs,
+    type: 'FETCH_MORE_TRACKS_SUCCESS',
+    tracks,
     next
   };
 };
 
-const fetchSongsError = () => {
+const fetchTracksError = () => {
   return {
-    type: 'FETCH_SONGS_ERROR'
+    type: 'FETCH_TRACKS_ERROR'
   };
 };
 
-const containsSongSuccess = contains => {
+const containsTrackSuccess = contains => {
   return {
     type: 'CONTAINS_CURRENT_SUCCESS',
     contains: contains
   };
 };
 
-export const removeSong = (id, current = false) => {
+export const removeTrack = (id, current = false) => {
   axios.delete(`/me/tracks?ids=${id}`);
   return {
-    type: 'REMOVE_SONG_SUCCESS',
+    type: 'REMOVE_TRACK_SUCCESS',
     current: current
   };
 };
 
-export const addSong = (id, current = false) => {
+export const addTrack = (id, current = false) => {
   axios.put(`/me/tracks?ids=${id}`);
   return {
-    type: 'ADD_SONG_SUCCESS',
+    type: 'ADD_TRACK_SUCCESS',
     current: current
   };
 };
 
-export const containsCurrentSong = id => {
+export const containsCurrentTrack = id => {
   return async dispatch => {
     try {
       const response = await axios.get(`/me/tracks/contains?ids=${id}`);
-      dispatch(containsSongSuccess(response, true));
+      dispatch(containsTrackSuccess(response, true));
       return response.data;
     } catch (error) {
       return error;
@@ -62,7 +62,7 @@ export const containsCurrentSong = id => {
   };
 };
 
-export const containsSong = id => {
+export const containsTrack = id => {
   return async () => {
     try {
       const response = await axios.get(`/me/tracks/contains?ids=${id}`);
@@ -73,21 +73,21 @@ export const containsSong = id => {
   };
 };
 
-export const fetchSongs = () => {
+export const fetchTracks = () => {
   return async dispatch => {
-    dispatch(fetchSongsPending());
+    dispatch(fetchTracksPending());
     try {
       const response = await axios.get('/me/tracks?limit=25');
-      dispatch(fetchSongsSuccess(response.data));
+      dispatch(fetchTracksSuccess(response.data));
       return response.data;
     } catch (error) {
-      dispatch(fetchSongsError());
+      dispatch(fetchTracksError());
       return error;
     }
   };
 };
 
-const filterRepeatedSongs = (keyFn, array) => {
+const filterRepeatedTracks = (keyFn, array) => {
   var ids = [];
   return array.filter(x => {
     var key = keyFn(x),
@@ -97,39 +97,39 @@ const filterRepeatedSongs = (keyFn, array) => {
   });
 };
 
-export const fetchMoreSongs = () => {
+export const fetchMoreTracks = () => {
   return async (dispatch, getState) => {
-    const next = getState().libraryReducer.songs.next;
+    const next = getState().libraryReducer.tracks.next;
     try {
       if (next) {
         const response = await axios.get(next);
-        const songs = await filterRepeatedSongs(
+        const tracks = await filterRepeatedTracks(
           x => x.track.id,
           response.data.items
         );
-        dispatch(fetchMoreSucess(songs, response.data.next));
-        return songs;
+        dispatch(fetchMoreSucess(tracks, response.data.next));
+        return tracks;
       }
     } catch (error) {
-      dispatch(fetchSongsError());
+      dispatch(fetchTracksError());
       return error;
     }
   };
 };
 
-export const fetchRecentSongs = () => {
+export const fetchRecentTracks = () => {
   return async dispatch => {
-    dispatch(fetchSongsPending());
+    dispatch(fetchTracksPending());
     try {
       const response = await axios.get('/me/player/recently-played');
-      const songs = await filterRepeatedSongs(
+      const tracks = await filterRepeatedTracks(
         x => x.track.id,
         response.data.items
       );
-      dispatch(fetchSongsSuccess({ ...response.data, items: songs }));
-      return songs;
+      dispatch(fetchTracksSuccess({ ...response.data, items: tracks }));
+      return tracks;
     } catch (error) {
-      dispatch(fetchSongsError());
+      dispatch(fetchTracksError());
       return error;
     }
   };

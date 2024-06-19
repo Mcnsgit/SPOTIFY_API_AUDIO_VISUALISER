@@ -3,12 +3,12 @@ import React from 'react';
 import withPlayer from '../../hoc/playerHoc';
 
 const trackCover = props => {
-  return props.currentSong.album ? (
+  return props.currentTrack.album ? (
     <div className="cover">
       <img
         alt="cover"
         src={
-          props.currentSong.album ? props.currentSong.album.images[2].url : ''
+          props.currentTrack.album ? props.currentTrack.album.images[2].url : ''
         }
         style={{ width: '100%' }}
       />

@@ -4,8 +4,8 @@ import axios from '../../../../../utils/axios';
 import Spinner from '../../../../spinner/spinner';
 import withUiAction from '../../../../../hoc/uiHoc';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Album from '../../../../songsTable/items/album';
-import Artist from '../../../../songsTable/items/artist';
+import Album from '../../../../tracksTable/items/album';
+import Artist from '../../../../tracksTable/items/artist';
 
 import './generic.css';
 

@@ -46,7 +46,7 @@ export const playlistReducer = (state = {}, action) => {
         fetchPlaylistPending: false
       };
     case "FETCH_MORE_SUCCESS":
-      let items = [...state.playlist.tracks.items, ...action.songs];
+      let items = [...state.playlist.tracks.items, ...action.tracks];
       return {
         ...state,
         playlist: {
@@ -69,16 +69,16 @@ export const playlistReducer = (state = {}, action) => {
       };
 
     case "SORT_SONG":
-      let songs = [...state.playlist.tracks.items];
-      var song = songs[action.from];
-      songs.splice(action.from, 1);
-      songs.splice(action.to, 0, song);
+      let tracks = [...state.playlist.tracks.items];
+      var track = tracks[action.from];
+      tracks.splice(action.from, 1);
+      tracks.splice(action.to, 0, track);
       return {
         ...state,
         playlist: {
           ...state.playlist,
           snapshot_id: action.snapshot_id,
-          tracks: { ...state.playlist.tracks, items: songs }
+          tracks: { ...state.playlist.tracks, items: tracks }
         }
       };
 

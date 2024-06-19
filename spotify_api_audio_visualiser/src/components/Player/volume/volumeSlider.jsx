@@ -3,7 +3,7 @@ import axios from '../../../utils/axios';
 import Devices from '../../devices/devices';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import '../Controls/SongControls.css';
+import '../Controls/TrackControls.css';
 
 const VolumeSlider = ({ player }) => {
   const [volume, setVolume] = useState(1);

@@ -1,12 +1,18 @@
-import React from "react";
+// src/components/layoutComponents/SideMenu/menuItem.jsx
+import React from 'react';
+import PropTypes from 'prop-types';
+import './MenuItem.scss';
 
-const item = props => (
-  <li
-    onClick={props.onClick}
-    className={"menu-item" + (props.active ? " active" : "")}
-  >
-    {props.title}
+const MenuItem = ({ title, active, onClick }) => (
+  <li className={`menu-item ${active ? 'active' : ''}`} onClick={onClick}>
+    {title}
   </li>
 );
 
-export default item;
+MenuItem.propTypes = {
+  title: PropTypes.string.isRequired,
+  active: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired
+};
+
+export default MenuItem;

@@ -29,7 +29,7 @@ export const movePlaylist = (snapshot_id, from, to) => {
   };
 };
 
-export const movePlaylistSong = (playlist, range_start, insert_before) => {
+export const movePlaylistTrack = (playlist, range_start, insert_before) => {
   return async dispatch => {
     try {
       const data = {
@@ -92,10 +92,10 @@ export const updatePlaylist = playlist => {
   };
 };
 
-const fetchMoreSuccess = (songs, next) => {
+const fetchMoreSuccess = (tracks, next) => {
   return {
     type: "FETCH_MORE_SUCCESS",
-    songs,
+    tracks,
     next
   };
 };
@@ -128,7 +128,7 @@ export const unfollowPlaylist = () => {
   };
 };
 
-export const fetchMoreSongs = () => {
+export const fetchMoreTracks = () => {
   return async (dispatch, getState) => {
     try {
       const next = getState().playlistReducer.playlist.tracks.next;

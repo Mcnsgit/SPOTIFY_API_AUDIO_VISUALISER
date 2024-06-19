@@ -1,5 +1,11 @@
+const initialState = {
+  currentAlbum: null,
+  fetchAlbumError: false,
+  fetchAlbumPending: false
 
-export const albumReducer = (state = {}, action) => {
+};
+
+export const albumReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_ALBUM_SUCCESS':
       return {

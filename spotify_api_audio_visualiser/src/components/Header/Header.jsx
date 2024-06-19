@@ -9,8 +9,12 @@ import UserDetails from '../userDetails/userDetails';
 class Header extends Component {
   render = () => (
     <div className="main-header">
+      <div className="header-container">
       <Search />
+      </div>
+      <div className="user-details-container">
       <UserDetails username={this.props.username} img={this.props.img} />
+      </div>
     </div>
   );
 }
