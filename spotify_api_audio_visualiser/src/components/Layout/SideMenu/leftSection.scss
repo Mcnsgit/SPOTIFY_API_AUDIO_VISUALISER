@@ -1,16 +1,22 @@
 @import '../../../utilities/variables';
 
 .left-section {
-  height: 100%;
-  width: 100%;
-  z-index: 100;
-  overflow: hidden;
-  position: fixed;
-  top: 0px;
-  bottom: 10px;
-  width: 210px;
-  background-color: #0e0e10;
+  display: flex;
+  flex-direction: column;
+  width: 300px; /* Ensure this fits your design */
+  min-height: 100vh; /* Full height of the viewport */
+  background-color: #1c1c1c;
+  color: white;
+}
+.content-section {
+  flex: 1;
+  padding: 20px; /* Padding for content */
+  overflow: auto; /* Allows scrolling if content overflows */
+}
 
+.bottom-section {
+  margin-top: auto; /* Pushes it to the bottom */
+}
   .side-menu-container {
     position: absolute;
     top: 0;
@@ -45,7 +51,7 @@
       }
     }
   }
-}
+
 .left-section {
   width: 300px;
   background-color: #121212;
@@ -56,10 +62,7 @@
     font-size: 18px;
     margin: 20px 0 10px 10px;
   }
-
-  .side-menu-container {
-    padding: 10px;
-  }
+ 
 }
 
 .side-menu-container ul {

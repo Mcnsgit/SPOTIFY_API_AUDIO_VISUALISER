@@ -1,7 +1,7 @@
 // src/components/layoutComponents/SideMenu/menuItem.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
-import './MenuItem.scss';
+import './SideMenu.scss';
 
 const MenuItem = ({ title, active, onClick }) => (
   <li className={`menu-item ${active ? 'active' : ''}`} onClick={onClick}>

@@ -1,0 +1,36 @@
+.main-section {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #181818;
+  color: #ffffff;
+  font-family: 'Proxima Thin', sans-serif;
+
+  .main-section-container {
+    display: flex;
+    flex: 1;
+  }
+}
+
+.main-section .main-section-container {
+  flex-grow: 1;
+  display: flex;
+}
+
+
+.footer {
+  flex-shrink: 0;
+}
+
+.details-section {
+  flex: 1;
+  padding: 10px;
+}
+
+.controls-wrapper {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #282828;
+}

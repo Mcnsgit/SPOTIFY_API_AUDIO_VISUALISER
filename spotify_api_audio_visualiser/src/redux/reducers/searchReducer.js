@@ -1,28 +1,44 @@
-export const searchReducer = (state = {}, action) => {
-  switch (action.type) {
-    case 'FETCH_DATA_SUCCESS':
-      return {
-        ...state,
+import { reducerCases } from '../common/constants.js';
+const initialState = {
+  input: '',
+  query: '',
+  artists: [],
+  tracks: [],
+  playlists: [],
+  albums: [],
+  loading: false,
+  error: false
+};
+  
 
-        artists: action.data.artists.items,
-        playlists: action.data.playlists.items,
-        tracks: action.data.tracks.items,
-        albums: action.data.albums.items,
-        fetchDataPending: false
-      };
-    case 'FETCH_DATA_PENDING':
+export default function searchReducer(state = initialState, action) {
+  switch (action.type) {
+    case reducerCases.SET_QUERY:
       return {
         ...state,
-        fetchDataPending: true
+        query: action.query,
       };
-    case 'SET_QUERY':
+      case reducerCases.FETCH_DATA_PENDING:
       return {
         ...state,
-        query: action.query
+        loading: true,
+        error: null,
+      }
+    case reducerCases.FETCH_DATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        ...action.data,
       };
+      case reducerCases.FETCH_DATA_FAILURE:
+        return {
+          ...state,
+          loading: false,
+          error: action.data.error.message,
+        };
     default:
       return state;
   }
 };
 
-export default searchReducer;
+

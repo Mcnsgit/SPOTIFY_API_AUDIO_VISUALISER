@@ -3,81 +3,80 @@
   color: rgb(179, 179, 179);
   margin: 0;
 }
-
-.user-library-header {
-  font-weight: 300;
-  text-transform: uppercase;
-  font-family: 'Proxima Thin', Georgia, sans-serif;
-  font-size: 13px;
-  margin: 0;
-  padding: 0 0 5px 0;
-  letter-spacing: 1px;
-}
-
-.side-menu-item {
+.side-menu-container .menu-item {
   list-style-type: none;
   line-height: 28px;
   font-size: 14px;
-  width: 140px;
   cursor: pointer;
-text-overflow: ellipsis;
-white-space: nowrap;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 170px;
 }
-
-.side-menu-item:hover {
+.side-menu-container .menu-item:hover {
   color: #fff;
 }
-
-.radio {
+.side-menu-container .menu-item.active:before {
+  content: "";
+  position: relative;
+  left: -18px;
+  border-left: 3px solid #1db954;
+}
+.side-menu-container .library-header {
+  font-weight: 300;
+  text-transform: uppercase;
+  font-family: "Proxima Thin", Georgia, sans-serif;
+  font-size: 12px;
+  margin: 0;
+  padding: 30px 0 5px 0;
+  letter-spacing: 1px;
+}
+.side-menu-container .radio {
   margin-bottom: 20px;
 }
-
-.side-menu-container .active {
-	margin-left: -3px;
+.side-menu-container .user-playlist-container {
+  padding-bottom: 320px;
+  color: rgb(179, 179, 179);
+  margin: 0px 0px 30px;
 }
 
-.side-menu-container .active:before {
-	content: "";
-	border-left: 3px solid #1db954;
-	position: relative;
-	left: -18px;
+.side-menu-container {
+  padding: 20px;
+  color: rgb(179, 179, 179);
+  margin: 0;
 }
-/* src/components/layout/SideMenu.css */
-.side-menu {
-  width: 200px;
-  background-color: #1c1c1c;
-  color: white;
+.side-menu-container .menu-item {
+  list-style-type: none;
+  line-height: 28px;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 170px;
 }
-
-.side-menu ul {
-  list-style: none;
-  padding: 0;
+.side-menu-container .menu-item:hover {
+  color: #fff;
 }
-
-.side-menu li {
-  padding: 10px 20px;
+.side-menu-container .menu-item.active:before {
+  content: "";
+  position: relative;
+  left: -18px;
+  border-left: 3px solid #1db954;
 }
-
-.side-menu a {
-  color: white;
-  text-decoration: none;
+.side-menu-container .library-header {
+  font-weight: 300;
+  text-transform: uppercase;
+  font-family: "Proxima Thin", Georgia, sans-serif;
+  font-size: 12px;
+  margin: 0;
+  padding: 30px 0 5px 0;
+  letter-spacing: 1px;
 }
-
-.side-menu a:hover {
-  text-decoration: underline;
-}
-.logo {
-  width: 30%;
+.side-menu-container .radio {
   margin-bottom: 20px;
-  margin-left: 5px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-right: 5px;
-  
-  img {
-    width: 100%;
-    height: auto;
-  }
-  
-
 }
+.side-menu-container .user-playlist-container {
+  padding-bottom: 320px;
+  color: rgb(179, 179, 179);
+  margin: 0px 0px 30px;
+}
+

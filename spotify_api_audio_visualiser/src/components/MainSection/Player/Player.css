@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+  .player {
+    @apply absolute bg-black w-screen bottom-0 h-24 flex flex-row;
+  }
+
+  .cover-and-title {
+    @apply flex w-1/3;
+  }
+
+  .cover {
+    @apply w-24 h-24 p-2;
+  }
+
+  .title {
+    @apply w-8/12 text-gray-200 flex flex-col justify-center;
+  }
+
+  .controllers {
+    @apply w-1/3 flex flex-col h-full;
+  }
+
+  .controllers-buttons {
+    @apply h-3/5 flex justify-center items-center;
+  }
+
+  .control-button {
+    @apply rounded-full h-8 w-8 text-gray-300 hover:text-gray-100 cursor-pointer flex mx-2;
+  }
+
+  .control-button-large {
+    @apply h-10 w-10;
+  }
+
+  .progress-container {
+    @apply h-2/5 w-full flex justify-between items-center;
+  }
+
+  .progress-time {
+    @apply text-sm text-gray-200 w-12;
+  }
+
+  .volume-container {
+    @apply w-1/3 flex justify-end items-center text-gray-100 p-3;
+  }
+
+  .volume-icon {
+    @apply w-4 mx-1;
+  }
+
+  .volume-slider {
+    @apply w-24;
+  }
+}

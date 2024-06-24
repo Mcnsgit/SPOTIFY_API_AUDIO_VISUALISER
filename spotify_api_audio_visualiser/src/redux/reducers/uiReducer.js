@@ -1,20 +1,24 @@
+import {reducerCases}  from "../common/constants";
+
 const initialState = {
-  view: 'browse',
-  modal: false
+  input: '',
+  view: 'search',
+  headerTitle: 'Search',
+
 };
 
-export const uiReducer = (state = initialState, action) => {
+const uiReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_NEW_VIEW':
+    case reducerCases.SET_VIEW:
       return {
         ...state,
-        view: action.view
+        view: action.payload,
       };
-    case 'SET_MODAL':
+      case reducerCases.SET_MODAL:
+    case reducerCases.UPDATE_HEADER_TITLE:
       return {
         ...state,
-        modal: action.modal,
-        mode: action.mode
+        headerTitle: action.title,
       };
     default:
       return state;

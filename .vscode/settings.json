@@ -1,0 +1,6 @@
+{
+    "files.trimTrailingWhitespaceInRegexAndStrings": false,
+    "[go]": {
+        "editor.formatOnSave": false
+    }
+}
