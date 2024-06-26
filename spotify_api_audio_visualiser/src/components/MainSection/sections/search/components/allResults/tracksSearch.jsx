@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import axios from '../../../../../axios';
-import Spinner from '../../../../spinner/spinner';
+import axios from '../../../../../../utils/axios';
+import Spinner from '../../../../../spinner/spinner';
 
-import withStatus from '../../../../../hoc/statusHoc';
-import PlaylistTable from '../../../../tracksTable/playlistTable/playlistTable';
+import withStatus from '../../../../../../hoc/statusHoc';
+import PlaylistTable from '../../../../../tracksTable/playlistTable/playlistTable';
 
 class TracksSearcher extends Component {
   state = {

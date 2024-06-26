@@ -1,9 +1,40 @@
 
 import React, { Component } from 'react';
 
-import axios from '../../../utils/axios.jsx';
+import axios from '../../../../utils/axios.jsx';
 import VolumeSlider from './volumeSlider.jsx';
-import Devices from '../../devices/devices.jsx';
+import Devices from '../../../devices/devices.jsx';
+import styled from 'styled-components';
+// import './VolumeControls.scss';
+const VolumeContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  input[type='range'] {
+    width: 100px;
+    background: #1db954;
+    border-radius: 4px;
+    appearance: none;
+    outline: none;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+`;
 
 class VolumeControl extends Component {
   state = {
@@ -41,28 +72,25 @@ class VolumeControl extends Component {
     }
   };
   render() {
+    const { volume } = this.state;
+    const handleVolumeChange = e => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const newVolume = (e.clientX - rect.left) / rect.width;
+      this.setState({ volume: newVolume });
+      this.handleVolumeChange(newVolume);
+    }
     return (
-      <div className="volume-control">
-        <Devices onClick={this.onClick} />
-        <VolumeSlider
-        className="volume-slider"
-        min={0}
-        max={1}
-        step={0.01}
-        precision={2}
-        valueText={value => `${Math.round(value * 100)}`}
-        value={this.state.volume}
-        onClick={this.onClick}
-        onChange={value => this.setState({ volume: value }) || this.handleVolumeChange(value)}
-        onChangeEnd={value => {
-          this.setState({ volume: value }) || this.handleVolumeChange(value);
-          this.changeVolume(value);
-        }}
-        player={this.props.player} />
-      </div>
-    );
-  }
+      <VolumeContainer>
+      <input
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value={volume}
+        onChange={handleVolumeChange}
+      />
+  </VolumeContainer>
+);
+};
 }
-
-
 export default VolumeControl;

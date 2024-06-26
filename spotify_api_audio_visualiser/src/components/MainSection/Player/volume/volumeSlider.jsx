@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from '../../../utils/axios';
-import Devices from '../../devices/devices';
+import axios from '../../../../utils/axios';
+import Devices from '../../../devices/devices';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import '../Controls/TrackControls.css';

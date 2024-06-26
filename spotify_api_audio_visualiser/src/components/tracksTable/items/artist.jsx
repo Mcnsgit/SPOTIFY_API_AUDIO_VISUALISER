@@ -1,5 +1,5 @@
 import React from 'react';
-import artistImg from '../../Layout/MainSection/images/artist.png';
+import artistImg from '../../../assets/images/artist.png';
 
 const imgStyle = {
   height: 200,

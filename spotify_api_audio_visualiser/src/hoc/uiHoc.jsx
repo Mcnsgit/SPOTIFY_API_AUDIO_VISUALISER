@@ -61,7 +61,7 @@ export default function(ComposedComponent) {
         onSearch={this.onSearch}
         onMoreTracks={this.onMoreTracks}
         onTrackClick={this.onTrackClick}
-        onQuery={this.onQuery}  
+        onQuery={this.onQuery}
       />
     );
   }
@@ -77,11 +77,6 @@ export default function(ComposedComponent) {
         fetchMoreTracks,
         fetchTracks,
         fetchSearchData,
-        fetchRecentTracks: () => dispatch({ type: 'FETCH_RECENT_TRACKS' }),
-        fetchMoreTracks: () => dispatch({ type: 'FETCH_MORE_TRACKS' }),
-        fetchSearchData: query => dispatch({ type: 'FETCH_SEARCH_DATA', query }),
-        fetchLibraryData: query => dispatch({ type: 'FETCH_LIBRARY_DATA', query }),
-        setQuery: query => dispatch({ type: 'SET_QUERY', query })
       },
       dispatch
     );

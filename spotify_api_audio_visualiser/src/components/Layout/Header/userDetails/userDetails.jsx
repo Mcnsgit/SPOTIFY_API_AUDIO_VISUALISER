@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './userDetails.scss';
+import '../Header.scss';
 
 const header = props => (
   <div className="details-container">

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import artist from '../../../../../containers/mainSection/images/artist.png';
-import playlist from '../../../../../containers/mainSection/images/playlist.png';
-import withStatus from '../../../../../hoc/statusHoc';
+import artist from '../../../../../../assets/images/artist.png';
+import playlist from '../../../../../../assets/images/playlist.png';
+import withStatus from '../../../../../../hoc/statusHoc';
 
 const item = ({
   item,

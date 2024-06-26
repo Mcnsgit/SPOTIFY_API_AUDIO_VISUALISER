@@ -78,3 +78,17 @@ export const shuffle = status => {
     type: 'Shuffle'
   };
 };
+
+export const setVolume = volume => {
+  axios.put(`/me/player/volume?volume_percent=${volume}`);
+  return {
+    type: 'SET_VOLUME'
+  };
+};
+
+export const setDeviceId = id => {
+  return {
+    type: 'SET_DEVICE_ID',
+    id
+  };  
+}

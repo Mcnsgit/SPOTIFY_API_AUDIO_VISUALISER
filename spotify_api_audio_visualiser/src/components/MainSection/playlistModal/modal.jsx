@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
-import trackpng from '../../../assets/images/trackpng.png';
+import trackcopy from '../../../../src/assets/images/trackcopy.png'; // Correct import path
 import axios from '../../../utils/axios';
 import { setModal } from '../../../redux/actions/uiActions';
 import {
@@ -15,24 +15,24 @@ import './modal.scss';
 
 
 class Modal extends Component {
-  state = { header: '',
-    title: '',
-    description: '',
-    image: trackpng, // Default to trackpng
-    btn: '',
-    error: false
-  };
+  state = {};
   
-
+  
+  
   componentWillMount() {
     this.initialize();
   }
-
+  
   componentDidUpdate(prevProps) {
-    if (prevProps.show !== this.props.show) {
+    if (!_.isEqual(prevProps, this.props) && this.props.show) {
       this.initialize();
     }
   }
+
+  componentDidMount() {
+    this.initialize();
+  }
+
   initialize = () => {
     if (this.props.edit) {
       this.setState({
@@ -40,8 +40,8 @@ class Modal extends Component {
         title: this.props.playlist.name || '',
         description: this.props.playlist.description || '',
         image: this.props.playlist.images.length
-          ? this.props.playlist.images[0].url
-          : trackpng,
+        ? this.props.playlist.images[0].url
+        : trackcopy,
         btn: 'Save',
         error: false
       });
@@ -50,79 +50,75 @@ class Modal extends Component {
         header: 'Create Playlist',
         title: 'New Playlist',
         description: '',
-        image: trackpng,
+        image: trackcopy,
         btn: 'Create',
         error: false
       });
     }
   };
+  handleChange = (input, event) => {
+    this.setState({ [input]: event.target.value });
+};
 
-  handleChange(input, event) {
-    const value = event.target.value;
-    this.setState(prevState => ({
-      ...prevState,
-      [input]: value
-    }));
-  }
-  
-  validate = () => {
+validate = () => {
     const title = this.state.title;
     if (!title.replace(/\s/g, '').length) {
-      this.setState({ error: true });
-      return false;
+        this.setState({ error: true });
+        return false;
     }
     return true;
-  };
+};
 
-  onCancel = () => {
+onCancel = () => {
     this.initialize();
     this.props.setModal(false);
-  };
+};
 
-  onSubmitNew = () => {
+onSubmitNew = () => {
     if (this.validate()) {
-      axios
-  .post(`/users/${this.props.id}/playlists`, {
-    name: this.state.title,
-    description: this.state.description
-  })
-  .then(() => {
-    this.props.setModal(false);
-    this.props.fetchPlaylistsMenu();
-  })
-  .catch(error => console.error(error));
+        axios
+            .post(`/users/${this.props.id}/playlists`, {
+                name: this.state.title,
+                description: this.state.description
+            })
+            .then(() => {
+                this.props.setModal(false);
+                this.props.fetchPlaylistsMenu();
+            })
+            .catch(error => console.error(error));
     }
-  };
+};
 
-  onSubmitPlaylist = () => {
+onSubmitPlaylist = () => {
     const changeTitle = this.props.playlist.name !== this.state.title;
     const changeDescription = this.props.playlist.description !== this.state.description;
     if (!changeTitle && !changeDescription) {
-      return;
+        return;
     }
     let playlist = {};
     if (changeTitle) {
-      playlist.name = this.state.title;
+        playlist.name = this.state.title;
     }
     if (changeDescription) {
-      playlist.description = this.state.description;
+        playlist.description = this.state.description;
     }
     if (this.validate()) {
-      axios.put(`/playlists/${this.props.playlist.id}`, playlist)
-      .then(() => {
-        this.props.setModal(false);
-        this.props.updatePlaylist({ ...this.props.playlist, ...playlist });
-        if (changeTitle) {
-          this.props.fetchPlaylistsMenu();
-        }
-      })
-      .catch(error => console.error(error));
+        axios.put(`/playlists/${this.props.playlist.id}`, playlist)
+            .then(() => {
+                this.props.setModal(false);
+                this.props.updatePlaylist(playlist);
+                if (changeTitle) {
+                    this.props.fetchPlaylistsMenu();
+                }
+            })
+            .catch(error => console.error(error));
     }
-  };
+};
 
-  render() {
+render() { 
+  
     const edit = this.props.edit;
-    return (
+    return(
       <div>
         <div className={`playlist-Modal ${this.props.show ? 'active' : ''}`}>
           <div className="modal-content">
@@ -143,7 +139,7 @@ class Modal extends Component {
                 }/100`}</div>
                 <div className="description">
                   <div className="image">
-                    <span>Image</span> <img alt="track" src={this.state.image} />
+                    <span>Image</span> <img alt="track" src={trackcopy} />
                   </div>
                   <div className="text">
                     <span>Description</span>
@@ -191,6 +187,7 @@ class Modal extends Component {
     );
   }
 }
+
 
 const mapStateToProps = state => {
   return {

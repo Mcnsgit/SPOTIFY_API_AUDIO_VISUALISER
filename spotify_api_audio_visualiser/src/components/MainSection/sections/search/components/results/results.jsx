@@ -1,6 +1,6 @@
 import React from 'react';
 
-import withUiActions from '../../../../../hoc/uiHoc';
+import withUiActions from '../../../../../../hoc/uiHoc';
 
 import ResultGroup from './resultGroup';
 const results = ({

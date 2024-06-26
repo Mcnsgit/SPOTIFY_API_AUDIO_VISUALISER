@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchSearchData } from '../../../store/actions/searchActions';
+import { fetchSearchData } from '../../../../redux/actions/searchActions';
 
 import Index from './components/index/index';
 import NoResults from './components/noResults/noResults';

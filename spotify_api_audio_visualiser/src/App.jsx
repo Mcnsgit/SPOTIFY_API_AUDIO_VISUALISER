@@ -2,21 +2,22 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import './App.scss';
-import './App.css';
+
 
 import { setToken } from './redux/actions/sessionActions';
 import { fetchUser } from './redux/actions/userActions';
-import Header from './components/Layout/Header/Header';
+// import Header from './components/Layout/Header/Header';
 import Spinner from './components/spinner/spinner';
 import Login from './spotify/login';
 import WebPlaybackReact from './spotify/webPlayback';
 // import MainSection from './components/MainSection/MainSection';
 // import LeftSection from './components/Layout/SideMenu/leftSection';
-import LeftSideMenu from "./components/Layout/SideMenu/LeftSideMenu";
+import LeftSection from './components/Layout/SideMenu/leftSection';
 
 // import RightSection from './components/Layout/RightSection/RightSection';
 // import defaultProfile from './components/MainSection/images/profile.png';
 import Footer from './components/Layout/Footer/Footer';
+import MainSection from './components/MainSection/MainSection';
 import Dashboard from './components/MainSection/Dashboard/Dashboard';
 window.onSpotifyWebPlaybackSDKReady = () => {};
 
@@ -62,12 +63,14 @@ class App extends Component {
 
     return (
       <div className="App">
-        <WebPlaybackReact {...webPlaybackSdkProps} > 
-        <Spinner loading={!this.state.playerLoaded} >
-        <Header  />
-        <LeftSideMenu />
-         <Dashboard />
-         <Footer />
+      <WebPlaybackReact {...webPlaybackSdkProps}>
+        <Spinner loading={!this.state.playerLoaded}>
+        <div className="left-container">
+        <LeftSection />
+        </div>
+          <div className="main-section-container">     <MainSection />
+
+        </div>
         </Spinner>
         </ WebPlaybackReact>
         </div>

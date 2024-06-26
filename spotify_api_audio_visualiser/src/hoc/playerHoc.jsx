@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { containsCurrentTrack, fetchTracks } from '../redux/actions/libraryActions.js'; 
 
 import {
   nextTrack,
@@ -12,28 +13,29 @@ import {
   repeatContext
 } from '../redux/actions/playerActions';
 
-import { containsCurrentTrack, fetchTracks } from '../redux/actions/libraryActions.js'; 
-export default function(ComposedComponent) {
-  class PlayerHoc extends Component {
 
-    componentDidMount() {
-    if (!this.props.tracks || this.props.tracks.length === 0) {
-      this.props.fetchTracks();
-    }
-  }
-    shouldComponentUpdate(nextProps) {
-      return nextProps.playing !== this.props.playing;
-    }
-    componentDidUpdate(prevProps) {
-      const { currentTrack } = this.props;
-      if (prevProps.currentTrack.id !== currentTrack.id) {
-        const id = currentTrack.id;
-        const other = currentTrack.linked_from ? currentTrack.linked_from.id : null;
-        this.props.containsCurrentTrack(other ? `${id},${other}` : id);
+const PlayerHoc = (ComposedComponent) => {
+  class PlayerHocComponent extends Component {
+        componentDidMount() {
+        if (!this.props.tracks || this.props.tracks.length === 0) {
+          this.props.fetchTracks();
+        }
       }
-    }
+  
+      shouldComponentUpdate(nextProps) {
+        return nextProps.playing !== this.props.playing;
+      }
+      componentDidUpdate(prevProps) {
+        const { currentTrack } = this.props;
+        if (currentTrack && prevProps.currentTrack.id !== currentTrack.id) {
+          const id = currentTrack.id;
+          const other = currentTrack.linked_from ? currentTrack.linked_from.id : null;
+          this.props.containsCurrentTrack(other ? `${id},${other}` : id);
+        }
+      }
 
-    render = () => (
+    render() {
+      return (
       <ComposedComponent
         {...this.props}
         playContext={(context, offset) => this.props.playTrack(context, offset)}
@@ -41,13 +43,12 @@ export default function(ComposedComponent) {
       />
     );
   }
+  }
 
   const mapStateToProps = state => {
     const playerStatus = state.playerReducer.status;
     return {
-      currentTrack: playerStatus 
-      ? playerStatus.track_window.current_track 
-      : {},
+    currentTrack: playerStatus ? playerStatus.track_window.current_track : {},
       contains: state.libraryReducer.containsCurrent ? true : false,
       trackPosition: playerStatus ? playerStatus.position : 0,
       playing: playerStatus ? !playerStatus.paused : false,
@@ -73,8 +74,8 @@ export default function(ComposedComponent) {
     );
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(PlayerHoc);
+  return connect(mapStateToProps, mapDispatchToProps)(PlayerHocComponent);
 }
+
+export default PlayerHoc;
+

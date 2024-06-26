@@ -5,38 +5,40 @@ import { connect } from 'react-redux';
 import Dashboard from './Dashboard/Dashboard';
 // import LeftSection from '../SideMenu/leftSection';
 // import RightSection from '../RightSection/RightSection';
-import defaultProfile from './images/profile.png';
+import profile from '../../assets/images/profile.png';
 import './mainSection.scss';
-import './mainSection.css';
+
 // import Search from './Search/SearchResults';
-import Modal from './playlistModal/modal';
-import Browse from './sections/browse/browser';
+// import Modal from './playlistModal/modal';
+import Header from '../Layout/Header/Header';
+import './mainSection.scss';
+import Footer from '../Layout/Footer/Footer';
 
 
 class MainSection extends Component {
   render = () => {
-    
+    const { name, id, images } = this.props.user;
+    const img = images[0]     ? images[0].url : profile;
+
     return (
       <div className="main-section">
-        <Modal />
-
-  <div className="main-section-container">
-       <Dashboard />
-
-    </div>
-
-
+      <Header username={name || id} img={img} />
+      <div className="main-app-container">
+        <Dashboard />
+      </div>
+        <div className="footer">
+        <Footer />
+        </div>
       </div>
     );
     };
     }
-    
-    const mapStateToProps = state => {
-      return {
+
+    const mapStateToProps = (state) => ({
         user: state.userReducer.user,
-        view: state.uiReducer.view
-        };
-        };
+     
+        });
+      
         
         export default connect(mapStateToProps)(MainSection);
         // import Tracks from '../../components/sections/trackList/trackList';

@@ -1,3 +1,4 @@
+
 import { reducerCases } from '../common/constants.js';
 
 const initialState = {
@@ -14,6 +15,13 @@ const initialState = {
   top_tracks: null,
   user: null,
   user_playlists: null,
+  currentlyPlaying: null,
+  audioFeatures: null,
+  audioAnalysis: null,
+  error: null,
+  loading: false,
+  errorInfo: null,
+  loadingInfo: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -99,6 +107,41 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         user_playlists: action.payload,
+      };
+    case 'SET_ERROR':
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case 'SET_LOADING':
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    case 'SET_ERROR_INFO':
+      return {
+        ...state,
+        errorInfo: action.payload,
+      };
+    case 'SET_LOADING_INFO':
+      return {
+        ...state,
+        loadingInfo: action.payload,
+      };
+    case 'SET_AUDIO_FEATURES':
+      return {
+        ...state,
+        audioFeatures: action.payload,
+      };
+    case 'SET_AUDIO_ANALYSIS':
+      return {
+        ...state,
+        audioAnalysis: action.payload,
+      };
+        case 'SET_CURRENTLY_PLAYING':
+      return {
+        ...state,
+        currentlyPlaying: action.payload,
       };
     default:
       return state;

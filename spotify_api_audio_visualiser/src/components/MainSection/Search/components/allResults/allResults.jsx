@@ -2,7 +2,7 @@ import React from 'react';
 
 import Generic from '../../../sections/top/generic';
 import TrackSearch from './tracksSearch';
-const results = props => {
+const allResults = props => {
   let type;
   switch (true) {
     case props.type === 'Artists':
@@ -33,4 +33,4 @@ const results = props => {
   );
 };
 
-export default results;
+export default allResults;

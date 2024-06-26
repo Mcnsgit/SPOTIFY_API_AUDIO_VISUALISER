@@ -1,0 +1,22 @@
+// src/components/main/Player/Details/detailsSection.scss
+.details-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+  .track-name {
+    color: #fff;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .artist-name {
+    color: #b3b3b3;
+    font-size: 12px;
+  }
+}

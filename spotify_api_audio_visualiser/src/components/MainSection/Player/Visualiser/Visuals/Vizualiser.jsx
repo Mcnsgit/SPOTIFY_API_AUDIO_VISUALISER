@@ -3,7 +3,7 @@ import { Suspense, useEffect, useRef, useMemo, useContext } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import useStore from "./audioLink";
 import { useSelector, useDispatch } from 'react-redux';
-import { containsCurrentTrack } from '../../../../redux/actions/libraryActions';
+import { containsCurrentTrack } from '../../../../../redux/actions/libraryActions';
 import './styles.css';
 
 export default function Visualizer({ trackId, accessToken }) {

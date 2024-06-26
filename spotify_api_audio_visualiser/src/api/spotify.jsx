@@ -53,3 +53,8 @@ export const searchTracks = (query) => get('/search', { q: query, type: 'track' 
  * Fetch user's profile information.
  */
 export const fetchUserProfile = () => get('/me');
+
+export const getAudioAnalysis = async (trackId) => get('/audio-analysis/${trackId}');
+
+
+export const getAudioFeatures = async (trackId) => get('/audio-features/${trackId}');

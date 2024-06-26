@@ -12,7 +12,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+body {
+  background: rgb(24, 24, 24);
+  font-family: 'Proxima Nova', Georgia, sans-serif;
+  color: white;
+  margin: 0 auto;
+  padding: 0;
+  cursor: default;
+}
 a {
   font-weight: 500;
   color: #646cff;

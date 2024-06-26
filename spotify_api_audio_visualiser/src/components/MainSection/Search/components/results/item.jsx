@@ -1,7 +1,7 @@
 import React from 'react';
 
-import artist from '../../../images/artist.png';
-import playlist from '../../../images/playlist.png';
+import artist from '../../../../../assets/images/artist.png';
+import playlist from '../../../../../assets/images/playlist.png';
 import withStatus from '../../../../../hoc/statusHoc';
 
 const item = ({

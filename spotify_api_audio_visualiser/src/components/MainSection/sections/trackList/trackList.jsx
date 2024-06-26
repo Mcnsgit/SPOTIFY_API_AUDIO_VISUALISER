@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import axios from '../../../axios';
+import axios from '../../../../utils/axios';
 
 import {
   fetchTracks,
   fetchRecentTracks,
   fetchMoreTracks
-} from '../../../store/actions/libraryActions';
+} from '../../../../redux/actions/libraryActions';
+import {} from '../../../../redux/actions/playerActions';
+import Playlist from '../../../tracksTable/playlistTable/playlistTable';
+import Header from '../../../Layout/Header/tracksHeader';
+import Spinner from '../../../spinner/spinner';
 
-import Playlist from '../../tracksTable/playlistTable/playlistTable';
-import Header from '../../header/tracksHeader';
-import Spinner from '../../spinner/spinner';
-
-import withStatus from '../../../hoc/statusHoc';
+import withStatus from '../../../../hoc/statusHoc';
 
 class TracksList extends Component {
   componentDidMount() {
@@ -58,7 +58,9 @@ class TracksList extends Component {
 }
 const mapStateToProps = state => {
   return {
+    token: state.tokenReducer.token ? state.tokenReducer.token.access_token : '',
     tracks: state.libraryReducer.tracks ? state.libraryReducer.tracks.items : [],
+    fetchTracksError: state.libraryReducer.fetchTracksError,
     user: state.userReducer.user.id,
     fetching: state.libraryReducer.fetchTracksPending,
     next: state.libraryReducer.tracks ? state.libraryReducer.tracks.next : false
