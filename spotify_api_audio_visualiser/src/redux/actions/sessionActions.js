@@ -1,5 +1,11 @@
 import axios from '../../utils/axios';
 
+export const setView = (view) => ({
+  type: 'SET_VIEW',
+  view
+});
+
+
 export const setToken = token => {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
   localStorage.setItem('token', token);

@@ -1,22 +1,23 @@
-import axios from '../../utils/axios';
+// redux/actions/searchActions.js
+import { searchTracks } from '../../api/spotify';
 
-
-const fetchDataPending = () => {
+export const fetchDataPending = () => {
   return {
     type: 'FETCH_DATA_PENDING'
   };
 };
 
-const fetchDataSuccess = data => {
+export const fetchDataSuccess = data => {
   return {
     type: 'FETCH_DATA_SUCCESS',
     data
   };
 };
 
-const fetchDataError = () => {
+export const fetchDataError = error => {
   return {
-    type: 'FETCH_DATA_ERROR'
+    type: 'FETCH_DATA_ERROR',
+    error
   };
 };
 
@@ -34,15 +35,13 @@ export const fetchSearchData = query => {
       return;
     }
     dispatch(fetchDataPending());
-    const country = getState().userReducer.user.country;
+    const country = getState().userReducer.user?.country || 'US';
     try {
-      const response = await axios.get(
-        `/search?q=${query}&type=artist,album,playlist,track&market=${country}&limit=6`
-      );
-      dispatch(fetchDataSuccess(response.data));
-      return response.data;
+      const response = await searchTracks(query, country);
+      dispatch(fetchDataSuccess(response.tracks));
+      return response.tracks;
     } catch (error) {
-      dispatch(fetchDataError());
+      dispatch(fetchDataError(error));
       return error;
     }
   };

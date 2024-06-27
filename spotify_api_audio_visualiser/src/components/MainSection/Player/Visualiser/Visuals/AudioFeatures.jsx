@@ -1,33 +1,44 @@
-// Audio features available
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAudioAnalysisAction, getAudioFeaturesAction, getMultipleAudioFeaturesAction } from '../../actions/audioApiActions';
+import AudioVisualizer from '../Visualiser';
 
-// Acousticness
-// Danceability
-// Energy
-// Instrumentalness
-// Key
-// Liveness
-// Loudness
-// Mode
-// Speechiness
-// Tempo
-// Time Signature
-// Valence
+const SpotifyData = ({ trackIds }) => {
+  const dispatch = useDispatch();
+  const audioAnalysis = useSelector(state => state.audioAnalysis);
+  const audioFeatures = useSelector(state => state.audioFeatures);
+  const multipleAudioFeatures = useSelector(state => state.multipleAudioFeatures);
 
-// AudioFeatures {
-// "danceability": 0.956,
-// "energy": 0.795,
-// "key": 7,
-// "loudness": -5.311,
-// *mode": 1, "speechiness": 0.15,
-// "acousticness": 0.00356,
-// "instrumentalness": 0.889,
-// *liveness": 0.0906,
-// "valence": 0.841,
-// *tempo": 121.294,
-// "type": "audio_features"
-// -id": "1pKYYY@dkg23s00X18052N*,
-// "uri": "spotify:track:1pKYYY®dkg23sQQXi®Q5zN*.
-// "track_href": *https://api.spotify.com/v1/tracks/1pKYYY@dkg23sQQXi8Q5zN*.
-// 'analysis_uri": "https://api.spotify.com/v1/aud¡0-analysis/1pKYYY®dkg23sQQX¿0Q5zN*
-// "duration_ms": 429533, "time_signature": 4
-// )}
+
+  useEffect(() => {
+    if (trackIds.length === 1) {
+      dispatch(getAudioAnalysisAction(trackIds[0]));
+      dispatch(getAudioFeaturesAction(trackIds[0]));
+    } else {
+      dispatch(getMultipleAudioFeaturesAction(trackIds.join(',')));
+    }
+  }, [dispatch, trackIds]);
+
+  return (
+    <div>
+      <h1>Spotify Audio Data</h1>
+      {trackIds.length === 1 ? (
+        <>
+          <h2>Audio Analysis</h2>
+          <pre>{JSON.stringify(audioAnalysis, null, 2)}</pre>
+          <h2>Audio Features</h2>
+          <pre>{JSON.stringify(audioFeatures, null, 2)}</pre>
+          {audioFeatures && <AudioVisualizer audioFeatures={audioFeatures} />}
+        </>
+      ) : (
+        <>
+          <h2>Multiple Audio Features</h2>
+          <pre>{JSON.stringify(multipleAudioFeatures, null, 2)}</pre>
+          {multipleAudioFeatures && <AudioVisualizer audioFeatures={multipleAudioFeatures} />}
+        </>
+      )}
+    </div>
+  );
+};
+
+export default SpotifyData;

@@ -47,14 +47,31 @@ export const fetchPlaylistTracks = (playlistId) => get(`/playlists/${playlistId}
  * Search for tracks.
  * @param {string} query - The search query.
  */
-export const searchTracks = (query) => get('/search', { q: query, type: 'track' });
+export const searchTracks = (query, market, limit = 20, offset = 0) => {
+  return get('/search', { q: query, type: 'track', market, limit, offset });
+};
+/**
+ * Fetch user's profile information.
+ */
+/**
+ * Fetch audio analysis for a track.
+ * @param {string} trackId - The Spotify ID of the track.
+ */
+export const getAudioApiAnalysis = (trackId) => get(`/audio-analysis/${trackId}`);
+
+/**
+ * Fetch audio features for a track.
+ * @param {string} trackId - The Spotify ID of the track.
+ */
+export const getAudioApiFeatures = (trackId) => get(`/audio-features/${trackId}`);
+
+/**
+ * Fetch audio features for multiple tracks.
+ * @param {string} trackIds - Comma-separated Spotify IDs of the tracks.
+ */
+export const getMultipleAudioApiFeatures = (trackIds) => get('/audio-features', { ids: trackIds });
 
 /**
  * Fetch user's profile information.
  */
 export const fetchUserProfile = () => get('/me');
-
-export const getAudioAnalysis = async (trackId) => get('/audio-analysis/${trackId}');
-
-
-export const getAudioFeatures = async (trackId) => get('/audio-features/${trackId}');

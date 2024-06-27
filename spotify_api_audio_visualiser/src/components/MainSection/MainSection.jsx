@@ -8,7 +8,7 @@ import Dashboard from './Dashboard/Dashboard';
 import profile from '../../assets/images/profile.png';
 import './mainSection.scss';
 
-// import Search from './Search/SearchResults';
+
 // import Modal from './playlistModal/modal';
 import Header from '../Layout/Header/Header';
 import './mainSection.scss';

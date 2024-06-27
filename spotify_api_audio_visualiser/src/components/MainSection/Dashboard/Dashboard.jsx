@@ -8,13 +8,31 @@ import './Dashboard.scss';
 
 
 const Dashboard = ({  token }) => {
-   
-    const [deviceId, setDeviceId] = useState('your_device_id_here');
+    const [deviceId, setDeviceId] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
     const [trackId, setTrackId] = useState('');
 
+
+    useEffect(() => {
+        const fetchDeviceId = async () => {
+            if (token) {
+                try {
+                    const data = await fetchUserProfile(token);
+                    setDeviceId(data.device_id);
+                    setLoading(false);
+                    console.log(data);
+                } catch (error) {
+                    setError(error);
+                    setLoading(false);
+                    console.error('Error fetching user profile:', error);
+                }
+            }
+        };
+        fetchDeviceId();
+    }, [token]);
+    
     const fetchData = async () => {
         if (token) {
             try {
@@ -33,6 +51,7 @@ const Dashboard = ({  token }) => {
     useEffect(() => {
         fetchData();
     }, [token]);
+
      // Add deviceId as a dependency
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;

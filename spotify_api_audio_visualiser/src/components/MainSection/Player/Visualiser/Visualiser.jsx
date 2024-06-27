@@ -1,44 +1,42 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getAudioFeatures } from '../../../../api/spotify';
-import './Visualiser.scss';
-import track from '../../../tracksTable/items/track';
 
-const AudioVisualizer = ({ token, deviceId }) => {
+import './Visualiser.scss';
+
+
+const AudioVisualizer = ({ audioFeatures }) => {
   const canvasRef = useRef(null);
   const audioContextRef = useRef(null);
-  const analyserRef = useRef(null);
+
   const sourceRef = useRef(null);
   const audioRef = useRef(new Audio());
-  const [audioFeatures, setAudioFeatures] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
 
   useEffect(() => {
-    const fetchAudioFeatures = async () => {
+    const initializeAudioContext = async () => {
       if (!audioContextRef.current) {
         audioContextRef.current = new (window.AudioContext || window.AudioContext)();
-
       }
 
       try {
-        const features = await getAudioFeatures(token, deviceId);
-        setAudioFeatures(features);
-
-        const audioUrl = features.preview_url;
+        const audioUrl = audioFeatures.preview_url;
         audioRef.current.src = audioUrl;
-        await audioRef.current.play()
-        
+        await audioRef.current.play();
+        setIsPlaying(true);
+
         sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
         analyserRef.current = audioContextRef.current.createAnalyser();
-        sourceRef.current.connect(analyserRef.current.destination);
-
+        sourceRef.current.connect(analyserRef.current);
+        analyserRef.current.connect(audioContextRef.current.destination);
 
         drawVisualizer();
       } catch (error) {
-        console.error('Error fetching audio features:', error);
+        console.error('Error playing audio:', error);
       }
     };
 
-    if (track) {
-      fetchAudioFeatures();
+    if (audioFeatures) {
+      initializeAudioContext();
     }
 
     return () => {
@@ -46,7 +44,7 @@ const AudioVisualizer = ({ token, deviceId }) => {
         audioContextRef.current.close();
       }
     };
-  }, [token, track]);
+  }, [audioFeatures]);
 
   const drawVisualizer = () => {
     const canvas = canvasRef.current;
@@ -64,11 +62,11 @@ const AudioVisualizer = ({ token, deviceId }) => {
 
       analyser.getByteTimeDomainData(dataArray);
 
-      canvasCtx.fillStyle = 'rgb(200, 200, 200)';
+      canvasCtx.fillStyle = 'rgb(24, 24, 24)';
       canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
       canvasCtx.lineWidth = 2;
-      canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+      canvasCtx.strokeStyle = 'rgb(0, 255, 0)';
 
       canvasCtx.beginPath();
 
@@ -95,6 +93,13 @@ const AudioVisualizer = ({ token, deviceId }) => {
     draw();
   };
 
+  const stopAudio = () => {
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
   return (
     <div>
       <canvas ref={canvasRef} width="640" height="480" />
@@ -105,8 +110,12 @@ const AudioVisualizer = ({ token, deviceId }) => {
             <li>Danceability: {audioFeatures.danceability}</li>
             <li>Energy: {audioFeatures.energy}</li>
             <li>Tempo: {audioFeatures.tempo}</li>
-            {/* Add more audio features as needed */}
+            <li>Valence: {audioFeatures.valence}</li>
+            <li>Loudness: {audioFeatures.loudness}</li>
+            <li>Acousticness: {audioFeatures.acousticness}</li>
+            <li>Instrumentalness: {audioFeatures.instrumentalness}</li>
           </ul>
+          <button onClick={stopAudio}>Stop</button>
         </div>
       )}
     </div>

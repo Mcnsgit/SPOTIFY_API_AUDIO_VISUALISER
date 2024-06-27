@@ -12,7 +12,7 @@ import playerReducer from './playerReducer.js';
 import searchReducer from './searchReducer.js';
 import tokenReducer from './tokenReducer.js';
 import visualizerReducer from './visualizerReducer.js';
-
+import audioApiReducer from './audioApiReducer.js'
 
 export default combineReducers({
   sessionReducer,
@@ -26,5 +26,6 @@ export default combineReducers({
   playerReducer,
   visualizerReducer,
   tokenReducer,
+  audioApiReducer,
   searchReducer
 });
