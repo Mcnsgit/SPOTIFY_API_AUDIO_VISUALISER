@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import PropTypes from 'prop-types';
 import { setView, setModal } from '../redux/actions/uiActions';
 import { fetchPlaylistsMenu } from '../redux/actions/playlistActions';
 import { fetchArtist } from '../redux/actions/artistActions';
 import { fetchAlbum } from '../redux/actions/albumActions';
 import { fetchTracks } from '../redux/actions/libraryActions';
-import { fetchSearchData } from '../redux/actions/searchActions'; 
+import { fetchSearchData, setQuery } from '../redux/actions/searchActions'; 
 import { fetchMoreTracks } from '../redux/actions/libraryActions';
 
 
 export default function(ComposedComponent) {
-  class UiHoc extends Component {
+  class UiHocComponent extends Component {
     showModal = () => {
       this.props.setModal(true, 'playlist');
     };
@@ -65,6 +65,19 @@ export default function(ComposedComponent) {
       />
     );
   }
+UiHocComponent.PropTypes = {
+  fetchPlaylistsMenu: PropTypes.func,
+  fetchArtist: PropTypes.func,
+  fetchAlbum: PropTypes.func,
+  setView: PropTypes.func,
+  setModal: PropTypes.func,
+  fetchMoreTracks: PropTypes.func,
+  fetchTracks: PropTypes.func,
+  fetchSearchData: PropTypes.func,
+  setQuery: PropTypes.func,
+}
+
+
 
   const mapDispatchToProps = dispatch => {
     return bindActionCreators(
@@ -85,5 +98,5 @@ export default function(ComposedComponent) {
   return connect(
     null,
     mapDispatchToProps
-  )(UiHoc);
+  )(UiHocComponent);
 }

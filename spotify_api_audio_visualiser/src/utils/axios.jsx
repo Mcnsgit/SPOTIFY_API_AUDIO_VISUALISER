@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
-const path = 'https://api.spotify.com/v1';
+const path = "https://api.spotify.com/v1";
 
 const instance = axios.create({
-  baseURL: path,
-  headers: {}
+	baseURL: path,
+	headers: {}
 });
 
 export default instance;

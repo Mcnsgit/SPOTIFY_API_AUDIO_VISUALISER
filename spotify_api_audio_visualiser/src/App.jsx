@@ -13,12 +13,13 @@ import WebPlaybackReact from './spotify/webPlayback';
 // import MainSection from './components/MainSection/MainSection';
 // import LeftSection from './components/Layout/SideMenu/leftSection';
 import LeftSection from './components/Layout/SideMenu/leftSection';
+import PropTypes from 'prop-types';
 
 // import RightSection from './components/Layout/RightSection/RightSection';
 // import defaultProfile from './components/MainSection/images/profile.png';
-import Footer from './components/Layout/Footer/Footer';
+// import Footer from './components/Layout/Footer/Footer';
 import MainSection from './components/MainSection/MainSection';
-import Dashboard from './components/MainSection/Dashboard/Dashboard';
+// import Dashboard from './components/MainSection/Dashboard/Dashboard';
 window.onSpotifyWebPlaybackSDKReady = () => {};
 
 
@@ -75,11 +76,11 @@ class App extends Component {
         </ WebPlaybackReact>
         </div>
       );
-
-    
-
   }}
-
+App.PropTypes = {
+  setToken: PropTypes.func,
+  fetchUser: PropTypes.func,
+}
   const mapStateToProps = (state) => {
     return {
       token: state.sessionReducer.token,

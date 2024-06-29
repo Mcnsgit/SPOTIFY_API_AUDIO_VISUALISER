@@ -7,7 +7,7 @@ import { useSpotifyContext} from '../context/SpotifyContext';
  * Custom hook to handle Spotify authentication flow.
  */
 
-export const useSpotifyAuth = () => {
+export const useAuth = () => {
   const { dispacth } = useSpotifyContext();
   useEffect(() => {
     const token = extractTokenFromUrl();
@@ -19,7 +19,7 @@ export const useSpotifyAuth = () => {
 
 const logout = () => {
   clearAccessToken();
-  dispatch({ type: 'SET_TOKEN', payload: null });
+  dispacth({ type: 'SET_TOKEN', payload: null });
 };
 
 return { logout };

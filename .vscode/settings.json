@@ -2,5 +2,8 @@
     "files.trimTrailingWhitespaceInRegexAndStrings": false,
     "[go]": {
         "editor.formatOnSave": false
+    },
+    "[dockercompose]": {
+        "editor.tabSize": 4
     }
 }

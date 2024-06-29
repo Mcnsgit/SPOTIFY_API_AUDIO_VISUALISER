@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import '../../sections/artist/components/popular/popular.css';
 import './albumTable.css';
 
@@ -90,5 +90,8 @@ class Album extends Component {
     );
   }
 }
-
+Album.PropTypes = {
+  tracks: PropTypes.array,
+  
+}
 export default withTracksStatus(Album);

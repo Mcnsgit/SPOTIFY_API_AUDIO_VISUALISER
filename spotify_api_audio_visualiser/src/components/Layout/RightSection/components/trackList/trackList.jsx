@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 
 import axios from '../../../../../utils/axios';
 
@@ -56,6 +57,18 @@ class TracksList extends Component {
     </Spinner>
   );
 }
+TracksList.PropTypes = {
+  fetchTracks: PropTypes.func,
+  fetchRecentTracks: PropTypes. func,
+  fetchMoreTracks: PropTypes. func,
+  tracks: PropTypes.array,
+  recently: PropTypes.bool,
+  pauseTrack: PropTypes. func,
+  playing: PropTypes.bool,
+  currentTrack: PropTypes.string,
+  
+};
+
 const mapStateToProps = state => {
   return {
     tracks: state.libraryReducer.tracks ? state.libraryReducer.tracks.items : [],

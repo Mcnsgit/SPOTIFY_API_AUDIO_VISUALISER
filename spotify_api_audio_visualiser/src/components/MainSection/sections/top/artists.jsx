@@ -2,8 +2,6 @@ import React from 'react';
 
 import Top from './generic';
 
-const albums = props => (
-  <Top title="Artists" url="/me/top/artists" type="artist" />
-);
+const artists = props => <Top title="Artists" type="album" url="/me/albums" />;
 
-export default albums;
+export default artists;

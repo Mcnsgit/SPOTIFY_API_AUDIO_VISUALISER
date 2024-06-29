@@ -172,3 +172,6 @@ sketch
 pyvenv.cfg
 .venv
 pip-selfcheck.json
+
+# React Component Preview
+previewConfig.json

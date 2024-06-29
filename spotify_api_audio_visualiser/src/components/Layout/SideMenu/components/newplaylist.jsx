@@ -1,12 +1,12 @@
-import React from 'react';
-import './newplaylist.scss';
+import React from "react";
+import "./newplaylist.scss";
 
 
 const NewPlaylist = (props) => (
-  <div className="new-playlist" onClick={() => props.setModal(true)}>
-    <i className="fa fa-plus-circle" />
+	<div className="new-playlist" onClick={() => props.setModal(true)}>
+		<i className="fa fa-plus-circle" />
     New Playlist
-  </div>
+	</div>
 );
 
 export default NewPlaylist;

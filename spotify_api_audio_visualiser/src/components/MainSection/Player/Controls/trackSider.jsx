@@ -1,6 +1,6 @@
-import React, { useMemo, useState, useEffect, useCallback } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 // import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from "styled-components";
 // import '../trackSider.scss';
 // import {formatDuration} from '../../../helpers/format'
 const ProgressBarContainer = styled.div`
@@ -43,43 +43,43 @@ const ProgressBarContainer = styled.div`
 `;
 
 const ProgressBar = ({
-    audioRef,
-  timeProgress,
-  duration,
+	audioRef,
+	timeProgress,
+	duration,
 }) => {
-  const handleProgressChange = (event) => {
-    audioRef.current.currentTime = event.target.value;
-  };
-  const formatTime = (time) => {
-    if (time && !isNaN(time)) {
-      const minutes = Math.floor(time / 60);
-      const formatMinutes =
+	const handleProgressChange = (event) => {
+		audioRef.current.currentTime = event.target.value;
+	};
+	const formatTime = (time) => {
+		if (time && !isNaN(time)) {
+			const minutes = Math.floor(time / 60);
+			const formatMinutes =
         minutes < 10 ? `0${minutes}` : `${minutes}`;
-      const seconds = Math.floor(time % 60);
-      const formatSeconds =
+			const seconds = Math.floor(time % 60);
+			const formatSeconds =
         seconds < 10 ? `0${seconds}` : `${seconds}`;
-      return `${formatMinutes}:${formatSeconds}`;
-    }
-    return '00:00';
-  };
+			return `${formatMinutes}:${formatSeconds}`;
+		}
+		return "00:00";
+	};
 
-  return (
-    <ProgressBarContainer>
+	return (
+		<ProgressBarContainer>
 
-       <span className="time">{formatTime(timeProgress)}</span>
-      <input
-        type="range"
-        min="0"
-        max={duration}
-        value={timeProgress}
-        onChange={handleProgressChange}
-        style={{
-          background: `linear-gradient(to right, #1db954 ${(timeProgress / duration) * 100}%, #535353 ${(timeProgress / duration) * 100}%)`,
-        }}
-      />
-      <span className="time">{formatTime(duration)}</span>
-    </ProgressBarContainer>
-  );
+			<span className="time">{formatTime(timeProgress)}</span>
+			<input
+				type="range"
+				min="0"
+				max={duration}
+				value={timeProgress}
+				onChange={handleProgressChange}
+				style={{
+					background: `linear-gradient(to right, #1db954 ${(timeProgress / duration) * 100}%, #535353 ${(timeProgress / duration) * 100}%)`,
+				}}
+			/>
+			<span className="time">{formatTime(duration)}</span>
+		</ProgressBarContainer>
+	);
 };
 
 export default ProgressBar;

@@ -1,8 +1,9 @@
-import React from 'react';
-import TrackCover from '../SideMenu/trackCover/trackCover';
-import styled from 'styled-components';
-import Player from '../../MainSection/Player/Player';
-import './Footer.scss';
+// src/components/Layout/Footer/Footer.jsx
+import React from "react";
+import TrackCover from "../SideMenu/trackCover/trackCover";
+import styled from "styled-components";
+import Player from "../../MainSection/Player/Player";
+// import "./Footer.scss";
 
 const FooterContainer = styled.footer`
   position: fixed;
@@ -19,29 +20,14 @@ const FooterContainer = styled.footer`
 `;
 
 const Footer = () => (
-<FooterContainer> 
-      <div className="track-cover">
-        <TrackCover />
-      </div>
-      <div className="player">
-        <Player />
-      </div>
-</FooterContainer>  
+  <FooterContainer>
+    <div className="track-cover">
+      <TrackCover />
+    </div>
+    <div className="player">
+      <Player />
+    </div>
+  </FooterContainer>
 );
 
 export default Footer;
-// import React from 'react';
-// import Player from '../../MainSection/Player/Player';
-// import TrackCover from '../SideMenu/trackCover/trackCover';
-// import './Footer.css';
-
-// const Footer = () => (
-//   <div className="footer">
-//     <div className="footer-container">
-//     <TrackCover />
-//     </div>
-//     <Player />
-//   </div>
-// );
-
-// export default Footer;

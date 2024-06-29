@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 
 import { setStatus } from '../redux/actions/playerActions';
 import { setDeviceId, setActiveDevice } from '../redux/actions/sessionActions';
@@ -138,6 +139,22 @@ class WebPlayback extends Component {
     return <Fragment>{this.props.children}</Fragment>;
   }
 }
+
+WebPlayback.propTypes = {
+  setStatus: PropTypes.func.isRequired, 
+  playerRefreshRateMs: PropTypes.number.isRequired,
+  playerName: PropTypes.string.isRequired,                   
+  playerInitialVolume: PropTypes.number.isRequired,          
+  onPlayerRequestAccessToken: PropTypes.func.isRequired,   
+  onPlayerError: PropTypes.func.isRequired,
+  setDeviceId: PropTypes.func.isRequired,
+  setActiveDevice: PropTypes.func.isRequired,              
+  playerAutoConnect: PropTypes.bool.isRequired,            
+  onPlayerLoading: PropTypes.func.isRequired,              
+  onPlayerWaitingForDevice: PropTypes.func.isRequired,     
+  onPlayerDeviceSelected: PropTypes.func.isRequired,       
+  children: PropTypes.node.isRequired,             
+};
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(

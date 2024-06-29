@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import PropTypes from 'prop-types';
 import axios from '../../../../utils/axios';
-
 import {
   fetchTracks,
   fetchRecentTracks,
   fetchMoreTracks
 } from '../../../../redux/actions/libraryActions';
-import {} from '../../../../redux/actions/playerActions';
+import { setStatus } from '../../../../redux/actions/playerActions';
 import Playlist from '../../../tracksTable/playlistTable/playlistTable';
 import Header from '../../../Layout/Header/tracksHeader';
 import Spinner from '../../../spinner/spinner';
@@ -56,6 +55,16 @@ class TracksList extends Component {
     </Spinner>
   );
 }
+TracksList.PropTypes = {
+  fetchMoreTracks: PropTypes.func,
+  fetchRecentTracks: PropTypes.func,
+  fetchTracks: PropTypes.func,
+  tracks: PropTypes.array,
+  recently: PropTypes.bool,
+  pauseTrack: PropTypes.func,
+  playing: PropTypes.bool,
+  currentTrack: PropTypes.string,
+};
 const mapStateToProps = state => {
   return {
     token: state.tokenReducer.token ? state.tokenReducer.token.access_token : '',

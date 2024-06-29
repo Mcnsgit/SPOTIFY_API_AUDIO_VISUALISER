@@ -1,18 +1,34 @@
+// src/components/SideMenu/trackCover/trackCover.jsx
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import withPlayer from '../../../../hoc/playerHoc';
-import './trackCover.scss';
-const TrackCover = (props) => {
-  return props.currentTrack.album ? (
-    <div className="track-cover">
+
+const TrackCover = ({ currentSong }) => {
+  if (!currentSong || !currentSong.album || !currentSong.album.images) {
+    return null;
+  }
+
+  return (
+    <div className="cover">
       <img
         alt="cover"
-        src={props.currentTrack.album ? props.currentTrack.album.images[2].url : ''}
+        src={currentSong.album.images[2]?.url}
         style={{ width: '100%' }}
       />
     </div>
-  ) : null;
+  );
+};
+
+TrackCover.propTypes = {
+  currentSong: PropTypes.shape({
+    album: PropTypes.shape({
+      images: PropTypes.arrayOf(
+        PropTypes.shape({
+          url: PropTypes.string
+        })
+      )
+    })
+  }).isRequired
 };
 
 export default withPlayer(TrackCover);
-1

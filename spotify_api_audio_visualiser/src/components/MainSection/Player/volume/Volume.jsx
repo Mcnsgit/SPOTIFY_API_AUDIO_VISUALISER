@@ -1,11 +1,8 @@
 
-import React, { Component } from 'react';
-
-import axios from '../../../../utils/axios.jsx';
-import VolumeSlider from './volumeSlider.jsx';
-import Devices from '../../../devices/devices.jsx';
+import React, { useState } from 'react';
+import axios from '../../../../utils/axios';
 import styled from 'styled-components';
-// import './VolumeControls.scss';
+
 const VolumeContainer = styled.div`
   display: flex;
   align-items: center;
@@ -36,51 +33,22 @@ const VolumeContainer = styled.div`
   }
 `;
 
-class VolumeControl extends Component {
-  state = {
-    volume: 1,
-    previous: 1,
-    onClick: false
-  }
-  handleVolumeChange = value => {
-    axios.put(`/me/player/volume?volume_percent=${Math.round(value * 100)}`);
+const VolumeControl = () => {
+  const [volume, setVolume] = useState(1);
+  const [muted, setMuted] = useState(false);
+
+  const handleVolumeChange = (e) => {
+    const newVolume = e.target.value;
+    setVolume(newVolume);
+    axios.put(`/me/player/volume?volume_percent=${Math.round(newVolume * 100)}`);
   };
 
-  onOff = () => {
-    this.setState(prevState => {
-      return { volume: 0, previous: prevState.volume, onClick: true };
-    });
-    this.handleVolumeChange(0);
+  const toggleMute = () => {
+    setMuted(!muted);
   };
 
-  onOn = () => {
-    this.setState(prevState => {
-      return { volume: prevState.previous, onClick: false };
-    });
-    this.handleVolumeChange(this.state.previous);
-  };
-  onClick = () => {
-    if (!this.state.onClick) {
-      this.onOff();
-    } else {
-      if (this.state.volume === 0) {
-        this.onOn();
-      } else {
-        this.setState({ onClick: false });
-        this.onOff();
-      }
-    }
-  };
-  render() {
-    const { volume } = this.state;
-    const handleVolumeChange = e => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const newVolume = (e.clientX - rect.left) / rect.width;
-      this.setState({ volume: newVolume });
-      this.handleVolumeChange(newVolume);
-    }
-    return (
-      <VolumeContainer>
+  return (
+    <VolumeContainer>
       <input
         type="range"
         min="0"
@@ -89,8 +57,12 @@ class VolumeControl extends Component {
         value={volume}
         onChange={handleVolumeChange}
       />
-  </VolumeContainer>
-);
+      <button onClick={toggleMute}>
+        {muted ? 'Unmute' : 'Mute'}
+      </button>
+    </VolumeContainer>
+  );
 };
-}
+
 export default VolumeControl;
+
