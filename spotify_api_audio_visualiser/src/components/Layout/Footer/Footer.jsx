@@ -1,6 +1,6 @@
 // src/components/Layout/Footer/Footer.jsx
 import React from "react";
-import TrackCover from "../SideMenu/trackCover/trackCover";
+// import TrackCover from "../SideMenu/trackCover/trackCover";
 import styled from "styled-components";
 import Player from "../../MainSection/Player/Player";
 // import "./Footer.scss";
@@ -22,7 +22,7 @@ const FooterContainer = styled.footer`
 const Footer = () => (
   <FooterContainer>
     <div className="track-cover">
-      <TrackCover />
+    
     </div>
     <div className="player">
       <Player />

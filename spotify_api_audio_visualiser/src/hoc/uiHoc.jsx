@@ -6,9 +6,9 @@ import { setView, setModal } from '../redux/actions/uiActions';
 import { fetchPlaylistsMenu } from '../redux/actions/playlistActions';
 import { fetchArtist } from '../redux/actions/artistActions';
 import { fetchAlbum } from '../redux/actions/albumActions';
-import { fetchTracks } from '../redux/actions/libraryActions';
+import { fetchTracks,fetchMoreTracks } from '../redux/actions/libraryActions';
 import { fetchSearchData, setQuery } from '../redux/actions/searchActions'; 
-import { fetchMoreTracks } from '../redux/actions/libraryActions';
+
 
 
 export default function(ComposedComponent) {
@@ -50,6 +50,7 @@ export default function(ComposedComponent) {
       this.props.fetchSearchData(query);
       this.props.setView('search');
     };
+    
 
     render = () => (
       <ComposedComponent

@@ -4,83 +4,78 @@ import styled from "styled-components";
 // import '../trackSider.scss';
 // import {formatDuration} from '../../../helpers/format'
 const ProgressBarContainer = styled.div`
-    display: flex;
-    align-items: center;
-    width: 100%;
-    gap: 10px;
-  
-    time {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+
+  time {
     align-self: flex-start;
-      color: #fff;
-      font-size: 12px;
-    }
-  
-    input[type='range'] {
-      width: 80%;
-      background: #535353;
-      left:50px;
-      border-radius: 4px;
+    color: #fff;
+    font-size: 12px;
+  }
+
+  input[type='range'] {
+    width: 80%;
+    background: #535353;
+    left: 50px;
+    border-radius: 4px;
+    appearance: none;
+    outline: none;
+    &::-webkit-slider-thumb {
       appearance: none;
-      outline: none;
-      &::-webkit-slider-thumb {
-        appearance: none;
-        width: 12px;
-        height: 12px;
-        background: #fff;
-        border-radius: 50%;
-        cursor: pointer;
-      }
-      &::-moz-range-thumb {
-        width: 12px;
-        height: 12px;
-        background: #fff;
-        border-radius: 50%;
-        cursor: pointer;
-      }
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      cursor: pointer;
     }
-  
-  
+    &::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
 `;
 
-const ProgressBar = ({
-	audioRef,
-	timeProgress,
-	duration,
-}) => {
-	const handleProgressChange = (event) => {
-		audioRef.current.currentTime = event.target.value;
-	};
-	const formatTime = (time) => {
-		if (time && !isNaN(time)) {
-			const minutes = Math.floor(time / 60);
-			const formatMinutes =
-        minutes < 10 ? `0${minutes}` : `${minutes}`;
-			const seconds = Math.floor(time % 60);
-			const formatSeconds =
-        seconds < 10 ? `0${seconds}` : `${seconds}`;
-			return `${formatMinutes}:${formatSeconds}`;
-		}
-		return "00:00";
-	};
+const ProgressBar = ({ progressBarRef,
+  audioRef,
+  timeProgress,
+  duration, }) => {
+  const handleProgressChange = () => {
+      audioRef.current.currentTime = progressBarRef.current.value;
 
-	return (
-		<ProgressBarContainer>
+    };
 
-			<span className="time">{formatTime(timeProgress)}</span>
-			<input
-				type="range"
-				min="0"
-				max={duration}
-				value={timeProgress}
-				onChange={handleProgressChange}
-				style={{
-					background: `linear-gradient(to right, #1db954 ${(timeProgress / duration) * 100}%, #535353 ${(timeProgress / duration) * 100}%)`,
-				}}
-			/>
-			<span className="time">{formatTime(duration)}</span>
-		</ProgressBarContainer>
-	);
+  
+
+  const formatTime = (time) => {
+    if (time && !isNaN(time)) {
+      const minutes = Math.floor(time / 60);
+      const formatMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+      const seconds = Math.floor(time % 60);
+      const formatSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+      return `${formatMinutes}:${formatSeconds}`;
+    }
+    return "00:00";
+  };
+
+  return (
+    <div className="progress">
+    <span className="time current">{formatTime(timeProgress)}</span>
+    <input
+      type="range"
+      ref={progressBarRef}
+      defaultValue="0"
+      onChange={handleProgressChange}
+    />
+    <span className="time">{formatTime(duration)}</span>
+  </div>
+);
 };
+
 
 export default ProgressBar;
 //   const [played, setPlayed] = useState(0);

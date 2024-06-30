@@ -1,8 +1,8 @@
-import React from "react";
 import Button from '../Controls/controlButon';
+import React from "react";
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-
+import PlayerControlsHoc from '../../../../hoc/playerControlsHoc.jsx';
 
 const ExtraControlsContainer = styled.div`
   display: flex;
@@ -44,7 +44,7 @@ ExtraControls.propTypes = {
   repeatContext: PropTypes.func,
 };
 
-export default ExtraControls;
+export default PlayerControlsHoc(ExtraControls);
 // // const ExtraControls = props =>
 // <div className="extra-controls">
 // <Button

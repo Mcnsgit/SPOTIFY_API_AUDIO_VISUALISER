@@ -20,6 +20,12 @@ export const previousTrack = () => {
 		type: "CHANGE_SONG"
 	};
 };
+export const pauseTrack = () => {
+	axios.put("/me/player/pause");
+	return {
+		type: "PAUSE_STATE"
+	};
+};
 
 export const playTrack = (context = false, offset) => {
 	if (context && offset) {
@@ -51,12 +57,6 @@ export const playTracks = (tracks, offset) => {
 	};
 };
 
-export const pauseTrack = () => {
-	axios.put("/me/player/pause");
-	return {
-		type: "PAUSE_STATE"
-	};
-};
 
 export const seekTrack = ms => {
 	axios.put(`/me/player/seek?position_ms=${ms}`);
