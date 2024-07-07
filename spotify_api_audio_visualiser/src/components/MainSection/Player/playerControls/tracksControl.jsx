@@ -1,175 +1,308 @@
-// src/components/main/Player/playerControls/tracksControl.jsx
-import React,{ useState, useEffect, useCallback, useRef} from 'react';
-// import './PlayerControls.scss';
-// import Button from '../Controls/controlButon';
-import {
-  IoPlayBackSharp,
-  IoPlayForwardSharp,
-  IoPlaySkipBackSharp,
-  IoPlaySkipForwardSharp,
-  IoPlaySharp,
-  IoPauseSharp,
-} from 'react-icons/io5';
+// // src/components/main/Player/playerControls/tracksControl.jsx
+import React from 'react';
+// // import './PlayerControls.scss';
+import Button from '../Controls/controlButon';
+import styled from 'styled-components';
+// const ControlsContainer = styled.div`
+// //   display: flex;
+// //   align-items: center;
+// //   gap: 10px;
+
+// //   Button {
+// //     background: none;
+// //     border: none;
+// //     color: #fff;
+// //     font-size: 20px;
+// //     cursor: pointer;
+
+// //     &:hover {
+// //       color: #1db954;
+// //     }
+// //   }
+// // `;
+const tracksControl= props => (
+  <div className="track-control">
+    
+    <Button
+      onClick={() => props.shuffle(!props.shuffleActive)}
+      className={'shuffle-track' + (props.shuffleActive ? ' active' : '')}
+      icon="fa-random"
+      />
+    <Button
+      className="back-track"
+      icon="fa-step-backward reverse"
+      onClick={props.previousTrack}
+      />
+    <Button
+      className="play-btn"
+      onClick={props.playing ? props.pauseTrack : props.playTrack}
+      icon={
+        'play-btn ' + (props.playing ? 'fa-pause-circle-o' : 'fa-play-circle-o')
+      }
+      playBtn
+      />
+    <Button
+      className="next-track"
+      icon="fa-step-forward forward"
+      onClick={props.nextTrack}
+      />
+    <Button
+      onClick={() =>
+        props.repeatContext(props.repeatActive ? 'off' : 'context')
+      }
+      className={'repeat-track' + (props.repeatActive ? ' active' : '')}
+      icon="fa-retweet"
+      />
+      
+  </div>
+);
+
+export default tracksControl;
 
 // import {
-//   IoMdVolumeHigh,
-//   IoMdVolumeOff,
-//   IoMdVolumeLow,
-// } from 'react-icons/io';
+//   IoPlayBackSharp,
+//   IoPlayForwardSharp,
+//   IoPlaySkipBackSharp,
+//   IoPlaySkipForwardSharp,
+//   IoPlaySharp,
+//   IoPauseSharp,
+// } from 'react-icons/io5';
 
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
+// // import {
+// //   IoMdVolumeHigh,
+// //   IoMdVolumeOff,
+// //   IoMdVolumeLow,
+// // } from 'react-icons/io';
 
-const ControlsContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
+// import styled from 'styled-components';
+// import PropTypes from 'prop-types';
 
-  button {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
+// const ControlsContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
 
-    &:hover {
-      color: #1db954;
-    }
-  }
-`;
+//   Button {
+//     background: none;
+//     border: none;
+//     color: #fff;
+//     font-size: 20px;
+//     cursor: pointer;
 
-const TracksControl = ({
-  audioRef,
-  duration,
-  setTimeProgress,
-  progressBarRef,
-  trackIndex,
-  setTrackIndex,
-  fetchTracks,
-  setCurrentTrack,
-}) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  // const [volume, setVolume] = useState(60);
-  // const [muteVolume, setMuteVolume] = useState(false);
+//     &:hover {
+//       color: #1db954;
+//     }
+//   }
+// `;
 
-  const togglePlayPause = () => {
-    setIsPlaying((prev) => !prev);
-  };
+// const TracksControl = ({
+//   audioRef,
+//   duration,
+//   setTimeProgress,
+//   progressBarRef,
+//   trackIndex,
+//   setTrackIndex,
+//   fetchTracks,
+//   setCurrentTrack,
+// }) => {
+//   const [isPlaying, setIsPlaying] = useState(false);
+//   const playAnimationRef = useRef();
 
-  const playAnimationRef = useRef();
+//   const togglePlayPause = () => {
+//       setIsPlaying((prev) => !prev);
+//   };
 
-  const repeat = useCallback(() => {
-  const currentTime = audioRef.current.currentTime;
-  setTimeProgress(currentTime);
-  progressBarRef.current.value = currentTime;
-  progressBarRef.current.style.setProperty(
-    '--range-progress',
-    `${(progressBarRef.current.value / duration) * 100}%`
-  );
+//   const repeat = useCallback(() => {
+//       if (audioRef.current) {
+//           const currentTime = audioRef.current.currentTime;
+//           setTimeProgress(currentTime);
+//           progressBarRef.current.value = currentTime;
+//           progressBarRef.current.style.setProperty(
+//               '--range-progress',
+//               `${(progressBarRef.current.value / duration) * 100}%`
+//           );
 
-  playAnimationRef.current = requestAnimationFrame(repeat);
-}, [audioRef, duration, progressBarRef, setTimeProgress]);
+//           playAnimationRef.current = requestAnimationFrame(repeat);
+//       }
+//   }, [audioRef, duration, progressBarRef, setTimeProgress]);
 
-  useEffect(() => {
-    if (isPlaying && audioRef.current) {
-      audioRef.current.play();
-    } else if (!isPlaying && audioRef.current) {
-      audioRef.current.pause();
-    }
-    playAnimationRef.current = requestAnimationFrame(repeat);
-  }, [isPlaying, audioRef, repeat]);
+//   useEffect(() => {
+//       if (isPlaying && audioRef.current) {
+//           audioRef.current.play();
+//       } else if (!isPlaying && audioRef.current) {
+//           audioRef.current.pause();
+//       }
+//       playAnimationRef.current = requestAnimationFrame(repeat);
+//   }, [isPlaying, audioRef, repeat]);
 
-  const skipForward = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime += 15;
-    }
-  };
+//   const skipForward = () => {
+//       if (audioRef.current) {
+//           audioRef.current.currentTime += 15;
+//       }
+//   };
 
-  const skipBackward = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime -= 15;
-    }
-  };
+//   const skipBackward = () => {
+//       if (audioRef.current) {
+//           audioRef.current.currentTime -= 15;
+//       }
+//   };
 
- 
-  // const handlePrevious = () => {
-  //   if (trackIndex === 0) {
-  //     let lastTrackIndex = fetchTracks.length - 1;
-  //     setTrackIndex(lastTrackIndex);
-  //     setCurrentTrack(fetchTracks[lastTrackIndex]);
-  //   } else {
-  //     setTrackIndex((prev) => prev - 1);
-  //     setCurrentTrack(fetchTracks[trackIndex - 1]);
-  //   }
-  // };
+//   const handlePrevious = () => {
+//       const newTrackIndex = (trackIndex + fetchTracks.length - 1) % fetchTracks.length;
+//       setTrackIndex(newTrackIndex);
+//       setCurrentTrack(fetchTracks[newTrackIndex]);
+//   };
 
-  const handlePrevious = () => {
-    const newTrackIndex = (trackIndex + fetchTracks.length - 1) % fetchTracks.length;
-    setTrackIndex(newTrackIndex);
-    setCurrentTrack(fetchTracks[newTrackIndex]);
-  };
+//   const handleNext = () => {
+//       const newTrackIndex = (trackIndex + 1) % fetchTracks.length;
+//       setTrackIndex(newTrackIndex);
+//       setCurrentTrack(fetchTracks[newTrackIndex]);
+//   };
 
-  const handleNext = () => {
-    const newTrackIndex = (trackIndex + 1) % fetchTracks.length;
-    setTrackIndex(newTrackIndex);
-    setCurrentTrack(fetchTracks[newTrackIndex]);
-  };
-
-  // useEffect(() => {
-  //   if (audioRef) {
-  //     audioRef.current.volume = volume / 100;
-  //     audioRef.current.muted = muteVolume;
-  //   }
-  // }, [volume, audioRef, muteVolume]);
-
-  return (
-    <ControlsContainer>
-      <button onClick={handlePrevious}>
-        <IoPlaySkipBackSharp />
-      </button>
-      <button onClick={skipBackward}>
-        <IoPlayBackSharp />
-      </button>
-      <button onClick={togglePlayPause}>
-        {isPlaying ? <IoPauseSharp /> : <IoPlaySharp />}
-      </button>
-      <button onClick={skipForward}>
-        <IoPlayForwardSharp />
-      </button>
-      <button onClick={handleNext}>
-        <IoPlaySkipForwardSharp />
-      </button>
-    </ControlsContainer>
-  );
-};
-      // <div className="volume">
-      //   <button onClick={() => setMuteVolume((prev) => !prev)}>
-      //     {muteVolume || volume < 5 ? (
-      //       <IoMdVolumeOff />
-      //     ) : volume < 40 ? (
-      //       <IoMdVolumeLow />
-      //     ) : (
-      //       <IoMdVolumeHigh />
-      //     )}
-      //   </button>
-      //   <input
-      //     type="range"
-      //     min={0}
-      //     max={100}
-      //     value={volume}
-      //     onChange={(e) => setVolume(e.target.value)}
-      //     style={{
-      //       background: `linear-gradient(to right, #f50 ${volume}%, #ccc ${volume}%)`,
-      //     }}
-      //   />
-      // </div>
-
-// TracksControl.propTypes = {
-//   audioRef: PropTypes.object.isRequired,
-//   currentTrack: PropTypes.object,
-//   onPlayPause: PropTypes.func.isRequired,
-//   onNextTrack: PropTypes.func.isRequired,
-//   onPreviousTrack: PropTypes.func.isRequired,
+//   return (
+//       <ControlsContainer>
+//           <Button onClick={handlePrevious}>
+//               <IoPlaySkipBackSharp />
+//           </Button>
+//           <Button onClick={skipBackward}>
+//               <IoPlayBackSharp />
+//           </Button>
+//           <Button onClick={togglePlayPause}>
+//               {isPlaying ? <IoPauseSharp /> : <IoPlaySharp />}
+//           </Button>
+//           <Button onClick={skipForward}>
+//               <IoPlayForwardSharp />
+//           </Button>
+//           <Button onClick={handleNext}>
+//               <IoPlaySkipForwardSharp />
+//           </Button>
+//       </ControlsContainer>
+//   );
 // };
+// src/components/main/Player/playerControls/tracksControl.jsx
+// import React, { useState, useEffect, useCallback, useRef } from 'react';
+// import {
+//   IoPlayBackSharp,
+//   IoPlayForwardSharp,
+//   IoPlaySkipBackSharp,
+//   IoPlaySkipForwardSharp,
+//   IoPlaySharp,
+//   IoPauseSharp,
+// } from 'react-icons/io5';
+// import styled from 'styled-components';
+// import SpotifyWebApi from 'spotify-web-api-js'
+// import Button from '../Controls/controlButon';
+// const ControlsContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
 
-export default TracksControl;
+//   Button {
+//     background: none;
+//     border: none;
+//     color: #fff;
+//     font-size: 20px;
+//     cursor: pointer;
+
+//     &:hover {
+//       color: #1db954;
+//     }
+//   }
+// `;
+
+// const spotifyApi = new SpotifyWebApi();
+// const TracksControl = ({
+//   audioRef,
+//   duration,
+//   setTimeProgress,
+//   progressBarRef,
+//   trackIndex,
+//   setTrackIndex,
+//   fetchTracks,
+//   setCurrentTrack,
+// }) => {
+//   const [isPlaying, setIsPlaying] = useState(false);
+
+
+//   useEffect(() => {
+//     // Fetch the current playback state
+//     spotifyApi.getMyCurrentPlaybackState().then((response) => {
+//       setIsPlaying(response.is_playing);
+//       setCurrentTrack(response.item);
+//     });
+//   }, []);
+
+//   const handlePlay = () => {
+//     // Start playback
+//     spotifyApi.play();
+//     setIsPlaying(true);
+//   };
+
+//   const handlePause = () => {
+//     // Pause playback
+//     spotifyApi.pause();
+//     setIsPlaying(false);
+//   };
+
+//   const skipForward = () => {
+//     if (audioRef.current) {
+//       spotifyApi.seek(audioRef.current.currentTime + 15);
+
+//     }
+//   };
+
+//   const skipBackward = () => {
+//     if (audioRef.current) {
+//       spotifyApi.seek(audioRef.current.currentTime - 15);
+
+//     }
+//   };
+
+//   const handlePrevious = () => {
+//     const newTrackIndex = (trackIndex + fetchTracks.length - 1) % fetchTracks.length;
+//     setTrackIndex(newTrackIndex);
+//     setCurrentTrack(fetchTracks[newTrackIndex]);
+//   };
+
+//   const handleNext = () => {
+//     const newTrackIndex = (trackIndex + 1) % fetchTracks.length;
+//     setTrackIndex(newTrackIndex);
+//     setCurrentTrack(fetchTracks[newTrackIndex]);
+//   };
+
+//   useEffect(() => {
+//     if (isPlaying && audioRef.current) {
+//       audioRef.current.play();
+//     } else if (!isPlaying && audioRef.current) {
+//       audioRef.current.pause();
+//     }
+//   }, [isPlaying, audioRef]);
+
+//   return (
+//     <ControlsContainer>
+//        <Button
+//       onClick={() => props.shuffle(!props.shuffleActive)}
+//       className={'shuffle-track' + (props.shuffleActive ? ' active' : '')}
+//       icon="fa-random"
+//     />
+//       <Button onClick={handlePrevious}>
+//         <IoPlaySkipBackSharp />
+//       </Button>
+//       <Button onClick={skipBackward}>
+//         <IoPlayBackSharp />
+//       </Button>
+//         {isPlaying ? ( 
+//           <Button onClick={handlePause}> <IoPauseSharp /> </Button> 
+//           ) : (
+//           <Button onClick={handlePlay}> <IoPlaySharp /> </Button>
+//           )}
+//       <Button onClick={skipForward}>
+//         <IoPlayForwardSharp />
+//       </Button>
+//       <Button onClick={handleNext}>
+//         <IoPlaySkipForwardSharp />
+//       </Button>
+//     </ControlsContainer>
+//   );
+// };
+// export default TracksControl;

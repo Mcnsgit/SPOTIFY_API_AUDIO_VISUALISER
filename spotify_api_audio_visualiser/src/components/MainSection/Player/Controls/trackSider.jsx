@@ -40,17 +40,13 @@ const ProgressBarContainer = styled.div`
   }
 `;
 
-const ProgressBar = ({ progressBarRef,
-  audioRef,
-  timeProgress,
-  duration, }) => {
-  const handleProgressChange = () => {
-      audioRef.current.currentTime = progressBarRef.current.value;
-
-    };
-
-  
-
+const ProgressBar = ({ progressBarRef, audioRef, timeProgress, duration }) => {
+  const handleProgressChange = (e) => {
+    if (audioRef.current) {
+      const newTime = parseInt(e.target.value);
+      audioRef.current.currentTime = newTime;
+    }
+  };
   const formatTime = (time) => {
     if (time && !isNaN(time)) {
       const minutes = Math.floor(time / 60);
@@ -64,18 +60,17 @@ const ProgressBar = ({ progressBarRef,
 
   return (
     <div className="progress">
-    <span className="time current">{formatTime(timeProgress)}</span>
-    <input
-      type="range"
-      ref={progressBarRef}
-      defaultValue="0"
-      onChange={handleProgressChange}
-    />
-    <span className="time">{formatTime(duration)}</span>
-  </div>
-);
+      <span className="time current">{formatTime(timeProgress)}</span>
+      <input
+        type="range"
+        ref={progressBarRef}
+        defaultValue="0"
+        onChange={handleProgressChange}
+      />
+      <span className="time">{formatTime(duration)}</span>
+    </div>
+  );
 };
-
 
 export default ProgressBar;
 //   const [played, setPlayed] = useState(0);

@@ -13,89 +13,67 @@ import {
     shuffle,
     repeatContext
 } from "../redux/actions/playerActions";
-// export default function(ComposedComponent) {
-// class PlayerHoc extends Component {
-//     componentDidMount() {
-//         if(this.props.currentTrack.id) {
-//             this.props.containsCurrentTrack(this.props.currentTrack.id);
-//         }
-    
-    
-// shouldComponentUpdate(nextProps)
-//     return nextProps.playing !== this.props.playing;
-//   }
-
-
-
-// componentDidUpdate(prevProps) {
-//     if (prevProps.currentTrack.id !== this.props.currentTrack.id) {
-//         const id = this.props.currentTrack.id;
-//         const other = this.props.currentTrack.linked_from
-//           ? this.props.currentTrack.linked_from.id
-//           : null;
-//         this.props.containsCurrentTrack(other ? `${id},${other}` : id);
-//         }
-//     }
-export default function(ComposedComponent) {
-    class PlayerHoc extends Component {
-        componentDidMount() {
-            if (this.props.currentTrack.id) {
-                this.props.containsCurrentTrack(this.props.currentTrack.id);
-            }
-        }
-
-        componentDidUpdate(prevProps) {
-            if (prevProps.currentTrack.id !== this.props.currentTrack.id) {
-                const id = this.props.currentTrack.id;
-                const other = this.props.currentTrack.linked_from ? this.props.currentTrack.linked_from.id : null;
-                this.props.containsCurrentTrack(other ? `${id},${other}` : id);
-            }
-        }
-
-        render() {
-            return (
-                <ComposedComponent
-                    {...this.props}
-                    currentTrack={this.props.currentTrack}
-                    playContext={this.props.playContext}
-                    playTrack={this.props.playTrack}
-                />
-            );
-        }
+export default function withPlayerHoc(ComposedComponent) {
+  class PlayerHoc extends Component {
+    componentDidMount() {
+      const { currentTrack, containsCurrentTrack } = this.props;
+      if (currentTrack && currentTrack.id) {
+        containsCurrentTrack(currentTrack.id);
+      }
     }
 
-    PlayerHoc.propTypes = {
-        currentTrack: PropTypes.object.isRequired,
-        playTrack: PropTypes.func.isRequired,
-        playContext: PropTypes.func.isRequired,
-    };
+    componentDidUpdate(prevProps) {
+      const { currentTrack, containsCurrentTrack } = this.props;
+      const { id, linked_from } = currentTrack;
+      if (prevProps.currentTrack?.id !== id) {
+        const otherId = linked_from ? linked_from.id : null;
+        const trackIds = otherId ? `${id},${otherId}` : id;
+        containsCurrentTrack(trackIds);
+      }
+    }
 
-    const mapStateToProps = state => ({
-        currentTrack: state.playerReducer.status?.track_window?.current_track || {},
+    render() {
+      return <ComposedComponent {...this.props} />;
+    }
+  }
+
+  PlayerHoc.propTypes = {
+    currentTrack: PropTypes.object,
+    playTrack: PropTypes.func.isRequired,
+    playContext: PropTypes.func,
+  };
+
+  const mapStateToProps = (state) => {
+    const playerStatus = state.playerReducer.status || {};
+    const libraryTracks = state.libraryReducer.tracks.items || [];
+
+
+      return {
+        currentTrack: playerStatus.track_window?.current_track || null,
         contains: !!state.libraryReducer.containsCurrent,
-        trackPosition: state.playerReducer.status?.position,
-        playing: !state.playerReducer.status?.paused,
-        shuffleActive: state.playerReducer.status?.shuffle,
-        repeatActive: state.playerReducer.status?.repeat_mode !== 0,
-        tracks: state.libraryReducer.tracks.items || []
-    });
+        trackPosition: playerStatus.position || 0,
+        playing: !playerStatus.paused,
+        shuffleActive: playerStatus.shuffle,
+        repeatActive: playerStatus.repeat_mode !== 0,
+        tracks: libraryTracks,
+        playContext: state.playerReducer.playContext
+    };
+  };
 
-    const mapDispatchToProps = dispatch => {
-        return bindActionCreators(
-            {
-                nextTrack,
-                previousTrack,
-                pauseTrack,
-                playTrack,
-                seekTrack,
-                shuffle,
-                repeatContext,
-                containsCurrentTrack,
-                fetchTracks
-            },
-            dispatch
-    );
+  const mapDispatchToProps = (dispatch) => bindActionCreators(
+    {
+      nextTrack,
+      previousTrack,
+      pauseTrack,
+      playTrack,
+      seekTrack,
+      shuffle,
+      repeatContext,
+      containsCurrentTrack,
+      fetchTracks
+    },
+    dispatch
+  );
+
+  return connect(mapStateToProps, mapDispatchToProps)(PlayerHoc);
 };
-
-return connect(mapStateToProps, mapDispatchToProps)(PlayerHoc);
-}

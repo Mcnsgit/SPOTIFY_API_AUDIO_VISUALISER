@@ -17,9 +17,10 @@
 }
 
 .controls-wrapper {
-  justify-content: center;
   display: flex;
-  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .forward,
@@ -41,7 +42,7 @@
   font-size: 40px;
 }
 
-.track-control .control-button  .pause-btn {
+.track-control .control-button .pause-btn {
   position: relative;
   top: -7px;
   font-size: 40px;

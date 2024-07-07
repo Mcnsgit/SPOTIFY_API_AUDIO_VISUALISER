@@ -10,6 +10,16 @@ const reducer = (state, action) => {
 	case "SET_USER": return { ...state, user: action.payload };
 	case "SET_PLAYLISTS": return { ...state, playlists: action.payload };
 	case "SET_CURRENT_PLAYLIST": return { ...state, currentPlaylist: action.payload };
+	case "SET_PLAYING": return { ...state, playing: action.payload };
+	case "SET_AUDIO_FEATURES": return { ...state, audio_features: action.payload };
+	case "SET_AUDIO_ANALYSIS": return { ...state, audio_analysis: action.payload };
+	case "SET_MULTIPLE_AUDIO_FEATURES": return { ...state, multiple_audio_features: action.payload };
+	case "SET_MULTIPLE_AUDIO_ANALYSIS": return { ...state, multiple_audio_analysis: action.payload };
+	case "SET_MULTIPLE_ERROR": return { ...state, multiple_error: action.payload };
+	case "SET_MULTIPLE_LOADING": return { ...state, multiple_loading: action.payload };
+	case "SET_MULTIPLE_ERROR_INFO": return { ...state, multiple_error_info: action.payload };
+	case "SET_MULTIPLE_LOADING_INFO": return { ...state, multiple_loading_info: action.payload };
+	case "SET_VOLUME": return { ...state, volume: action.payload };
 	default: return state;
 	}
 };

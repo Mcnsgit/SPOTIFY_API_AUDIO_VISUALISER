@@ -11,7 +11,7 @@ import {
 import { setStatus } from '../../../../redux/actions/playerActions';
 import Playlist from '../../../tracksTable/playlistTable/playlistTable';
 import Header from '../../../Layout/Header/tracksHeader';
-import Spinner from '../../../spinner/spinner';
+import Spinner from '../../../common/spinner/spinner';
 
 import withStatus from '../../../../hoc/statusHoc';
 

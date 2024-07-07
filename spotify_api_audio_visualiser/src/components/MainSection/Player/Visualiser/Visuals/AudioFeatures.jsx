@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAudioAnalysisAction, getAudioFeaturesAction, getMultipleAudioFeaturesAction } from '../../actions/audioApiActions';
-import AudioVisualizer from '../Visualiser';
+import Visualizer from '../Visualiser';
 
 const SpotifyData = ({ trackIds }) => {
   const dispatch = useDispatch();
@@ -28,13 +28,13 @@ const SpotifyData = ({ trackIds }) => {
           <pre>{JSON.stringify(audioAnalysis, null, 2)}</pre>
           <h2>Audio Features</h2>
           <pre>{JSON.stringify(audioFeatures, null, 2)}</pre>
-          {audioFeatures && <AudioVisualizer audioFeatures={audioFeatures} />}
+          {audioFeatures && <Visualizer audioFeatures={audioFeatures} />}
         </>
       ) : (
         <>
           <h2>Multiple Audio Features</h2>
           <pre>{JSON.stringify(multipleAudioFeatures, null, 2)}</pre>
-          {multipleAudioFeatures && <AudioVisualizer audioFeatures={multipleAudioFeatures} />}
+          {multipleAudioFeatures && <Visualizer audioFeatures={multipleAudioFeatures} />}
         </>
       )}
     </div>

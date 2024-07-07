@@ -1,94 +1,154 @@
-import axios from "../../utils/axios";
+import device from '../../components/common/devices/device';
+import { axiosToken } from '../../utils/axios';
 
-export const setStatus = status => {
-	return {
-		type: "FETCH_STATUS_SUCCESS",
-		status
-	};
+export const nextTrack = () => async (dispatch, getState) => {
+  const { deviceId } = getState().player;
+  try {
+    await axiosToken.post(`https://api.spotify.com/v1/me/player/next?device_id=${deviceId}`);
+  } catch (error) {
+    console.error('Error playing next track:', error);
+  }
 };
 
-export const nextTrack = () => {
-	axios.post("/me/player/next");
-	return {
-		type: "CHANGE_SONG"
-	};
+export const previousTrack = () => async (dispatch, getState) => {
+  const { deviceId } = getState().player;
+  try {
+    await axiosToken.post(`https://api.spotify.com/v1/me/player/previous?device_id=${deviceId}`);
+  } catch (error) {
+    console.error('Error playing previous track:', error);
+  }
 };
 
-export const previousTrack = () => {
-	axios.post("/me/player/previous");
-	return {
-		type: "CHANGE_SONG"
-	};
-};
-export const pauseTrack = () => {
-	axios.put("/me/player/pause");
-	return {
-		type: "PAUSE_STATE"
-	};
-};
-
-export const playTrack = (context = false, offset) => {
-	if (context && offset) {
-		axios.put("/me/player/play", {
-			context_uri: context,
-			offset: { position: offset }
-		});
-	} else {
-		if (context) {
-			axios.put("/me/player/play", {
-				context_uri: context
-			});
-		} else {
-			axios.put("/me/player/play");
-		}
-	}
-	return {
-		type: "PLAY_STATE"
-	};
+export const playTrack = () => async (dispatch, getState) => {
+  const { tracks, offset } = getState().player;
+  if (tracks.length > 0) {
+    const track = tracks[offset];
+    try {
+      await axiosToken.put(`https://api.spotify.com/v1/me/player/play?device_id=${track.device_id}`, {
+        context_uri: track.context_uri,
+        uris: [track.track.uri],
+      });
+      dispatch(setIsPlaying(true));
+    } catch (error) {
+      console.error('Error playing track:', error);
+    }
+  }
 };
 
-export const playTracks = (tracks, offset) => {
-	axios.put("/me/player/play", {
-		uris: tracks,
-		offset: { position: offset }
-	});
-	return {
-		type: "PLAY_STATE"
-	};
+export const pauseTrack = () => async (dispatch) => {
+  try {
+    await axiosToken.put('https://api.spotify.com/v1/me/player/pause');
+    dispatch(setIsPlaying(false));
+  } catch (error) {
+    console.error('Error pausing track:', error);
+  }
+};
+
+export const seekTrack = (ms) => async (dispatch) => {
+  try {
+    await axiosToken.put(`/me/player/seek?position_ms=${ms}`);
+    dispatch({ type: "SEEK_SONG" });
+  } catch (error) {
+    console.error("Error seeking track:", error);
+  }
 };
 
 
-export const seekTrack = ms => {
-	axios.put(`/me/player/seek?position_ms=${ms}`);
-	return {
-		type: "SEEK_SONG"
-	};
+export const repeatContext = (status) => async (dispatch) => {
+  try {
+    await axiosToken.put(`/me/player/repeat?state=${status}`);
+    dispatch({ type: "REPEAT" });
+  } catch (error) {
+    console.error("Error setting repeat context:", error);
+  }
 };
 
-export const repeatContext = status => {
-	axios.put(`/me/player/repeat?state=${status}`);
-	return {
-		type: "REPEAT"
-	};
+export const shuffle = (status) => async (dispatch) => {
+  try {
+    await axiosToken.put(`/me/player/shuffle?state=${status}`);
+    dispatch({ type: "SHUFFLE" });
+  } catch (error) {
+    console.error("Error setting shuffle status:", error);
+  }
 };
 
-export const shuffle = status => {
-	axios.put(`/me/player/shuffle?state=${status}`);
-	return {
-		type: "Shuffle"
-	};
+export const setVolume = (volume) => async (dispatch) => {
+  try {
+    await axiosToken.put(`/me/player/volume?volume_percent=${volume}`);
+    dispatch({ type: "SET_VOLUME" });
+  } catch (error) {
+    console.error("Error setting volume:", error);
+  }
 };
 
-export const setVolume = volume => {
-	axios.put(`/me/player/volume?volume_percent=${volume}`);
-	return {
-		type: "SET_VOLUME"
-	};
+export const currentTrack = (track) => async (dispatch) => {
+  try {
+    await axiosToken.put(`/me/player/play`, { context_uri: track.uri });
+    dispatch({ type: "CURRENT_TRACK", track });
+  } catch (error) {
+    console.error("Error setting current track:", error);
+  }
 };
 
-export const setDeviceId = id => {
-	return {
-		type: "SET_DEVICE_ID",
-		id
-	};  
+export const playing = () => ({
+  type: "PLAYING",
+  playing: true
+});
+
+export const setCurrentTrack = (track) => ({
+  type: 'SET_CURRENT_TRACK',
+  payload: track,
+});
+
+export const setIsPlaying = (isPlaying) => ({
+  type: 'SET_IS_PLAYING',
+  payload: isPlaying,
+});
+
+export const setTrackPosition = (position) => ({
+  type: 'SET_TRACK_POSITION',
+  payload: position,
+});
+
+export const setDeviceId = (deviceId) => ({
+  type: 'SET_DEVICE_ID',
+  payload: deviceId,
+});
+
+
+export const playTracks = (tracks, offset) => async (dispatch, getState) => {
+  const { deviceId } = getState().player;
+  try {
+    await axiosToken.get(`/me/play/player`);
+    dispatch({
+      type: "PLAY_TRACKS",
+      payload: {
+        tracks,
+        offset,
+        deviceId
+      }
+    });
+  } catch (error) {
+    console.error("Error playing tracks:", error);
+  }
+};
+
+
+
+
+export const setSpotifyPlayer = (player) => ({
+  type: "SET_SPOTIFY_PLAYER",
+  player
+});
+
+export const setStatus = (status) => (dispatch) => {
+  dispatch({
+    type: "FETCH_STATUS_SUCCESS",
+    status
+  });
+  if (status) {
+    dispatch(setCurrentTrack(status.track_window.current_track));
+    dispatch(setTrackPosition(status.position));
+    dispatch(setIsPlaying(!status.paused));
+  }
 };

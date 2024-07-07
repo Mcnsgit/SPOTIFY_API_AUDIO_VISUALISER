@@ -6,13 +6,16 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import store from "./redux/store.js";
 import ErrorBoundary from "./ErrorBoundary.jsx";
+import { SpotifyAuthProvider } from './services/AuthService';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <ErrorBoundary>
+  <ErrorBoundary>
+    <SpotifyAuthProvider>
       <Provider store={store}>
         <BrowserRouter>
-          <App />
+        <App />
         </BrowserRouter>
       </Provider>
-    </ErrorBoundary>
+    </SpotifyAuthProvider>
+  </ErrorBoundary>
 );

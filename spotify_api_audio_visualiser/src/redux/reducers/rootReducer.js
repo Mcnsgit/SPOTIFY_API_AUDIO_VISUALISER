@@ -14,6 +14,7 @@ import tokenReducer from "./tokenReducer.js";
 import visualizerReducer from "./visualizerReducer.js";
 import audioApiReducer from "./audioApiReducer.js";
 
+
 export default combineReducers({
 	sessionReducer,
 	userReducer,
@@ -27,5 +28,5 @@ export default combineReducers({
 	visualizerReducer,
 	tokenReducer,
 	audioApiReducer,
-	searchReducer
-});
+	searchReducer,
+	});

@@ -4,7 +4,7 @@ import './devices.css';
 
 import Device from './device';
 import media from './media.png';
-import axios from '../../utils/axios';
+import axios from '../../../utils/axios';
 
 class Devices extends Component {
   state = { devices: [], show: false };

@@ -1,14 +1,26 @@
+const initialState = {
+  currentTrack: null,
+  isPlaying: false,
+  trackPosition: 0,
+  deviceId: null,
+  volume: 50,
+};
 
-export const playerReducer = (state = {}, action) => {
-	switch (action.type) {
-	case "FETCH_STATUS_SUCCESS":
-		return {
-			...state,
-			status: action.status
-		};
-	default:
-		return state;
-	}
+const playerReducer = (state = initialState, action) => {
+  switch (action.type) {
+		case "SET_CURRENT_TRACK":
+		return { ...state, currentTrack: action.payload };
+	case "SET_IS_PLAYING":
+		return { ...state, isPlaying: action.payload };
+	case "SET_TRACK_POSITION":
+		return { ...state, trackPosition: action.payload };
+	case "SET_DEVICE_ID":
+		return { ...state, deviceId: action.payload };
+    case "SET_VOLUME":
+      return { ...state, volume: action.volume };
+    default:
+      return state;
+  }
 };
 
 export default playerReducer;

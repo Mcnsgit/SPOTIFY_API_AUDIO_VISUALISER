@@ -3,23 +3,25 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { setView, setModal } from '../redux/actions/uiActions';
-import { fetchPlaylistsMenu } from '../redux/actions/playlistActions';
+import { fetchPlaylistsMenu, fetchPlaylist } from '../redux/actions/playlistActions';
 import { fetchArtist } from '../redux/actions/artistActions';
 import { fetchAlbum } from '../redux/actions/albumActions';
 import { fetchTracks,fetchMoreTracks } from '../redux/actions/libraryActions';
 import { fetchSearchData, setQuery } from '../redux/actions/searchActions'; 
+import {currentTrack, playing } from '../redux/actions/playerActions';
 
 
 
 export default function(ComposedComponent) {
-  class UiHocComponent extends Component {
+  class UiHoc extends Component {
     showModal = () => {
       this.props.setModal(true, 'playlist');
     };
     onPlaylistClick = id => {
-      this.props.fetchPlaylistsMenu(id);
+      this.props.fetchPlaylist(id);
       this.props.setView('playlist');
     };
+   
 
     onArtistClick = id => {
       this.props.fetchArtist(id);
@@ -51,6 +53,13 @@ export default function(ComposedComponent) {
       this.props.setView('search');
     };
     
+    pauseTrack = () => {
+      this.props.pauseTrack();
+    }
+    playing =  () => {
+      this.props.playing();
+      
+    }
 
     render = () => (
       <ComposedComponent
@@ -66,7 +75,7 @@ export default function(ComposedComponent) {
       />
     );
   }
-UiHocComponent.PropTypes = {
+UiHoc.PropTypes = {
   fetchPlaylistsMenu: PropTypes.func,
   fetchArtist: PropTypes.func,
   fetchAlbum: PropTypes.func,
@@ -82,7 +91,7 @@ UiHocComponent.PropTypes = {
 
   const mapDispatchToProps = dispatch => {
     return bindActionCreators(
-      {
+      {fetchPlaylist,
         fetchPlaylistsMenu,
         fetchArtist,
         fetchAlbum,
@@ -99,5 +108,5 @@ UiHocComponent.PropTypes = {
   return connect(
     null,
     mapDispatchToProps
-  )(UiHocComponent);
+  )(UiHoc);
 }

@@ -1,59 +1,27 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-
-import Dashboard from './Dashboard/Dashboard';
-// import LeftSection from '../SideMenu/leftSection';
-// import RightSection from '../RightSection/RightSection';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import profile from '../../assets/images/profile.png';
 import './mainSection.scss';
-
-
-// import Modal from './playlistModal/modal';
-import Header from '../Layout/Header/Header';
-import './mainSection.scss';
 import Footer from '../Layout/Footer/Footer';
+import Visualizer from './Player/Visualiser/Visualiser'
 
+const MainSection = () => {
+  // const user = useSelector(state => state.userReducer.user);
+  // const { name, id, images } = user || {};
+  // const img = images && images.length > 0 ? images[0].url : profile;
 
-class MainSection extends Component {
-  render = () => {
-    const { name, id, images } = this.props.user;
-    const img = images[0]     ? images[0].url : profile;
-
-    return (
-      <div className="main-section">
-      <Header username={name || id} img={img} />
+  return (
+    <div className="main-section">
       <div className="main-app-container">
-        <Dashboard />
-      </div>
-        <div className="footer">
-        <Footer />
+        <div className="main">
+          <AudioVisualizer />
         </div>
       </div>
-    );
-    };
-    }
+      <div className="footer">
+        <Footer />
+      </div>
+    </div>
+  );
+};
 
-    const mapStateToProps = (state) => ({
-        user: state.userReducer.user,
-     
-        });
-      
-        
-        export default connect(mapStateToProps)(MainSection);
-        // import Tracks from '../../components/sections/trackList/trackList';
-        // import Playlist from '../../components/sections/playlist/playlist';
-        // import Artist from '../../components/sections/artist/artist';
-        // import Album from '../../components/sections/album/album';
-        // import Albums from '../../components/sections/top/albums';
-        // {this.props.view === 'search' ? <Search /> : null}
-        // import Artists from '../../components/sections/top/artists';
-        
-        
-    //   {this.props.view === 'playlist' ? <Playlist /> : null}
-    //   {this.props.view === 'recently' ? <Tracks recently /> : null}
-    //   {this.props.view === 'tracks' ? <Tracks /> : null}
-    //   {this.props.view === 'artist' ? <Artist /> : null}
-    //   {this.props.view === 'album' ? <Album /> : null}
-    //   {this.props.view === 'albums' ? <Albums /> : null}
-    //   {this.props.view === 'artists' ? <Artists /> : null}
+export default MainSection;

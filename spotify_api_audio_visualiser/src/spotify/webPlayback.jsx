@@ -1,169 +1,201 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useSpotifyAuth } from '../services/AuthService';
 
-import { setStatus } from '../redux/actions/playerActions';
-import { setDeviceId, setActiveDevice } from '../redux/actions/sessionActions';
+const WebPlayback = () => {
+  const { token } = useSpotifyAuth();
+  const [player, setPlayer] = useState(undefined);
 
-class WebPlayback extends Component {
-  deviceSelectedInterval = null;
-  statePollingInterval = null;
-  webPlaybackInstance = null;
+  useEffect(() => {
+    const initializePlayer = () => {
+      const player = new window.Spotify.Player({
+        name: 'Web Playback SDK',
+        getOAuthToken: cb => { cb(token); },
+      });
 
-  state = {
-    playerReady: false,
-    playerSelected: false
-  };
+      player.addListener('initialization_error', ({ message }) => { console.error(message); });
+      player.addListener('authentication_error', ({ message }) => { console.error(message); });
+      player.addListener('account_error', ({ message }) => { console.error(message); });
+      player.addListener('playback_error', ({ message }) => { console.error(message); });
 
-  async handleState(state) {
-    if (state) {
-      this.props.setStatus(state);
-    } else {
-      this.clearStatePolling();
-      await this.waitForDeviceToBeSelected();
-    }
-  }
+      player.connect();
 
-  waitForSpotify() {
-    return new Promise(resolve => {
-      if ('Spotify' in window) {
-        resolve();
-      } else {
-        window.onSpotifyWebPlaybackSDKReady = () => {
+      setPlayer(player);
+
+      return () => {
+        player.disconnect();
+      };
+    };
+
+    const waitForSpotify = () => {
+      return new Promise((resolve) => {
+        if (window.Spotify) {
           resolve();
-        };
-      }
-    });
-  }
-
-  waitForDeviceToBeSelected() {
-    return new Promise(resolve => {
-      this.deviceSelectedInterval = setInterval(() => {
-        if (this.webPlaybackInstance) {
-          this.webPlaybackInstance.getCurrentState().then(state => {
-            if (state !== null) {
-              this.startStatePolling();
-              clearInterval(this.deviceSelectedInterval);
-              resolve(state);
-            }
-          });
+        } else {
+          window.onSpotifyWebPlaybackSDKReady = () => {
+            resolve();
+          };
         }
       });
-    });
-  }
+    };
 
-  startStatePolling() {
-    this.statePollingInterval = setInterval(async () => {
-      let state = await this.webPlaybackInstance.getCurrentState();
-      await this.handleState(state);
-    }, this.props.playerRefreshRateMs || 1000);
-  }
+    waitForSpotify().then(initializePlayer);
 
-  clearStatePolling() {
-    clearInterval(this.statePollingInterval);
-  }
-
-  async setupWebPlaybackEvents() {
-    let { Player } = window.Spotify;
-
-    this.webPlaybackInstance = new Player({
-      name: this.props.playerName,
-      volume: this.props.playerInitialVolume,
-      getOAuthToken: async callback => {
-        if (typeof this.props.onPlayerRequestAccessToken !== 'undefined') {
-          let userAccessToken = await this.props.onPlayerRequestAccessToken();
-          callback(userAccessToken);
-        }
+    return () => {
+      if (player) {
+        player.disconnect();
       }
-    });
+    };
+  }, [token]);
 
-    this.webPlaybackInstance.on('initialization_error', e => {
-      this.props.onPlayerError(e.message);
-    });
 
-    this.webPlaybackInstance.on('authentication_error', e => {
-      this.props.onPlayerError(e.message);
-    });
-
-    this.webPlaybackInstance.on('account_error', e => {
-      this.props.onPlayerError(e.message);
-    });
-
-    this.webPlaybackInstance.on('playback_error', e => {
-      this.props.onPlayerError(e.message);
-    });
-
-    this.webPlaybackInstance.on('player_state_changed', async state => {
-      await this.handleState(state);
-    });
-
-    this.webPlaybackInstance.on('ready', data => {
-      this.props.setDeviceId(data.device_id);
-      this.props.setActiveDevice(data.device_id);
-    });
-
-    if (this.props.playerAutoConnect) {
-      this.webPlaybackInstance.connect();
-    }
-  }
-
-  setupWaitingForDevice() {
-    return new Promise(resolve => {
-      this.webPlaybackInstance.on('ready', data => {
-        resolve(data);
-      });
-    });
-  }
-
-  async componentDidMount() {
-    // Notify the player is loading
-    this.props.onPlayerLoading();
-
-    // Wait for Spotify to load player
-    await this.waitForSpotify();
-
-    // Setup the instance and the callbacks
-    await this.setupWebPlaybackEvents();
-
-    // Wait for device to be ready
-    let device_data = await this.setupWaitingForDevice();
-    this.props.onPlayerWaitingForDevice(device_data);
-
-    // Wait for device to be selected
-    await this.waitForDeviceToBeSelected();
-    this.props.onPlayerDeviceSelected();
-  }
-
-  render() {
-    return <Fragment>{this.props.children}</Fragment>;
-  }
-}
-
-WebPlayback.propTypes = {
-  setStatus: PropTypes.func.isRequired, 
-  playerRefreshRateMs: PropTypes.number.isRequired,
-  playerName: PropTypes.string.isRequired,                   
-  playerInitialVolume: PropTypes.number.isRequired,          
-  onPlayerRequestAccessToken: PropTypes.func.isRequired,   
-  onPlayerError: PropTypes.func.isRequired,
-  setDeviceId: PropTypes.func.isRequired,
-  setActiveDevice: PropTypes.func.isRequired,              
-  playerAutoConnect: PropTypes.bool.isRequired,            
-  onPlayerLoading: PropTypes.func.isRequired,              
-  onPlayerWaitingForDevice: PropTypes.func.isRequired,     
-  onPlayerDeviceSelected: PropTypes.func.isRequired,       
-  children: PropTypes.node.isRequired,             
 };
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    { setDeviceId, setActiveDevice, setStatus },
-    dispatch
-  );
-};
+export default WebPlayback;
+// import React, { Component } from 'react';
+// import { connect } from 'react-redux';
+// import { bindActionCreators } from 'redux';
+// import PropTypes from 'prop-types';
+// import { setCurrentTrack, setIsPlaying, setTrackPosition, setSpotifyPlayer } from '../redux/actions/playerActions';
+// import {setActiveDevice,setDeviceId } from '../redux/actions/sessionActions';
+// class WebPlayback extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       spotifyPlayer: null,
+//     };
+//     this.webPlaybackInstance = null;
+//     this.statePollingInterval = null;
+//     this.deviceSelectedInterval = null;
+//   }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(WebPlayback);
+//   componentDidMount() {
+//     this.initializePlayer();
+//   }
+
+//   componentWillUnmount() {
+//     this.clearStatePolling();
+//     clearInterval(this.deviceSelectedInterval);
+//   }
+
+//   initializePlayer = () => {
+//     const player = new window.Spotify.Player({
+//       name: 'Web Playback SDK',
+//       getOAuthToken: cb => { cb(this.props.token); },
+//     });
+
+//     player.addListener('ready', ({ device_id }) => {
+//       this.props.setDeviceId(device_id);
+//     });
+
+//     player.addListener('player_state_changed', state => {
+//       if (state) {
+//         this.props.setCurrentTrack(state.track_window.current_track);
+//         this.props.setIsPlaying(!state.paused);
+//         this.props.setTrackPosition(state.position);
+//       }
+//     });
+
+//     player.connect();
+//     this.setState({ spotifyPlayer: player });
+//     this.webPlaybackInstance = player;
+//   }
+
+//   waitForSpotify() {
+//     return new Promise(resolve => {
+//       if ('Spotify' in window) {
+//         resolve();
+//       } else {
+//         window.onSpotifyWebPlaybackSDKReady = () => {
+//           resolve();
+//         };
+//       }
+//     });
+//   }
+
+//   waitForDeviceToBeSelected() {
+//     return new Promise(resolve => {
+//       this.deviceSelectedInterval = setInterval(() => {
+//         if (this.webPlaybackInstance) {
+//           this.webPlaybackInstance.getCurrentState().then(state => {
+//             if (state !== null) {
+//               this.startStatePolling();
+//               clearInterval(this.deviceSelectedInterval);
+//               resolve(state);
+//             }
+//           });
+//         }
+//       });
+//     });
+//   }
+
+//   startStatePolling() {
+//     this.statePollingInterval = setInterval(() => {
+//       this.webPlaybackInstance.getCurrentState().then(state => {
+//         this.handleState(state);
+//       });
+//     }, this.props.playerRefreshRateMs || 1000);
+//   }
+
+//   clearStatePolling() {
+//     clearInterval(this.statePollingInterval);
+//   }
+
+//   handleState = (state) => {
+//     // Handle state logic here
+//   }
+
+//   async setupWebPlaybackEvents() {
+//     let { Player } = window.Spotify;
+//     this.webPlaybackInstance = new Player({
+//       name: this.props.playerName,
+//       volume: this.props.playerInitialVolume,
+//       getOAuthToken: async callback => {
+//         if (typeof this.props.onPlayerRequestAccessToken !== 'undefined') {
+//           let userAccessToken = await this.props.onPlayerRequestAccessToken();
+//           callback(userAccessToken);
+//         }
+//       }
+//     });
+
+//     // Event listeners setup
+
+//     if (this.props.playerAutoConnect) {
+//       this.webPlaybackInstance.connect();
+//     }
+//   }
+
+//   setupWaitingForDevice() {
+//     return new Promise(resolve => {
+//       this.webPlaybackInstance.on('ready', data => {
+//         resolve(data);
+//       });
+//     });
+//   }
+
+//   async initializeWebPlayback() {
+
+//     await this.waitForSpotify();
+//     await this.setupWebPlaybackEvents();
+
+//     let device_data = await this.setupWaitingForDevice();
+//     this.props.onPlayerWaitingForDevice(device_data);
+
+//     await this.waitForDeviceToBeSelected();
+//     this.props.onPlayerDeviceSelected();
+//   }
+
+//   render() {
+//     return null;
+//   }
+// }
+
+// const mapDispatchToProps = {
+//   setCurrentTrack,
+//   setIsPlaying,
+//   setTrackPosition,
+//   setDeviceId,
+//   setActiveDevice,
+//   setSpotifyPlayer,
+// };
+
+// export default connect(null, mapDispatchToProps)(WebPlayback);

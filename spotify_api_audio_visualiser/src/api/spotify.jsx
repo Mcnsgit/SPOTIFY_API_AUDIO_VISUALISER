@@ -7,7 +7,7 @@ const SPOTIFY_BASE_URL = "https://api.spotify.com/v1";
 /**
  * Get the access token from local storage or other storage mechanism.
  */
-const getAccessToken = () => {
+export const getAccessToken = () => {
 	return localStorage.getItem("spotify_access_token");
 };
 

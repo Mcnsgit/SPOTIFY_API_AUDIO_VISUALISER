@@ -1,0 +1,28 @@
+name: Analyze Project Files
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl
+
+      - name: Run analysis script
+        run: ./scripts/analyze.sh
+
+      - name: Output analysis results
+        run: cat analysis-results.txt

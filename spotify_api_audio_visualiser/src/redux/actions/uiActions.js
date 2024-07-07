@@ -2,10 +2,12 @@ export const updateHeaderTitle = (title) => ({
 	type: "UPDATE_HEADER_TITLE",
 	title
 });
-export const setView = (view) => ({
-	type: "SET_VIEW",
-	payload: view,
-});
+export const setView = view => {
+  return {
+    type: 'SET_NEW_VIEW',
+    view
+  };
+};
 
 export const input = {
 	type: "SET_INPUT",

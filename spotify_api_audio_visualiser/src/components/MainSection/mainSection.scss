@@ -1,9 +1,23 @@
-.main-section {
+.header-section {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
-
+.main-header {
+  
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    background: rgb(24, 24, 24);
+    color: white;
+    padding: 0 20px;
+    top:10px
+  
+}
 .main-app-container {
   flex: 1;
   display: flex;

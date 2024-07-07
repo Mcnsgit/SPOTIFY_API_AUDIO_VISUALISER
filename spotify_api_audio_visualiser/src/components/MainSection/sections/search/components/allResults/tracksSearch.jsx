@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import axios from '../../../../../../utils/axios';
-import Spinner from '../../../../../spinner/spinner';
+import Spinner from '../../../../../common/spinner/spinner';
 
 import withStatus from '../../../../../../hoc/statusHoc';
 import PlaylistTable from '../../../../../tracksTable/playlistTable/playlistTable';

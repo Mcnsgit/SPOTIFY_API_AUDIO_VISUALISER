@@ -1,7 +1,9 @@
 /* src/components/reusable/UserProfile.css */
 .user-profile {
-    display: flex;
-    align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0px;
+  background: rgb(24, 24, 24);
   }
   
   .user-profile__image {
@@ -12,8 +14,12 @@
   }
   
   .user-profile__name {
-    color: white;
-    text-decoration: none;
+    color: $light-gray;
+    font-size: 14px;
+    position: relative;
+    top: -5px;
+    margin-left: 10px;
+    padding-right: 10px;
   }
   
   .user-profile__name:hover {

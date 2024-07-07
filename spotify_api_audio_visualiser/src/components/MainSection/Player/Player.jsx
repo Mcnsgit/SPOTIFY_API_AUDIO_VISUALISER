@@ -1,130 +1,167 @@
 // src/components/main/Player/Player.jsx
-import React, { Component, useState, useEffect, useRef } from "react";
+import React, { Component,useState, useEffect,useRef } from "react";
+import useAudioContext from './Visualiser/Visuals/useAudioContext';
+import './Visualiser/Visuals/AudioControls.scss';
+import Button from './Controls/controlButon';
 import styled from "styled-components";
-// import { connect } from "react-redux";
-// import { useSelector, useDispatch } from "react-redux";
-// import PropTypes from 'prop-types'
-// import './Player.scss';
-import ProgressBar from "./Controls/trackSider";
-import DetailSection from "./Details/detailSection";
-import TracksControl from "./playerControls/tracksControl";
-import VolumeControl from "./volume/Volume";
-import ExtraControls from "./extraControls/ExtraControls";
-
+import PropTypes from 'prop-types';
 
 import PlayerHoc from "../../../hoc/playerHoc";
-import { fetchTracks } from "../../../redux/actions/libraryActions";
+import './Player.scss';
+import { connect } from 'react-redux';
+import { playTrack, pauseTrack, nextTrack, previousTrack, seekTrack } from '../../../redux/actions/playerActions';
+import { getAudioApiFeatures } from '../../../api/spotify';
+import { useSpotifyAuth } from '../../../services/AuthService';
+import './Details/detailsSection.scss'; 
+import withUiActions from '../../../hoc/uiHoc';
+import withStatus from '../../../hoc/statusHoc';
+import AudioControls from "./Visualiser/Visuals/AudioControls";
+import VolumeControl from "./volume/Volume";
+import ExtraControls from "./extraControls/ExtraControls";
+import './Player.scss'
+import { BsMusicNoteBeamed } from 'react-icons/bs';
+
+
 const PlayerContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   height: 100px;
   background: #282828;
+  color: white;
   padding: 0 20px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
 `;
 
-const TrackCoverStyles = styled.div`
+const ControlsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+const TrackDetails = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
 `;
 
-const PlayerControls = styled.div`
+const ProgressWrapper = styled.div`
   display: flex;
-  align-items: center;
-  gap: 20px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
 `;
 
-const PlayerProgressBar = styled.div`
-  flex: 1;
-  margin: 0 20px;
-`;
+const Player = ({     
+      currentTrack, 
+      isPlaying, 
+      playTrack,
+      pauseTrack,
+      nextTrack,
+      previousTrack
+    }) => {
+      if (!currentTrack) {
+        return <div>No track is currently playing</div>;
+      }
 
-const PlayerExtraButtons = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-shrink: 0;
-`;
 
-const Player = () => {
-  const [trackIndex, setTrackIndex] = useState(0);
-  const [currentTrack, setCurrentTrack] = useState(fetchTracks[trackIndex]);
-  const [volume, setVolume] = useState(50); // Default volume level
-  const [muteVolume, setMuteVolume] = useState(false); // Muted state 
-
-  const [timeProgress, setTimeProgress] = useState(0);
+  const { audioRef, seekTrack, trackPosition, playing } = useAudioContext({ currentTrack });
+  const { token } = useSpotifyAuth();
+  const progressBarRef = useRef(null);
   const [duration, setDuration] = useState(0);
+  const [timeProgress, setTimeProgress] = useState(0);
 
-  const audioRef = useRef();
-  const progressBarRef = useRef();
-
-  const handleNext = () =>{
-    if (trackIndex >= fetchTracks.length - 1) {
-      setTrackIndex(0);
-      setCurrentTrack(fetchTracks[0]);
-    } else {
-      setTrackIndex((prev) => prev + 1);
-      setCurrentTrack(fetchTracks[trackIndex +1]);
+  useEffect(() => {
+    console.log("Current Track:", currentTrack);
+    console.log("Track Position:", trackPosition);
+    console.log("Playing:", playing);
+    
+    if (currentTrack) {
+      setDuration(currentTrack.duration_ms / 1000);
     }
+  }, [currentTrack, trackPosition, playing]);
+
+  useEffect(() => {
+    setTimeProgress(trackPosition / 1000);
+  }, [trackPosition]);
+
+  const handleProgressChange = (e) => {
+    const newTime = parseInt(e.target.value, 10);
+    setTimeProgress(newTime);
+    seekTrack(newTime * 1000);
   };
-  
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const getSmallestAlbumImage = (images) => {
+    if (!images || images.length === 0) return '';
+    return images.reduce((smallest, image) => image.height < smallest.height ? image : smallest, images[0]).url;
+  };
+
+  const albumImageUrl = currentTrack?.album?.images ? getSmallestAlbumImage(currentTrack.album.images) : '';
+
 
   return (
     <PlayerContainer>
-      <TrackCoverStyles>
-        <DetailSection 
-        {...{
-          currentTrack,
-          audioRef,
-          setDuration,
-          progressBarRef,
-          handleNext,
-        }}
-                />
-      </TrackCoverStyles>
-      <PlayerControls>
-        <TracksControl{...{
-          audioRef,
-          fetchTracks,
-          trackIndex,
-          setTrackIndex,
-          setCurrentTrack,
-          duration,
-          setTimeProgress,
-          progressBarRef,
-          handleNext,
-        }}
+    <div className="player">
+      <img src={currentTrack.album?.images[0]?.url} alt="Album Art" />
+      <div>
+        <h3>{currentTrack.name}</h3>
+        <p>{currentTrack.artists?.map(artist => artist.name).join(', ')}</p>
+      </div>
+      <AudioControls 
+        isPlaying={isPlaying}
+        onPlay={playTrack}
+        onPause={pauseTrack}
+        onNext={nextTrack}
+        onPrevious={previousTrack}
+      />
+    </div>           
+      <ProgressWrapper>
+        <div className="progress">
+          <span className="time current">{formatTime(timeProgress)}</span>
+          <input
+            type="range"
+            ref={progressBarRef}
+            value={timeProgress}
+            min="0"
+            max={duration}
+            onChange={handleProgressChange}
           />
-      </PlayerControls>
-      <PlayerProgressBar>
-        <ProgressBar
-           {...{ progressBarRef, audioRef, timeProgress, duration }}
-        />
-      </PlayerProgressBar>
-       <PlayerExtraButtons>
-       <VolumeControl  {...{ audioRef, volume, muteVolume}} /> 
-      </PlayerExtraButtons>
+          <span className="time">{formatTime(duration)}</span>
+        </div>
+      </ProgressWrapper>
+      <VolumeControl audioRef={spotifyPlayer} />
     </PlayerContainer>
   );
 };
 
-export default PlayerHoc(Player);
+Player.propTypes = {
+  currentTrack: PropTypes.object
+};
 
-/* <ExtraControls shuffleActive={shuffle} repeatActive={repeatContext} /> */
-// Player.propTypes = {
-//   currentTrack: PropTypes.object.isRequired,
-//   isPlaying: PropTypes.bool,
-//   nextTrack: PropTypes.func.isRequired,
-//   previousTrack: PropTypes.func.isRequired,
-//   pauseTrack: PropTypes.func.isRequired,
-//   playTrack: PropTypes.func.isRequired,
-//   seekTrack: PropTypes.func,
-//   shuffle: PropTypes.func.isRequired,
-//   repeatContext: PropTypes.func.isRequired,
-//   setVolume: PropTypes.func.isRequired
-// };
+const mapStateToProps = state => ({
+  currentTrack: state.player.currentTrack,
+  isPlaying: state.player.isPlaying,
+  trackPosition: state.player.trackPosition,
+  spotifyPlayer: state.player.spotifyPlayer,
+});
 
+const mapDispatchToProps = {
+  playTrack,
+  pauseTrack,
+  nextTrack,
+  previousTrack,
+  seekTrack,
+};
 
-
+export default connect(mapStateToProps, mapDispatchToProps)(Player);
