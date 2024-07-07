@@ -1,6 +1,6 @@
 // src/components/layoutComponents/SideMenu/menuItem.jsx
 import React from "react";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 import "./SideMenu.scss";
 
 const MenuItem = ({ title, active, onClick }) => (
@@ -9,10 +9,10 @@ const MenuItem = ({ title, active, onClick }) => (
 	</li>
 );
 
-MenuItem.propTypes = {
-	title: PropTypes.string.isRequired,
-	active: PropTypes.bool.isRequired,
-	onClick: PropTypes.func.isRequired
+MenuItem.PropTypes = {
+	title: propTypes.string.isRequired,
+	active: propTypes.bool.isRequired,
+	onClick: propTypes.func.isRequired
 };
 
 export default MenuItem;

@@ -1,6 +1,6 @@
 // src/components/SideMenu/trackCover/trackCover.jsx
 import React from 'react';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import PlayerHoc from '../../../../hoc/playerHoc';
 
 
@@ -26,12 +26,12 @@ const TrackCover = ({ currentTrack }) => {
   );
 };
 
-TrackCover.propTypes = {
-  currentTrack: PropTypes.shape({
-    album: PropTypes.shape({
-      images: PropTypes.arrayOf(
-        PropTypes.shape({
-          url: PropTypes.string
+TrackCover.PropTypes = {
+  currentTrack: propTypes.shape({
+    album: propTypes.shape({
+      images: propTypes.arrayOf(
+        propTypes.shape({
+          url: propTypes.string
         })
       )
     })

@@ -1,8 +1,12 @@
 // src/spotify/login.js
+
 const client_id = "1f42356ed83f46cc9ffd35c525fc8541";
 const redirect_uri = "http://localhost:3000";
+const LoginButton = React.forwardRef((props, loginRef) => {
 
+});
 export default {
+  LoginRef: createRef(),
   logInWithSpotify: () => {
     let scopes = [
       'streaming',

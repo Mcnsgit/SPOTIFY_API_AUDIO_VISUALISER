@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 
 const SpotifyContext = createContext();
 
@@ -21,8 +21,8 @@ export const SpotifyProvider = ({ children }) => {
 	return <SpotifyContext.Provider value={{ state, dispatch }}>{children}</SpotifyContext.Provider>;
 };
 
-SpotifyProvider.propTypes = {
-	children: PropTypes.node.isRequired,
+SpotifyProvider.PropTypes = {
+	children: propTypes.node.isRequired,
 };
 
 export const useSpotifyContext = () => useContext(SpotifyContext);

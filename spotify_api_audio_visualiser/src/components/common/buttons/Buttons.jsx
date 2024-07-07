@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react'
-import MagentaSunrise from "./images/button-magenta-surprise.png";
-import RedFlash from "../../../assets/images/button-red-flash.png";
-import DancingBlob from "../../../assets/images/button-dancing-blob.png";
+import MagentaSunrise from "../../../assets/button-magenta-surprise.png";
+import RedFlash from "../../../assets/button-red-flash.png";
+import DancingBlob from "../../../assets/button-dancing-blob.png";
 
 class Buttons extends Component {
 

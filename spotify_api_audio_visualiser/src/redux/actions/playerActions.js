@@ -1,10 +1,10 @@
 import device from '../../components/common/devices/device';
-import { axiosToken } from '../../utils/axios';
+import instance  from '../../utils/axios';
 
 export const nextTrack = () => async (dispatch, getState) => {
   const { deviceId } = getState().player;
   try {
-    await axiosToken.post(`https://api.spotify.com/v1/me/player/next?device_id=${deviceId}`);
+    await instance.post(`https://api.spotify.com/v1/me/player/next?device_id=${deviceId}`);
   } catch (error) {
     console.error('Error playing next track:', error);
   }
@@ -13,7 +13,7 @@ export const nextTrack = () => async (dispatch, getState) => {
 export const previousTrack = () => async (dispatch, getState) => {
   const { deviceId } = getState().player;
   try {
-    await axiosToken.post(`https://api.spotify.com/v1/me/player/previous?device_id=${deviceId}`);
+    await instance.post(`https://api.spotify.com/v1/me/player/previous?device_id=${deviceId}`);
   } catch (error) {
     console.error('Error playing previous track:', error);
   }
@@ -24,7 +24,7 @@ export const playTrack = () => async (dispatch, getState) => {
   if (tracks.length > 0) {
     const track = tracks[offset];
     try {
-      await axiosToken.put(`https://api.spotify.com/v1/me/player/play?device_id=${track.device_id}`, {
+      await instance.put(`https://api.spotify.com/v1/me/player/play?device_id=${track.device_id}`, {
         context_uri: track.context_uri,
         uris: [track.track.uri],
       });
@@ -37,7 +37,7 @@ export const playTrack = () => async (dispatch, getState) => {
 
 export const pauseTrack = () => async (dispatch) => {
   try {
-    await axiosToken.put('https://api.spotify.com/v1/me/player/pause');
+    await instance.put('https://api.spotify.com/v1/me/player/pause');
     dispatch(setIsPlaying(false));
   } catch (error) {
     console.error('Error pausing track:', error);
@@ -46,7 +46,7 @@ export const pauseTrack = () => async (dispatch) => {
 
 export const seekTrack = (ms) => async (dispatch) => {
   try {
-    await axiosToken.put(`/me/player/seek?position_ms=${ms}`);
+    await instance.put(`/me/player/seek?position_ms=${ms}`);
     dispatch({ type: "SEEK_SONG" });
   } catch (error) {
     console.error("Error seeking track:", error);
@@ -56,7 +56,7 @@ export const seekTrack = (ms) => async (dispatch) => {
 
 export const repeatContext = (status) => async (dispatch) => {
   try {
-    await axiosToken.put(`/me/player/repeat?state=${status}`);
+    await instance.put(`/me/player/repeat?state=${status}`);
     dispatch({ type: "REPEAT" });
   } catch (error) {
     console.error("Error setting repeat context:", error);
@@ -65,7 +65,7 @@ export const repeatContext = (status) => async (dispatch) => {
 
 export const shuffle = (status) => async (dispatch) => {
   try {
-    await axiosToken.put(`/me/player/shuffle?state=${status}`);
+    await instance.put(`/me/player/shuffle?state=${status}`);
     dispatch({ type: "SHUFFLE" });
   } catch (error) {
     console.error("Error setting shuffle status:", error);
@@ -74,7 +74,7 @@ export const shuffle = (status) => async (dispatch) => {
 
 export const setVolume = (volume) => async (dispatch) => {
   try {
-    await axiosToken.put(`/me/player/volume?volume_percent=${volume}`);
+    await instance.put(`/me/player/volume?volume_percent=${volume}`);
     dispatch({ type: "SET_VOLUME" });
   } catch (error) {
     console.error("Error setting volume:", error);
@@ -83,7 +83,7 @@ export const setVolume = (volume) => async (dispatch) => {
 
 export const currentTrack = (track) => async (dispatch) => {
   try {
-    await axiosToken.put(`/me/player/play`, { context_uri: track.uri });
+    await instance.put(`/me/player/play`, { context_uri: track.uri });
     dispatch({ type: "CURRENT_TRACK", track });
   } catch (error) {
     console.error("Error setting current track:", error);
@@ -119,7 +119,7 @@ export const setDeviceId = (deviceId) => ({
 export const playTracks = (tracks, offset) => async (dispatch, getState) => {
   const { deviceId } = getState().player;
   try {
-    await axiosToken.get(`/me/play/player`);
+    await instance.get(`/me/play/player`);
     dispatch({
       type: "PLAY_TRACKS",
       payload: {

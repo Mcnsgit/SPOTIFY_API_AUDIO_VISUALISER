@@ -1,6 +1,6 @@
 // src/components/reusable/UserProfile.jsx
 import React from "react";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 
 import "./UserProfile.css";
 
@@ -21,11 +21,11 @@ const UserProfile = ({ userProfile }) => {
 	);
 };
 
-UserProfile.propTypes = {
-	userProfile: PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		imageUrl: PropTypes.string,
-		profileUrl: PropTypes.string.isRequired,
+UserProfile.PropTypes = {
+	userProfile: propTypes.shape({
+		name: propTypes.string.isRequired,
+		imageUrl: propTypes.string,
+		profileUrl: propTypes.string.isRequired,
 	}),
 };
 

@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
-// import PropTypes from 'prop-types';
+// import propTypes from 'prop-types';
 import styled from "styled-components";
 // import '../trackSider.scss';
 // import {formatDuration} from '../../../helpers/format'
@@ -151,9 +151,9 @@ export default ProgressBar;
 //   );
 // };
 
-// ProgressBar.propTypes = {
-//   player: PropTypes.object.isRequired,
-//   onSeek: PropTypes.func.isRequired,
+// ProgressBar.PropTypes = {
+//   player: propTypes.object.isRequired,
+//   onSeek: propTypes.func.isRequired,
 // };
 
 // const ProgressContainer = styled.div`

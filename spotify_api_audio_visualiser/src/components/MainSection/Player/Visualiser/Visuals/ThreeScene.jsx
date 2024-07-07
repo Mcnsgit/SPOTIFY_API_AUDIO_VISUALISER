@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import * as THREE from "three";
-import { MTLLoader, OBJLoader } from "three-obj-mtl-loader";
-import OrbitControls from "three-orbitcontrols";
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 class ThreeScene extends Component {
   componentDidMount() {

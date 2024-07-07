@@ -75,7 +75,7 @@ export default tracksControl;
 // // } from 'react-icons/io';
 
 // import styled from 'styled-components';
-// import PropTypes from 'prop-types';
+// import propTypes from 'prop-types';
 
 // const ControlsContainer = styled.div`
 //   display: flex;

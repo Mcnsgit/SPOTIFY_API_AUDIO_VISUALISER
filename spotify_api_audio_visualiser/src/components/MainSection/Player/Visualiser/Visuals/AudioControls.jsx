@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import useAudioContext from './useAudioContext';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 
 import Button from '../../Controls/controlButon';
 import {

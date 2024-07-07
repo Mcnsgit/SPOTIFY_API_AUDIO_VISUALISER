@@ -4,14 +4,14 @@ import useAudioContext from './Visualiser/Visuals/useAudioContext';
 import './Visualiser/Visuals/AudioControls.scss';
 import Button from './Controls/controlButon';
 import styled from "styled-components";
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 
 import PlayerHoc from "../../../hoc/playerHoc";
 import './Player.scss';
 import { connect } from 'react-redux';
 import { playTrack, pauseTrack, nextTrack, previousTrack, seekTrack } from '../../../redux/actions/playerActions';
 import { getAudioApiFeatures } from '../../../api/spotify';
-import { useSpotifyAuth } from '../../../services/AuthService';
+import { useSpotifyAuth } from '../../../hooks/SpotifyAuthProvider';
 import './Details/detailsSection.scss'; 
 import withUiActions from '../../../hoc/uiHoc';
 import withStatus from '../../../hoc/statusHoc';
@@ -145,8 +145,8 @@ const Player = ({
   );
 };
 
-Player.propTypes = {
-  currentTrack: PropTypes.object
+Player.PropTypes = {
+  currentTrack: propTypes.object
 };
 
 const mapStateToProps = state => ({

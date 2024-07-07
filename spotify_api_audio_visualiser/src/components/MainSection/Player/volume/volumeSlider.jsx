@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from '../../../../utils/axios';
 import Devices from '../../../devices/devices';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import styled from 'styled-components';
 import '../Controls/TrackControls.css';
 
@@ -40,8 +40,8 @@ const VolumeIcon = ({ value }) => {
   return <i className={`volume-icon fa ${volumeClass}`} aria-hidden="true" />;
 };
 
-VolumeSlider.propTypes = {
-  player: PropTypes.object
+VolumeSlider.PropTypes = {
+  player: propTypes.object
 };
 
 const SliderContainer = styled.div`

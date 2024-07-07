@@ -1,5 +1,9 @@
-
-export const playlistReducer = (state = {}, action) => {
+const initialState = {
+  playlists: {
+    items: []
+  }
+}
+export const playlistReducer = (state = initialState, action) => {
 	switch (action.type) {
 	case "FETCH_PLAYLIST_MENU_PENDING":
 		return {

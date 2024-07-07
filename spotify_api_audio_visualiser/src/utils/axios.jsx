@@ -5,17 +5,13 @@ const path = "https://api.spotify.com/v1";
 
 const instance = axios.create({
   baseURL: path,
-  headers: {}
-});
-
-
-
-export const axiosToken = axios.create({
-  baseURL: path,
   headers: {
     Authorization: `Bearer ${getAccessToken()}`
   }
 });
+
+
+
 
 
 export default instance;

@@ -1,6 +1,6 @@
 // src/components/layoutComponents/SideMenu/SideMenuConnected.jsx
 import React from "react";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 
 const SideMenuConnected = ({ title, active, onClick }) => (
 	<li className={`side-menu-item ${active ? "active" : ""}`} onClick={onClick}>
@@ -8,10 +8,10 @@ const SideMenuConnected = ({ title, active, onClick }) => (
 	</li>
 );
 
-SideMenuConnected.propTypes = {
-	title: PropTypes.string.isRequired,
-	active: PropTypes.bool.isRequired,
-	onClick: PropTypes.func.isRequired,
+SideMenuConnected.PropTypes = {
+	title: propTypes.string.isRequired,
+	active: propTypes.bool.isRequired,
+	onClick: propTypes.func.isRequired,
 };
 
 export default SideMenuConnected;

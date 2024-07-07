@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { containsCurrentTrack, fetchTracks } from "../redux/actions/libraryActions.js";
 
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 import {
     nextTrack,
     previousTrack,
@@ -37,10 +37,10 @@ export default function withPlayerHoc(ComposedComponent) {
     }
   }
 
-  PlayerHoc.propTypes = {
-    currentTrack: PropTypes.object,
-    playTrack: PropTypes.func.isRequired,
-    playContext: PropTypes.func,
+  PlayerHoc.PropTypes = {
+    currentTrack: propTypes.object,
+    playTrack: propTypes.func.isRequired,
+    playContext: propTypes.func,
   };
 
   const mapStateToProps = (state) => {

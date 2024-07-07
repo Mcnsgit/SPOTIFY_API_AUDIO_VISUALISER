@@ -6,7 +6,7 @@ import { fetchPlaylistsMenu } from "../../../redux/actions/playlistActions.js";
 import withUiActions from "../../../hoc/uiHoc.jsx";
 import MenuItem from "./menuItem.jsx";
 import "./leftSection.scss";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 const menuItems = [
 	{ name: "Search", view: "search", id: "search" },
 	{ name: "Visualizer", view: "visualizer", id: "visualizer" },
@@ -18,9 +18,14 @@ const menuItems = [
 
 ];
 const selectPlaylists = createSelector(
-  [state => state.playlistReducer.playlists, playlists => playlists?.items || []],
-  playlists => playlists
+  [state => state.playlistReducer.playlists],
+  playlists => {
+    console.log('Playlists:', playlists);
+    return playlists && playlists.items ? playlists.items : [];
+  }
 );
+
+
 const LeftSection = () => {
   const [activeItem, setActiveItem] = useState("search");
   const playlists = useSelector(selectPlaylists);
@@ -73,10 +78,10 @@ const LeftSection = () => {
   );
 };
 
-LeftSection.propTypes = {
-  setView: PropTypes.func,
-  setModal: PropTypes.func,
-  fetchPlaylistsMenu: PropTypes.func,
+LeftSection.PropTypes = {
+  setView: propTypes.func,
+  setModal: propTypes.func,
+  fetchPlaylistsMenu: propTypes.func,
 };
 
 export default connect(

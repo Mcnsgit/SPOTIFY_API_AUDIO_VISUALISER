@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import "./Header.scss";
 import UserDetails from "./userDetails/userDetails";
 
@@ -12,9 +12,9 @@ const Header = ({ username, img }) => {
     );
 }
 
-Header.propTypes = {
-    username: PropTypes.string,
-    img: PropTypes.object,
+Header.PropTypes = {
+    username: propTypes.string,
+    img: propTypes.object,
 }
 
 export default Header;

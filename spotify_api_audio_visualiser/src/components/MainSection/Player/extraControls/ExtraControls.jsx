@@ -1,7 +1,7 @@
 import Button from '../Controls/controlButon';
 import React from "react";
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import PlayerHoc from '../../../../hoc/playerHoc.jsx';
 import Devices from '../../../common/devices/devices.jsx';
 const ExtraControlsContainer = styled.div`
@@ -37,11 +37,11 @@ const ExtraControlsContainer = styled.div`
 //   </ExtraControlsContainer>
 // );
 
-// ExtraControls.propTypes = {
-//   shuffleActive: PropTypes.bool,
-//   repeatActive: PropTypes.bool,
-//   shuffle: PropTypes.func,
-//   repeatContext: PropTypes.func,
+// ExtraControls.PropTypes = {
+//   shuffleActive: propTypes.bool,
+//   repeatActive: propTypes.bool,
+//   shuffle: propTypes.func,
+//   repeatContext: propTypes.func,
 // };
 
 // // export default PlayerControlsHoc(ExtraControls);
@@ -78,11 +78,11 @@ const ExtraControls = ({ shuffleActive, repeatActive, shuffle, repeatContext }) 
   </ExtraControlsContainer>
 );
 
-ExtraControls.propTypes = {
-  shuffleActive: PropTypes.bool,
-  repeatActive: PropTypes.bool,
-  shuffle: PropTypes.func,
-  repeatContext: PropTypes.func,
+ExtraControls.PropTypes = {
+  shuffleActive: propTypes.bool,
+  repeatActive: propTypes.bool,
+  shuffle: propTypes.func,
+  repeatContext: propTypes.func,
 };
 
 export default PlayerHoc(ExtraControls);

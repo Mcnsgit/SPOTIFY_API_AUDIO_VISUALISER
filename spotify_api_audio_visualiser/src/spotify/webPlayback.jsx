@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useSpotifyAuth } from '../services/AuthService';
+import { SpotifyAuthProvider } from '../hooks/SpotifyAuthProvider';
 
 const WebPlayback = () => {
-  const { token } = useSpotifyAuth();
+  const { token } = SpotifyAuthProvider();
   const [player, setPlayer] = useState(undefined);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default WebPlayback;
 // import React, { Component } from 'react';
 // import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
-// import PropTypes from 'prop-types';
+// import propTypes from 'prop-types';
 // import { setCurrentTrack, setIsPlaying, setTrackPosition, setSpotifyPlayer } from '../redux/actions/playerActions';
 // import {setActiveDevice,setDeviceId } from '../redux/actions/sessionActions';
 // class WebPlayback extends Component {

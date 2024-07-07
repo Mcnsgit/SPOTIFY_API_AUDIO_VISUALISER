@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import { setView, setModal } from '../redux/actions/uiActions';
 import { fetchPlaylistsMenu, fetchPlaylist } from '../redux/actions/playlistActions';
 import { fetchArtist } from '../redux/actions/artistActions';
@@ -76,15 +76,15 @@ export default function(ComposedComponent) {
     );
   }
 UiHoc.PropTypes = {
-  fetchPlaylistsMenu: PropTypes.func,
-  fetchArtist: PropTypes.func,
-  fetchAlbum: PropTypes.func,
-  setView: PropTypes.func,
-  setModal: PropTypes.func,
-  fetchMoreTracks: PropTypes.func,
-  fetchTracks: PropTypes.func,
-  fetchSearchData: PropTypes.func,
-  setQuery: PropTypes.func,
+  fetchPlaylistsMenu: propTypes.func,
+  fetchArtist: propTypes.func,
+  fetchAlbum: propTypes.func,
+  setView: propTypes.func,
+  setModal: propTypes.func,
+  fetchMoreTracks: propTypes.func,
+  fetchTracks: propTypes.func,
+  fetchSearchData: propTypes.func,
+  setQuery: propTypes.func,
 }
 
 

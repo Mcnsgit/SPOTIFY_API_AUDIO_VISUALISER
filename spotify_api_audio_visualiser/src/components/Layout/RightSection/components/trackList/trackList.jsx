@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 
 import axios from '../../../../../utils/axios';
 
@@ -58,14 +58,14 @@ class TracksList extends Component {
   );
 }
 TracksList.PropTypes = {
-  fetchTracks: PropTypes.func,
-  fetchRecentTracks: PropTypes. func,
-  fetchMoreTracks: PropTypes. func,
-  tracks: PropTypes.array,
-  recently: PropTypes.bool,
-  pauseTrack: PropTypes. func,
-  playing: PropTypes.bool,
-  currentTrack: PropTypes.string,
+  fetchTracks: propTypes.func,
+  fetchRecentTracks: propTypes. func,
+  fetchMoreTracks: propTypes. func,
+  tracks: propTypes.array,
+  recently: propTypes.bool,
+  pauseTrack: propTypes. func,
+  playing: propTypes.bool,
+  currentTrack: propTypes.string,
   
 };
 

@@ -3,7 +3,7 @@
 // import { Canvas, useFrame } from '@react-three/fiber';
 // import useStore from './audioLink';
 // import { useSelector } from 'react-redux';
-// import PropTypes from 'prop-types';
+// import propTypes from 'prop-types';
 // import './styles.css';
 
 // export default function Visualizer({ trackId, accessToken }) {
@@ -52,9 +52,9 @@
 // 	);
 // }
 
-// Visualizer.propTypes = {
-// 	trackId: PropTypes.string.isRequired,
-// 	accessToken: PropTypes.string.isRequired,
+// Visualizer.PropTypes = {
+// 	trackId: propTypes.string.isRequired,
+// 	accessToken: propTypes.string.isRequired,
 // };
 
 // function Track({ y = 2500, space = 1.8, width = 0.01, height = 0.05, ...props }) {

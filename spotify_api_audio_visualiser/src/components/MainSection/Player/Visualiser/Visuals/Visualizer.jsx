@@ -3,7 +3,7 @@
 // import {Canvas, useFrame, useThree} from "@react-three/fiber";
 // import * as THREE from "three";
 // import ThreeJS from '../services/ThreeJS';
-// import PropTypes from 'prop-types';
+// import propTypes from 'prop-types';
 // import AudioAnalyzer from '../services/AudioAnalyzer';
 // let width = 310;
 // let height = 267;
