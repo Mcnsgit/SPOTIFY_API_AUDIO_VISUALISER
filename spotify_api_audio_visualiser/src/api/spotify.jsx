@@ -31,7 +31,25 @@ const get = async (endpoint, params = {}) => {
 		throw error;
 	}
 };
-
+/**
+ * Make a PUT request to the Spotify API.
+ * @param {string} endpoint - The API endpoint to call.
+ * @param {object} data - The data to send in the request body.
+ */
+const put = async (endpoint, data = {}) => {
+	const token = getAccessToken();
+	try {
+		const response = await axios.put(`${SPOTIFY_BASE_URL}${endpoint}`, data, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return response.data;
+	} catch (error) {
+		console.error("Spotify API PUT request failed:", error);
+		throw error;
+	}
+};
 /**
  * Fetch user's playlists.
  */
@@ -75,3 +93,22 @@ export const getMultipleAudioApiFeatures = (trackIds) => get("/audio-features", 
  * Fetch user's profile information.
  */
 export const fetchUserProfile = () => get("/me");
+
+/**
+ * Play a track.
+ * @param {string} deviceId - The Spotify Connect device ID.
+ * @param {Array} uris - The Spotify URIs to play.
+ */
+export const playTrack = (deviceId, uris) => put(`/me/player/play?device_id=${deviceId}`, { uris });
+
+/**
+ * Pause playback.
+ * @param {string} deviceId - The Spotify Connect device ID.
+ */
+export const pausePlayback = (deviceId) => put(`/me/player/pause?device_id=${deviceId}`);
+
+/**
+ * Skip to the next track.
+ * @param {string} deviceId - The Spotify Connect device ID.
+ */
+export const skipToNext = (deviceId) => put(`/me/player/next?device_id=${deviceId}`);

@@ -57,7 +57,7 @@ class TracksList extends Component {
     </Spinner>
   );
 }
-TracksList.PropTypes = {
+TracksList.propTypes = {
   fetchTracks: propTypes.func,
   fetchRecentTracks: propTypes. func,
   fetchMoreTracks: propTypes. func,

@@ -52,7 +52,7 @@
 // 	);
 // }
 
-// Visualizer.PropTypes = {
+// Visualizer.propTypes = {
 // 	trackId: propTypes.string.isRequired,
 // 	accessToken: propTypes.string.isRequired,
 // };

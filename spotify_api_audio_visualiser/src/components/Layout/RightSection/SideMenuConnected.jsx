@@ -8,7 +8,7 @@ const SideMenuConnected = ({ title, active, onClick }) => (
 	</li>
 );
 
-SideMenuConnected.PropTypes = {
+SideMenuConnected.propTypes = {
 	title: propTypes.string.isRequired,
 	active: propTypes.bool.isRequired,
 	onClick: propTypes.func.isRequired,

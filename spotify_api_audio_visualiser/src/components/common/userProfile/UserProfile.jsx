@@ -21,7 +21,7 @@ const UserProfile = ({ userProfile }) => {
 	);
 };
 
-UserProfile.PropTypes = {
+UserProfile.propTypes = {
 	userProfile: propTypes.shape({
 		name: propTypes.string.isRequired,
 		imageUrl: propTypes.string,

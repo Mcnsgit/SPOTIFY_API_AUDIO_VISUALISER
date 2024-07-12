@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Button from './followButton';
-import withUserActions from '../../../hoc/userHoc';
+import withUserActions from '../../../../hoc/userHoc';
 
 const followPlaylistBtn = ({ following, followPlaylist, unfollowPlaylist }) => {
   const onClick = following ? unfollowPlaylist : followPlaylist;

@@ -2,10 +2,10 @@ import React from 'react';
 import moment from 'moment';
 
 import './playlistHeader.css';
-import defaultCover from '../../../../../MainSection/images/playlist.png';
+import defaultCover from '../../../../../../assets/images/playlist.png';
 
-import FollowBtn from '../../../../../../buttons/followButton/followPlaylist';
-import withUiActions from '../../../../../../../hoc/uiHoc';
+import FollowBtn from '../../../../../../components/common/buttons/followButton/followPlaylist';
+import withUiActions from '../../../../../../hoc/uiHoc';
 
 const playlistHeader = ({
   playlist,

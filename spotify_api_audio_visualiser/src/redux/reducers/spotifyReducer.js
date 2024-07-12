@@ -21,7 +21,7 @@ export const SpotifyProvider = ({ children }) => {
 	return <SpotifyContext.Provider value={{ state, dispatch }}>{children}</SpotifyContext.Provider>;
 };
 
-SpotifyProvider.PropTypes = {
+SpotifyProvider.propTypes = {
 	children: propTypes.node.isRequired,
 };
 

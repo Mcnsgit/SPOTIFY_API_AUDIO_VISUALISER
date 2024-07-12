@@ -5,13 +5,13 @@ import { bindActionCreators } from "redux";
 import {
   fetchMoreTracks,
   movePlaylistTrack
-} from "../../../../../redux/actions/playlistActions";
+} from "../../../../redux/actions/playlistActions";
 
 import Header from "./components/header/playlistHeader";
-import Table from "../../../../tracksTable/playlistTable/playlistTable";
+import Table from "../../../../components/tracksTable/playlistTable/playlistTable";
 
-import withStatus from "../../../../../hoc/statusHoc";
-import Spinner from "../../../../spinner/spinner";
+import withStatus from "../../../../hoc/statusHoc";
+import Spinner from "../../../../components/common/spinner/spinner";
 
 class Playlist extends Component {
   render = () => {

@@ -9,7 +9,7 @@ const MenuItem = ({ title, active, onClick }) => (
 	</li>
 );
 
-MenuItem.PropTypes = {
+MenuItem.propTypes = {
 	title: propTypes.string.isRequired,
 	active: propTypes.bool.isRequired,
 	onClick: propTypes.func.isRequired

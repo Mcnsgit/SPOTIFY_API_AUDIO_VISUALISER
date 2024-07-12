@@ -11,7 +11,7 @@ const menuItems = [
 	{ name: "Search", view: "search", id: "search" },
 	{ name: "Visualizer", view: "visualizer", id: "visualizer" },
 	{ name: "Browse", view: "browse", id: "browse" },
-	{ name: "Songs", view: "trackList", id: "songs" },
+	{ name: "tracks", view: "tracks", id: "tracks" },
 	{ name: "Albums", view: "albums", id: "albums" },
 	{ name: "artists", view: "artists", id: "artists" },
 	{ name: "New Playlist", view: "newPlaylist", id: "newPlaylist" }
@@ -40,7 +40,7 @@ const LeftSection = () => {
     setActiveItem(item.id);
     if (item.view === "newPlaylist") {
       handleItemClick(item);
-      // setModal(true); // Uncomment this if setModal is defined
+      setModal(true); // Uncomment this if setModal is defined
     } else {
       setView(item.view || "search"); // Uncomment this if setView is defined
       if (playlist) {
@@ -78,7 +78,7 @@ const LeftSection = () => {
   );
 };
 
-LeftSection.PropTypes = {
+LeftSection.propTypes = {
   setView: propTypes.func,
   setModal: propTypes.func,
   fetchPlaylistsMenu: propTypes.func,
