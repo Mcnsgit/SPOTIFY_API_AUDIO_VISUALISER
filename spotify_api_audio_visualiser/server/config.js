@@ -1,6 +1,6 @@
 export default {
   client_id: '1f42356ed83f46cc9ffd35c525fc8541',
-  client_secret: '487ec052888b4917b00665fc65b8df9f',
+  client_secret: 'SPOTIFY_CLIENT_SECRET',
   redirect_uri: 'http://localhost:3001/callback',
   scope: 'user-read-playback-state',
   state_key: 'SPOTIFY_AUTH_ID',
