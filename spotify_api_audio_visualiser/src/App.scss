@@ -1,7 +1,10 @@
 @import 'utilities/variables';
 body {
-  /* overflow-y: hidden; */
   font-family: "Helvetica";
+  margin: 0;
+  padding: 0;
+  background-color: #282c34;
+  color: white;
 }
 
 #blur {
@@ -9,22 +12,20 @@ body {
 }
 
 .musicPlayerContainer {
-  position:sticky ;
+  position: sticky;
   top: 50%;
-  /* width: 100%; */
-  left: 0;
+  left: 300px;
   background-color: #16181bf8;
-  border-radius: 0px 15px 15px 0px;
+  border-radius: 0 15px 15px 0;
 }
 
 #musicPlayerContainer img {
   float: left;
   padding: 15px 20px;
-
 }
 
 #musicInfo {
-  padding: 10px 20px 10px 0px;
+  padding: 10px 20px 10px 0;
   font-family: "Helvetica";
   font-weight: 500;
   font-size: 20px;
@@ -37,13 +38,15 @@ body {
   font-weight: 400;
   margin-top: 5px;
 }
+
 #musicInfo #currentTitle {
-  margin: 0px;
+  margin: 0;
   font-family: "Futura";
 }
+
 #buttonContainer {
   position: absolute;
-  bottom: 10;
+  bottom: 10px;
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -125%);
@@ -51,6 +54,36 @@ body {
   flex-direction: row;
   background-color: #16181bf8;
   border-radius: 10px;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  float: left;
+  margin: 10px;
+  top: 90px ;
+}
+
+.main-app-container {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 70px); /* Adjusting for header height */
+  padding: 20px;
+  background-color: #282c34;
+  color: white;
+  margin-top: 70px; /* Space for fixed header */
+}
+
+
+  .header-section {
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    height: 90px;
+    width: 100vw;
+    background-color: #383849;
+    flex-shrink: 0;
 }
 
 #buttonContainer a {
@@ -61,8 +94,8 @@ body {
   cursor: pointer;
 }
 
-#buttonContainer a p{
-  height:35px;
+#buttonContainer a p {
+  height: 35px;
   margin: 14px;
   font-family: "Futura";
 }
@@ -72,17 +105,16 @@ body {
   border-radius: 40px;
   margin-bottom: 12px;
 }
+
 #logInPrompt {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  filter: blur(0) !important;
   background-color: #16181bf8;
   color: white;
   text-align: center;
   border-radius: 15px;
-  /* clip-path: polygon(0 0, 100% 0, 100% 27%, 0 28%); */
 }
 
 #logInPrompt h1 {
@@ -95,62 +127,73 @@ body {
   padding: 12px;
   margin-bottom: 20px;
   font-size: 16px;
-
 }
-#logInPrompt button a{
+
+#logInPrompt button a {
   text-decoration: none;
   color: black;
   font-weight: 100;
-
 }
-
 
 #greenSquare {
   width: 100%;
-  background: #4ac776	;
+  background: #4ac776;
   height: 40px;
-  text-align:center;
-  border-radius: 15px 15px 0px 0px;
+  text-align: center;
+  border-radius: 15px 15px 0 0;
 }
 
 #greenSquare #spotify-logo {
   width: 90px;
-  margin-top: -60px
+  margin-top: -60px;
 }
 
+.main-app-container {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 70px); /* Adjusting for header height */
+  padding: 20px;
+  background-color: #282c34;
+  color: white;
+  margin-top: 70px; /* Space for fixed header */
+}
 
+.header-section {
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  height: 90px;
+  width: 100vw;
+  background-color: #383849;
+  flex-shrink: 0;
+}
 
-// .App {
-//   top:0;
-//   display: flex;
-//   flex-direction: column;
-//   height: 100vh;
-//   width: 100vw;
-// }
-// .app-container{
-//   display: flex;
-//   flex-direction: column;
-//   height: 100vh;
-//   width: 100vw;
-//   background-color: $background-color;
-// }
-// .dashboard-container {
-//   display: flex;
-//   flex-direction: column;
-//   height: 100vh;
-//   width: 100vw;
+.left-container {
+  top: 70px; /* Adjusting for fixed header */
+  display: flex;
+  flex-direction: column;
+  background-color: #383849;
+  width: 300px;
+  height: calc(100vh - 70px); /* Adjusting for header height */
+  position: fixed;
+  left: 0;
+  padding: 10px 0;
+  z-index: 1;
+}
 
+.left-section {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 3;
+  overflow-y: auto;
+  padding: 10px 0;
+}
 
-  
-// }
-
-// .header-container {
-//   display: flex;
-//   flex-grow: 1;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   width: 100vw;
-//   height: 100vh;
-//   background-color: $background-color;
-// }
+.main-section {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 3;
+  overflow-y: auto;
+  margin-left: 320px; /* Space for left container */
+}

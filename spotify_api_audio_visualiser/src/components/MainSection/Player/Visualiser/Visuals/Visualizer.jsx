@@ -84,7 +84,7 @@
 // 	return <div id="canvasWrapper" />;
 // };
 
-// Visualizer.PropTypes = {
+// Visualizer.propTypes = {
 // 	source
 // }
 // export default Visualizer;

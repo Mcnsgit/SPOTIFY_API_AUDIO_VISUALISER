@@ -40,7 +40,7 @@ class ErrorBoundary extends React.Component {
 	}
 }
 
-ErrorBoundary.PropTypes = {
+ErrorBoundary.propTypes = {
 	children: propTypes.node.isRequired,
 };
 

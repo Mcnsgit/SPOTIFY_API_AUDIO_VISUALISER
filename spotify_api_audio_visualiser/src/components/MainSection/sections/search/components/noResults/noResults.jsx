@@ -2,7 +2,7 @@ import React from 'react';
 
 import Message from '../message/message';
 
-const noResults = ({ query }) => (
+const NoResults = ({ query }) => (
   <Message
     icon="fa-flag-o"
     title={`No results found for "${query}"`}
@@ -11,4 +11,4 @@ const noResults = ({ query }) => (
   />
 );
 
-export default noResults;
+export default NoResults;

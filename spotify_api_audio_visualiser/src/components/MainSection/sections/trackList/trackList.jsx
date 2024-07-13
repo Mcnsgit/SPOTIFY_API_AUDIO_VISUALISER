@@ -1,92 +1,68 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import propTypes from 'prop-types';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from '../../../../utils/axios';
-import {
-  fetchTracks,
-  fetchRecentTracks,
-  fetchMoreTracks
-} from '../../../../redux/actions/libraryActions';
-import { setStatus } from '../../../../redux/actions/playerActions';
+
+import { fetchTracks, fetchRecentTracks, fetchMoreTracks} from '../../../../redux/actions/libraryActions';
+
 import Playlist from '../../../tracksTable/playlistTable/playlistTable';
-import Header from '../../../Layout/Header/tracksHeader';
+import Header from '../../../Layout/RightSection/components/tracksHeader/tracksHeader';
 import Spinner from '../../../common/spinner/spinner';
 
 import withStatus from '../../../../hoc/statusHoc';
 
-class TracksList extends Component {
-  componentDidMount() {
-    this.fetchTracks();
-  }
+const TracksList = ({ recently, pauseTrack, playing, currentTrack }) => {
+  const dispatch = useDispatch();
+  const tracks= useSelector((state) => state.libraryReducer.tracks?.items || []);
+  const fetching = useSelector((state) => state.libraryReducer.fetchTracksPending);
+  const next = useSelector((state) => state.libraryReducer.tracks?.next || false);
+  const accessToken = useSelector((state) => state.tokenReducer.token);
 
-  fetchTracks() {
-    if (this.props.recently) {
-      this.props.fetchRecentTracks();
+  useEffect(() => {
+    fetchTracksList();
+  }, [recently]);
+
+  const fetchTracksList = () => {
+    if (recently) {
+      dispatch(fetchRecentTracks());
     } else {
-      this.props.fetchTracks();
+      dispatch(fetchTracks());
     }
-  }
-
-  playTracks = (context, offset) => {
-    const tracks = this.props.tracks.slice(offset).map(s => s.track.uri);
-    axios.put('/me/player/play', { uris: tracks });
   };
 
-  render = () => (
-    <Spinner section loading={this.props.fetching}>
+  const playTracks = async (context, offset) => {
+    const tracks = tracks.slice(offset).map((s) => s.track.uri);
+    try {
+      await axios.put('/me/player/play', { uris: tracks }, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    } catch (error) {
+      console.error("Error playing tracks:", error);
+    }
+  };
+
+  return (
+    <Spinner section loading={fetching}>
       <div className="player-container">
         <Header
-          title={this.props.recently ? 'Recently Played' : 'Tracks'}
-          playTrack={() => this.playTracks(this.props.tracks, 0)}
-          pauseTrack={this.props.pauseTrack}
-          playing={this.props.playing}
+          title={recently ? 'Recently Played' : 'Tracks'}
+          playTrack={() => playTracks(tracks, 0)}
+          pauseTrack={pauseTrack}
+          playing={playing}
         />
         <Playlist
-          tracks={this.props.tracks}
-          playTrack={this.playTracks}
-          pauseTrack={this.props.pauseTrack}
-          current={this.props.currentTrack}
-          playing={this.props.playing}
-          more={this.props.next ? true : false}
-          fetchMoreTracks={this.props.fetchMoreTracks}
+          tracks={tracks}
+          playTrack={playTracks}
+          pauseTrack={pauseTrack}
+          current={currentTrack}
+          playing={playing}
+          more={!!next}
+          fetchMoreTracks={() => dispatch(fetchMoreTracks())}
         />
       </div>
     </Spinner>
   );
-}
-TracksList.PropTypes = {
-  fetchMoreTracks: propTypes.func,
-  fetchRecentTracks: propTypes.func,
-  fetchTracks: propTypes.func,
-  tracks: propTypes.array,
-  recently: propTypes.bool,
-  pauseTrack: propTypes.func,
-  playing: propTypes.bool,
-  currentTrack: propTypes.string,
-};
-const mapStateToProps = state => {
-  return {
-    token: state.tokenReducer.token ? state.tokenReducer.token.access_token : '',
-    tracks: state.libraryReducer.tracks ? state.libraryReducer.tracks.items : [],
-    fetchTracksError: state.libraryReducer.fetchTracksError,
-    user: state.userReducer.user.id,
-    fetching: state.libraryReducer.fetchTracksPending,
-    next: state.libraryReducer.tracks ? state.libraryReducer.tracks.next : false
-  };
 };
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      fetchTracks,
-      fetchRecentTracks,
-      fetchMoreTracks
-    },
-    dispatch
-  );
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStatus(TracksList));
+export default withStatus(TracksList);

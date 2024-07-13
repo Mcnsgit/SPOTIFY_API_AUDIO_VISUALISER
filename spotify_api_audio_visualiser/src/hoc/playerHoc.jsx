@@ -37,26 +37,15 @@ export default function withPlayerHoc(ComposedComponent) {
     }
   }
 
-  PlayerHoc.PropTypes = {
+  PlayerHoc.propTypes = {
     currentTrack: propTypes.object,
     playTrack: propTypes.func.isRequired,
-    playContext: propTypes.func,
   };
 
   const mapStateToProps = (state) => {
     const playerStatus = state.playerReducer.status || {};
-    const libraryTracks = state.libraryReducer.tracks.items || [];
-
-
-      return {
-        currentTrack: playerStatus.track_window?.current_track || null,
-        contains: !!state.libraryReducer.containsCurrent,
-        trackPosition: playerStatus.position || 0,
-        playing: !playerStatus.paused,
-        shuffleActive: playerStatus.shuffle,
-        repeatActive: playerStatus.repeat_mode !== 0,
-        tracks: libraryTracks,
-        playContext: state.playerReducer.playContext
+    return {
+      currentTrack: playerStatus.track_window?.current_track || null,
     };
   };
 
@@ -70,7 +59,6 @@ export default function withPlayerHoc(ComposedComponent) {
       shuffle,
       repeatContext,
       containsCurrentTrack,
-      fetchTracks
     },
     dispatch
   );

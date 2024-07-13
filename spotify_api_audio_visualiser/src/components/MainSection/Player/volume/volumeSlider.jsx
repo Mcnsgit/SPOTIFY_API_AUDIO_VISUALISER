@@ -40,7 +40,7 @@ const VolumeIcon = ({ value }) => {
   return <i className={`volume-icon fa ${volumeClass}`} aria-hidden="true" />;
 };
 
-VolumeSlider.PropTypes = {
+VolumeSlider.propTypes = {
   player: propTypes.object
 };
 

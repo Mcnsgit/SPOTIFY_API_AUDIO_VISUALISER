@@ -1,16 +1,14 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import withUiActions from '../../hoc/uiHoc';
 import { fetchSearchData } from '../../redux/actions/searchActions';
 
-const container = {
+const containerStyle = {
   position: 'relative',
   top: '15px'
 };
 
-const input = {
+const inputStyle = {
   background: '#fff',
   width: 120,
   borderRadius: 10,
@@ -20,33 +18,26 @@ const input = {
   outline: 'none',
   marginTop: -2
 };
+const Search = ({ onSearch }) => {
+  const dispatch = useDispatch();
 
-class search extends Component {
-  render = () => (
-    <div className="track-search-container" style={container}>
+  const handleInputChange = (event) => {
+    dispatch(fetchSearchData(event.target.value));
+  };
+
+  return (
+    <div className="track-search-container" style={containerStyle}>
       <form>
         <input
           type="text"
           placeholder="Search..."
-          style={input}
-          onChange={event => this.props.fetchSearchData(event.target.value)}
-          onClick={this.props.onSearch}
+          style={inputStyle}
+          onChange={handleInputChange}
+          onClick={onSearch}
         />
       </form>
     </div>
   );
-}
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      fetchSearchData
-    },
-    dispatch
-  );
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(withUiActions(search));
+export default withUiActions(Search);

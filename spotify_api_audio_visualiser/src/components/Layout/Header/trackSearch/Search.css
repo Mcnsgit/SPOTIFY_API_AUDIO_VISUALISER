@@ -11,6 +11,14 @@
     outline: none;
     border-color: #1DB954;
   }
+
+  .input  {
+    background: '#fff';
+    width: 120;
+    border: 'none';
+    padding: '4px 4px 4px 10px';
+    outline: 'none';
+  };
   
 
 .container {
@@ -23,7 +31,7 @@
     width: 120;
     border-radius: 10;
     border: 'none';
-    font: "'Proxima Nova', Georgia, sans-serif";
+    font: "'Proxima Nova'; Georgia; sans-serif";
     padding: '4px 4px 4px 10px';
     outline: 'none';
     margin: -2

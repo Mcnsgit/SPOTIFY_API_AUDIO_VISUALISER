@@ -1,23 +1,4 @@
-.main-app-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  padding: 20px;
-  background-color: #282c34;
-  color: white;
-}
 
-.header-section {
-  top:0px;
-  display: flex;
-  flex-direction: column;
-  padding: 10px, 10px, 10px, 10px;
-  height: 90px;
-  width: 100vw;
-  background-color: #383849;
-  display: flex;
-  flex-shrink: 0;
-}
 .left-container {
   top:80px;
   bottom: 80px;

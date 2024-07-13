@@ -1,88 +1,104 @@
 import React, { useState, Component } from "react";
-import { connect } from "react-redux";
+import { connect,useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchSearchData } from "../../../../redux/actions/searchActions";
 import "./Search.css";
 import withUiActions from "../../../../hoc/uiHoc.jsx";
-import instance, { axiosToken } from "../../../../utils/axios";
+import instance from "../../../../utils/axios";
 
-import TrackSearchResults from "./trackSearchResults.jsx/index.js";
+import TrackSearchResults from "./trackSearchResults.jsx";
 // const TrackSearch = ({ fetchSearchData, onSearch }) => (
-class TrackSearch extends Component {
-	state = {
-		items: [],
-		searchKey:"",
-		fetching: true
-	};
-	playTracks = (context, offset) => {
-		const tracks = this.state.items.slice(offset).map(s => s.uri);
-		axiosToken.put('/me/player/play', { uris: tracks });
-	};
+	const TrackSearch = () => {
+		const [searchKey, setSearchKey] = useState("");
+		const [fetching, setFetching] = useState(false);
+		const [items, setItems] = useState([]);
+		const [next, setNext] = useState(null);
+		const dispatch = useDispatch();
+		
+		const { tracks, artists, albums, playlists } = useSelector(state => state.searchReducer);
 
-	componentDidMount() {
-		instance.get(`/search?q=${this.state.searchKey}&type=track`).then(response => {
-			this.setState({
-				fetching: false,
-				items: response.data.tracks.items,
-				next: response.data.tracks.next
-			});
-		});
-	} 
-	fetchMore = () => {
-		if (this.state.next) {
-			axiosToken.get(this.state.next).then(response => {
-				this.setState(prevState => {
-					return {
-						items: [...prevState.items, ...response.data.tracks.items],
-						next: response.data.tracks.next
-					};
+		// const playing = useSelector((state) => state.player.playing);
+		// const currentTrack = useSelector((state) => state.player.currentTrack);
+
+		const accessToken = useSelector((state) => state.tokenReducer.token);
+	
+	
+		const searchTracks = async (event) => {
+			event.preventDefault();
+			setFetching(true);
+			try {
+				const response = await instance.get(`/search?q=${searchKey}&type=track,album,playlist`, {
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
 				});
-			});
-		}
-	};
-	render = () => {
-		return (
-			<div className="generic-container">
-				<Spinner section loading={this.state.fetching}>
-					<div className="track-search-container">
-						<form onSubmit={this.searchTracks}>
-							<input
-								name='search'
-								type="text"
-								placeholder="Search..."
-								style={{ width: "100%", padding: "10px", margin: "10px 10px 10px 10px" }}
-								onChange={e => this.setState({ searchKey: e.target.value })}>
-				</input>
-				<button type={"submit"}>Search</button>
-		</form>
-	<div className="track-search-results">
-			<TrackSearchResults
-			removeDate={true}
-				items={this.state.items}
-				playTrack={this.playTracks}
-				pauseTrack={this.props.pauseTrack}
-				playing={this.props.playing}
-				current={this.props.currentTrack}
-				tracks={this.props.tracks}/>
-</div>
-			</div>
-		</Spinner>
-	</div>
-		);
-	};
-}
+				setItems(response.data.tracks.items);
+				setNext(response.data.tracks.next);
+				setFetching(false);
+			} catch (error) {
+				if (error.response && error.response.status === 401) {
+					try {
+						const refreshToken = await AuthService.refreshToken();
+						if (refreshToken) {
+							dispatch(setToken(refreshToken));
+							searchTracks(event); // Retry search with new token
+						}
+					} catch (refreshError) {
+						console.error("Error refreshing token:", refreshError);
+					}
+				} else {
+					console.error("Error fetching search data:", error);
+				}
+				setFetching(false);
+			}
+		};
 
-const mapDispatchToProps = dispatch => {
-	return bindActionCreators(
-		{
-			fetchSearchData
-		},
-		dispatch
-	);
+	const fetchMore = async () =>{
+		if(next) {
+			try{
+				const response = await instance.get(next, {
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+		});
+		setItems((prevItems) => [...prevItems, ...response.data.tracks.items]);
+		setNext(response.data.tracks.next);
+	} catch (error) {
+		console.error("Error fetching more data:", error);
+	}
+}
 };
 
-
-export default connect(
-	null,
-	mapDispatchToProps
-)(withUiActions(TrackSearch));
+return (
+<div className="generic-container">
+	{fetching ? (
+		<div>Loading...</div>
+	) : (
+		<div className="track-search-container">
+			<form onSubmit={searchTracks}>
+				<input
+					name="search"
+					type="text"
+					placeholder="Search..."
+					style={{ width: "100%", padding: "10px", margin: "10px 10px 10px 10px" }}
+					value={searchKey}
+					onChange={(e) => setSearchKey(e.target.value)}
+				/>
+				<button type="submit">Search</button>
+			</form>
+			<div className="track-search-results">
+							<TrackSearchResults
+								query={searchKey}
+								tracks={items}
+								album={albums}
+								artist={artists}
+							/>
+							{next && <button onClick={fetchMore}>Load More</button>}
+						</div>
+					</div>
+				)}
+			</div>
+		);
+	};
+	
+	export default withUiActions(TrackSearch);

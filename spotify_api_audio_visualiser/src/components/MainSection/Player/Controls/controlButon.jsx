@@ -1,9 +1,9 @@
 import React from "react";
 
-const button = props => (
+const Button = props => (
 	<div className={"control-btn " + props.className} onClick={props.onClick}>
 		<i className={"fa " + props.icon} />
 	</div>
 );
 
-export default button;
+export default Button;

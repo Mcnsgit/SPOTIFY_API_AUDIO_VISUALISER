@@ -75,7 +75,7 @@ export default function(ComposedComponent) {
       />
     );
   }
-UiHoc.PropTypes = {
+UiHoc.propTypes = {
   fetchPlaylistsMenu: propTypes.func,
   fetchArtist: propTypes.func,
   fetchAlbum: propTypes.func,

@@ -1,105 +1,99 @@
 import React from "react";
 import moment from "moment";
-
 import withUiActions from "../../../hoc/uiHoc";
-import artist from "../../tracksTable/items/artist";
+import { formatDuration } from "../../../helpers/format";
+import { useDispatch, useSelector } from "react-redux";
+import instance from "../../../utils/axios";
 
-const msToMinutesAndSeconds = ms => {
-  const minutes = Math.floor(ms / 60000);
-  const seconds = ((ms % 60000) / 1000).toFixed(0);
-  return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-};
 
-const track =  (props) => {
-  const active = props.id === props.current && props.playing;
-  const buttonClass = active ? "fa-pause-circle-o" : "fa-play-circle-o";
+const TrackSearch = ({ onSearch }) => {
+  const [items, setItems] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
+  const [fetching, setFetching] = useState(false);
+  const [next, setNext] = useState(null);
 
-  const artists = props.item && props.item.artists
-    ? props.item.artists.map(artist)
-    : null;
+  const dispatch = useDispatch();
+  const playing = useSelector((state) => state.player.playing);
+  const currentTrack = useSelector((state) => state.player.currentTrack);
+  const tracks = useSelector((state) => state.player.tracks);
 
-  const artistCount = props.item && props.item.artists
-    ? props.item.artists.length
-    : 0;
-    const handleClick = active
-    ? props.pauseTrack
-    : () => props.playTrack(props.uri, props.offset);
+  const playTracks = async (uri, offset) => {
+    try {
+      await instance.put('/me/player/play', { uris: [uri], offset: { position: offset } });
+    } catch (error) {
+      console.error("Error playing track:", error);
+    }
+  };
+
+  const pauseTrack = async () => {
+    try {
+      await instance.put('/me/player/pause');
+    } catch (error) {
+      console.error("Error pausing track:", error);
+    }
+  };
+
+  const searchTracks = async (event) => {
+    event.preventDefault();
+    setFetching(true);
+
+    try {
+      const response = await instance.get(`/search?q=${searchKey}&type=track,album,playlist`);
+      setItems(response.data.tracks.items);
+      setNext(response.data.tracks.next);
+      setFetching(false);
+    } catch (error) {
+      console.error("Error fetching search data:", error);
+      setFetching(false);
+    }
+  };
+
+  const fetchMore = async () => {
+    if (next) {
+      try {
+        const response = await instance.get(next);
+        setItems((prevItems) => [...prevItems, ...response.data.tracks.items]);
+        setNext(response.data.tracks.next);
+      } catch (error) {
+        console.error("Error fetching more data:", error);
+      }
+    }
+  };
 
   return (
-    <li className={"user-track-item" + (active ? " active" : "")}>
-      {props.isAlbum ? (
-        <div className="r-track" onClick={handleClick}>
-          <i className={`fa ${buttonClass} play-btn`} aria-hidden="true" />
-          {active ? (
-            <i className="fa fa-volume-up playing" />
-          ) : (
-            <span>{props.index}</span>
-          )}
-        </div>
+    <div className="generic-container">
+      {fetching ? (
+        <Spinner section loading={fetching}>
+          Loading...
+        </Spinner>
       ) : (
-        <div className="play-track" onClick={handleClick}>
-          <i className={`fa ${buttonClass} play-btn`} aria-hidden="true" />
-          {active ? <i className="fa fa-volume-up" /> : null}
+        <div className="track-search-container">
+          <form onSubmit={searchTracks}>
+            <input
+              name="search"
+              type="text"
+              placeholder="Search..."
+              style={{ width: "100%", padding: "10px", margin: "10px 10px 10px 10px" }}
+              value={searchKey}
+              onChange={(e) => setSearchKey(e.target.value)}
+            />
+            <button type="submit">Search</button>
+          </form>
+          <div className="track-search-results">
+            <TrackSearchResults
+              items={items}
+              playTrack={playTracks}
+              pauseTrack={pauseTrack}
+              playing={playing}
+              current={currentTrack}
+              tracks={tracks}
+            />
+            {next && <button onClick={fetchMore}>Load More</button>}
+          </div>
         </div>
       )}
-      <div className="add-remove-section">
-        {props.contains ? (
-          <i
-            className="fa fa-check"
-            aria-hidden="true"
-            onClick={props.onDelete}
-          />
-        ) : (
-          <i className="fa fa-plus" aria-hidden="true" onClick={props.onAdd} />
-        )}
-      </div>
-      <div className="track-title">
-        <p>{props.item && props.item.name}</p>
-      </div>
-      <div className="track-artist">
-        <p>
-          {props.item && props.item.artists
-            ? props.item.artists.map((a, i) => (
-                <span key={i}>
-                  <span
-                    className="artist"
-                    onClick={() => props.onArtistClick(a.id)}
-                  >
-                    {a.name}
-                  </span>
-                  {artists !== i + 1 ? <span>, </span> : null}
-                </span>
-              ))
-            : ""}
-        </p>
-      </div>
-      {!props.isAlbum && (
-        <div className="track-album">
-          <p
-            className="album"
-            onClick={() => props.onAlbumClick(props.item.album.id)}
-          >
-            {props.item && props.item.album.name}
-          </p>
-        </div>
-      )}
-      {!props.isAlbum && !props.removeDate && (
-        <div className="track-added">
-          <p>{props.item && moment(props.added_at).format("YYYY-MM-DD")}</p>
-        </div>
-      )}
-      {props.isAlbum && (
-        <div className="track-explicit">
-          {props.item && props.item.explicit ? (
-            <p className="explicit">EXPLICIT</p>
-          ) : null}
-        </div>
-      )}
-      <div className="track-length">
-        <p>{props.item && msToMinutesAndSeconds(props.item.duration_ms)}</p>
-      </div>
-    </li>
+    </div>
   );
 };
 
-export default withUiActions(track);
+export default withUiActions(TrackSearch);

@@ -37,7 +37,7 @@ const ExtraControlsContainer = styled.div`
 //   </ExtraControlsContainer>
 // );
 
-// ExtraControls.PropTypes = {
+// ExtraControls.propTypes = {
 //   shuffleActive: propTypes.bool,
 //   repeatActive: propTypes.bool,
 //   shuffle: propTypes.func,
@@ -78,7 +78,7 @@ const ExtraControls = ({ shuffleActive, repeatActive, shuffle, repeatContext }) 
   </ExtraControlsContainer>
 );
 
-ExtraControls.PropTypes = {
+ExtraControls.propTypes = {
   shuffleActive: propTypes.bool,
   repeatActive: propTypes.bool,
   shuffle: propTypes.func,

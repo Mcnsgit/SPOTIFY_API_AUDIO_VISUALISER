@@ -47,7 +47,9 @@ const ProgressBar = ({ progressBarRef, audioRef, timeProgress, duration }) => {
       audioRef.current.currentTime = newTime;
     }
   };
+
   const formatTime = (time) => {
+    
     if (time && !isNaN(time)) {
       const minutes = Math.floor(time / 60);
       const formatMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
@@ -58,6 +60,14 @@ const ProgressBar = ({ progressBarRef, audioRef, timeProgress, duration }) => {
     return "00:00";
   };
 
+  const handleSeek = (e) => {
+    const progressBar = progressBarRef.current;
+    const ratio = progressBar.value / progressBar.max;
+    const newTime = ratio * duration;
+    if (audioRef.current) {
+      audioRef.current.currentTime = newTime;
+    }
+  };
   return (
     <div className="progress">
       <span className="time current">{formatTime(timeProgress)}</span>
@@ -151,7 +161,7 @@ export default ProgressBar;
 //   );
 // };
 
-// ProgressBar.PropTypes = {
+// ProgressBar.propTypes = {
 //   player: propTypes.object.isRequired,
 //   onSeek: propTypes.func.isRequired,
 // };

@@ -90,7 +90,7 @@ class Album extends Component {
     );
   }
 }
-Album.PropTypes = {
+Album.propTypes = {
   tracks: propTypes.array,
   
 }

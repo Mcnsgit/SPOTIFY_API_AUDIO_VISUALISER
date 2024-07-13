@@ -26,7 +26,7 @@ const TrackCover = ({ currentTrack }) => {
   );
 };
 
-TrackCover.PropTypes = {
+TrackCover.propTypes = {
   currentTrack: propTypes.shape({
     album: propTypes.shape({
       images: propTypes.arrayOf(
