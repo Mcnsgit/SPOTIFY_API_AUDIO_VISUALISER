@@ -144,11 +144,7 @@ const App = ({ token }) => {
     <div className="App">
       <div className="login-blur" id={loggedIn ? "" : "blur"}>
         <div id='App-container' className='App-container'>
-          <div className='left'>
-          <LeftSection />
-          </div>
-          <div className='main-section'>
-          <MainSection />
+         
           <div className="musicPlayerContainer" id='musicPlayerContainer'>
             <div id="musicInfo">
               <div>
@@ -158,7 +154,6 @@ const App = ({ token }) => {
             </div>
             {nowPlaying.image && <img src={nowPlaying.image} style={{ width: 100 }} alt="Album cover" />}
           </div>
-        </div>
       </div>
             </div>
       {!loggedIn && (
